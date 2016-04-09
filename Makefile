@@ -56,9 +56,8 @@ vim-bin-deps:
 	sudo mkdir /usr/include/lua5.1/include
 	sudo cp /usr/include/lua5.1/*.h /usr/include/lua5.1/include/
 
-vim-bin: vim-deps
+vim-bin: submodules vim-deps
 	cd vim/vim-src
-	make distclean
 	./configure --with-features=huge \
 	   	--enable-rubyinterp \
 	   	--enable-largefile \
@@ -87,14 +86,13 @@ vim: vim-bin vim-deps font
 	# vim plugins
 	vim +PlugInstall +VimProcInstall +qall
 
-python: python-deps
+python:
 	# pyenv dependencies
 	sudo apt-get install -y make build-essential libssl-dev zlib1g-dev \
 		libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
 		libncurses5-dev
 	# pyenv
-	curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/\
-		master/bin/pyenv-installer | bash
+	curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
 	# pyenv-virtualenv
 	git clone \
 	  https://github.com/yyuu/pyenv-virtualenv.git \
