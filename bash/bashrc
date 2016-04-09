@@ -144,6 +144,3 @@ POWERLINE_BASH_SELECT=1
 
 # autojump
 . /usr/share/autojump/autojump.sh
-
-# solarized
-#$HOME/.gnome-terminal-colors-solarized/set_dark.sh
