@@ -1,0 +1,12 @@
+{
+  "ext": {
+    "shell": {
+      "colorscheme": "default",
+      "theme": "default_leftonly",
+      "local_themes": {
+        "continuation": "continuation",
+        "select": "select"
+      }
+    }
+  }
+}
