@@ -61,7 +61,7 @@ vim-bin-deps:
 	sudo cp /usr/include/lua5.1/*.h /usr/include/lua5.1/include/
 
 vim-bin: submodules vim-deps
-	./$(VIM_DIR)/vim-src/configure --with-features=huge \
+	cd $(VIM_DIR)/vim-src && ./configure --with-features=huge \
 	   	--enable-rubyinterp \
 	   	--enable-largefile \
 	   	--disable-netbeans \
@@ -74,7 +74,7 @@ vim-bin: submodules vim-deps
 	   	--enable-fail-if-missing \
 	   	--with-lua-prefix=/usr/include/lua5.1 \
 	   	--enable-cscope
-	(cd $(VIM_DIR)/vim-src && make && sudo make install)
+	cd $(VIM_DIR)/vim-src && make && sudo make install
 
 vim-deps:
 	sudo apt-get install bashdb cmake exuberant-ctags
