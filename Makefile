@@ -22,14 +22,14 @@ utils:
 
 bash: submodules font
 	# powerline binding & configuration paths
-	pip install powerline-status powerline-gitstatus
+	sudo pip install powerline-status powerline-gitstatus
 	root_dir=`pip show powerline-status | grep -i location | grep -Eo /.*$$`
 	bash_binding=$$root_dir/powerline/bindings/bash/powerline.sh
 	config_dir=`pwd`/$(BASH_DIRNAME)/powerline-configs
 	# powerline binding & configuration installation
 	mkdir -p ~/.config/powerline/colorschemes
 	mkdir -p ~/.config/powerline/themes/shell
-	ln -sfi $$bash_binding ~/.powerline
+	sudo ln -sfi $$bash_binding ~/.powerline
 	ln -sfi $$config_dir/config.json \
 		~/.config/powerline/config.json
 	ln -sfi $$config_dir/colorscheme.json \
