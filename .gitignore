@@ -63,3 +63,10 @@ target/
 
 # vim
 *.sw*
+
+# powerline
+.powerline
+
+# do not add tmux plugins to version control
+tmux/tmux/plugins/*
+!tmux/tmux/plugins/tpm

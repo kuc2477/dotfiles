@@ -29,7 +29,7 @@ bash: submodules font
 	# powerline binding & configuration installation
 	mkdir -p ~/.config/powerline/colorschemes
 	mkdir -p ~/.config/powerline/themes/shell
-	sudo ln -sfi $$bash_binding ~/.powerline
+	ln -sfi $$bash_binding ~/.powerline
 	ln -sfi $$config_dir/config.json \
 		~/.config/powerline/config.json
 	ln -sfi $$config_dir/colorscheme.json \
@@ -41,7 +41,7 @@ bash: submodules font
 
 tmux: submodules font
 	# tmux binary
-	sudo apt-get install libevent-dev
+	sudo apt-get install libevent-dev automake
 	(cd $(TMUX_DIRNAME)/tmux-src && ./autogen.sh && ./configure && make && sudo make install)
 	# tmux powerline
 	ln -sfi `pwd`/$(TMUX_DIRNAME)/tmux-powerline ~/.tmux-powerline
@@ -96,15 +96,10 @@ python:
 		libncurses5-dev
 	# pyenv
 	curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
-	# pyenv-virtualenv
-	git clone \
-	  https://github.com/yyuu/pyenv-virtualenv.git \
-	  ~/.pyenv/plugins/pyenv-virtualenv
 
 javascript:
 	# nvm
-	curl -o- https://raw.githubusercontent.com/creationix/nvm/\
-		v0.29.0/install.sh | bash
+	curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash
 
 haskell:
 	# stack
