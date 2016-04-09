@@ -1,9 +1,9 @@
 SHELL = /bin/bash
 
-FONT_DIR = ./fonts
-TMUX_DIR = ./tmux
-VIM_DIR = ./vim
-BASH_DIR = ./bash
+FONT_DIRNAME = fonts
+TMUX_DIRNAME = tmux
+VIM_DIRNAME = vim
+BASH_DIRNAME = bash
 
 
 
@@ -13,7 +13,7 @@ submodules:
 	git submodule update --init
 
 font: submodules
-	$(FONT_DIR)/install.sh
+	$(FONT_DIRNAME)/install.sh
 
 utils:
 	# autoenv, autojump, ag
@@ -25,8 +25,9 @@ bash: submodules font
 	pip install powerline-status powerline-gitstatus
 	root_dir=`pip show powerline-status | grep -i location | grep -Eo /.*$$`
 	bash_binding=$$root_dir/powerline/bindings/bash/powerline.sh
-	config_dir=`pwd`/$(BASH_DIR)/powerline-configs
+	config_dir=`pwd`/$(BASH_DIRNAME)/powerline-configs
 	# powerline binding & configuration installation
+	mkdir -p ~/.config/powerline/colorschemes
 	mkdir -p ~/.config/powerline/themes/shell
 	ln -sfi $$bash_binding ~/.powerline
 	ln -sfi $$config_dir/config.json \
@@ -36,18 +37,18 @@ bash: submodules font
 	ln -sfi $$config_dir/theme.json \
 		~/.config/powerline/themes/shell/default.json
 	# bash configuration
-	ln -sfi `pwd`/$(BASH_DIR)/bashrc ~/.bashrc
+	ln -sfi `pwd`/$(BASH_DIRNAME)/bashrc ~/.bashrc
 
 tmux: submodules font
 	# tmux binary
 	sudo apt-get install libevent-dev
-	(cd $(TMUX_DIR)/tmux-src && ./autogen.sh && ./configure && make && sudo make install)
+	(cd $(TMUX_DIRNAME)/tmux-src && ./autogen.sh && ./configure && make && sudo make install)
 	# tmux powerline
-	ln -sfi `pwd`/$(TMUX_DIR)/tmux-powerline ~/.tmux-powerline
-	ln -sfi `pwd`/$(TMUX_DIR)/tmux-powerlinerc ~/.tmux-powerlinerc
+	ln -sfi `pwd`/$(TMUX_DIRNAME)/tmux-powerline ~/.tmux-powerline
+	ln -sfi `pwd`/$(TMUX_DIRNAME)/tmux-powerlinerc ~/.tmux-powerlinerc
 	# tmux configuration
-	ln -sfi `pwd`/$(TMUX_DIR)/tmux ~/.tmux
-	ln -sfi `pwd`/$(TMUX_DIR)/tmux.conf ~/.tmux.conf
+	ln -sfi `pwd`/$(TMUX_DIRNAME)/tmux ~/.tmux
+	ln -sfi `pwd`/$(TMUX_DIRNAME)/tmux.conf ~/.tmux.conf
 
 vim-bin-deps:
 	sudo apt-get build-dep
@@ -61,7 +62,7 @@ vim-bin-deps:
 	sudo cp /usr/include/lua5.1/*.h /usr/include/lua5.1/include/
 
 vim-bin: submodules vim-deps
-	cd $(VIM_DIR)/vim-src && ./configure --with-features=huge \
+	cd $(VIM_DIRNAME)/vim-src && ./configure --with-features=huge \
 	   	--enable-rubyinterp \
 	   	--enable-largefile \
 	   	--disable-netbeans \
@@ -74,7 +75,7 @@ vim-bin: submodules vim-deps
 	   	--enable-fail-if-missing \
 	   	--with-lua-prefix=/usr/include/lua5.1 \
 	   	--enable-cscope
-	cd $(VIM_DIR)/vim-src && make && sudo make install
+	cd $(VIM_DIRNAME)/vim-src && make && sudo make install
 
 vim-deps:
 	sudo apt-get install bashdb cmake exuberant-ctags
@@ -84,7 +85,7 @@ vim: vim-bin vim-deps font
 	curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 	   	https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 	# vim configuration
-	ln -sfi `pwd`/$(VIM_DIR)/vimrc ~/.vimrc
+	ln -sfi `pwd`/$(VIM_DIRNAME)/vimrc ~/.vimrc
 	# vim plugins
 	vim +PlugInstall +VimProcInstall +qall
 
