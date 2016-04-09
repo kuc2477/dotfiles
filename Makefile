@@ -1,11 +1,12 @@
 SHELL = /bin/bash
-.PHONY = terminal
+.PHONY = terminal bin
 
 FONT_DIRNAME = fonts
 TMUX_DIRNAME = tmux
 VIM_DIRNAME = vim
 BASH_DIRNAME = bash
 TERMINAL_DIRNAME = terminal
+BIN_DIRNAME = bins
 
 
 all: font utils bash tmux vim python javascript haskell
@@ -20,6 +21,9 @@ utils:
 	# autoenv, autojump, ag
 	pip install autoenv
 	sudo apt-get install autojump silversearcher-ag
+
+bin:
+	cp ./bins/* /usr/local/bin
 
 terminal: font
 	# gnome terminal profile
