@@ -1,3 +1,15 @@
 [submodule "fonts"]
 	path = fonts
 	url = https://github.com/powerline/fonts
+[submodule "tmux/tmux-src"]
+	path = tmux/tmux-src
+	url = https://github.com/tmux/tmux
+[submodule "tmux/tmux-powerline"]
+	path = tmux/tmux-powerline
+	url = https://github.com/erikw/tmux-powerline
+[submodule "tmux/tmux/plugins/tpm"]
+	path = tmux/tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm
+[submodule "vim/vim-src"]
+	path = vim/vim-src
+	url = https://github.com/vim/vim.git
