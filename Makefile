@@ -62,7 +62,7 @@ tmux: submodules font
 	ln -sfi `pwd`/$(TMUX_DIRNAME)/tmux.conf ~/.tmux.conf
 
 vim-bin-deps:
-	sudo apt-get build-dep
+	sudo apt-get install build-essential
 	sudo apt-get install \
 		liblua5.1-dev luajit libluajit-5.1 python-dev ruby-dev \
 		libperl-dev libncurses5-dev libgnome2-dev libgnomeui-dev \
@@ -72,7 +72,7 @@ vim-bin-deps:
 	sudo mkdir /usr/include/lua5.1/include
 	sudo cp /usr/include/lua5.1/*.h /usr/include/lua5.1/include/
 
-vim-bin: submodules vim-deps
+vim-bin: submodules vim-bin-deps
 	cd $(VIM_DIRNAME)/vim-src && ./configure --with-features=huge \
 	   	--enable-rubyinterp \
 	   	--enable-largefile \
