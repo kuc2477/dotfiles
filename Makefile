@@ -1,5 +1,5 @@
 SHELL = /bin/bash
-.PHONY = terminal bin
+.PHONY: terminal bin
 
 FONT_DIRNAME = fonts
 TMUX_DIRNAME = tmux
@@ -23,7 +23,8 @@ utils:
 	sudo apt-get install autojump silversearcher-ag
 
 bin:
-	cp ./bins/* /usr/local/bin
+	sudo chown june -R /usr/local/bin
+	sudo cp ./bin/* /usr/local/bin
 
 terminal: font
 	# gnome terminal profile
