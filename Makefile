@@ -55,6 +55,8 @@ tmux: submodules font
 	# tmux powerline
 	ln -sfi `pwd`/$(TMUX_DIRNAME)/tmux-powerline ~/.tmux-powerline
 	ln -sfi `pwd`/$(TMUX_DIRNAME)/tmux-powerlinerc ~/.tmux-powerlinerc
+	# tmuxp
+	sudo pip install tmuxp
 	# tmux configuration
 	ln -sfi `pwd`/$(TMUX_DIRNAME)/tmux ~/.tmux
 	ln -sfi `pwd`/$(TMUX_DIRNAME)/tmux.conf ~/.tmux.conf
