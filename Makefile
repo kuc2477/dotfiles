@@ -51,7 +51,7 @@ bash: submodules font
 
 tmux: submodules font
 	# tmux binary
-	sudo apt-get install libevent-dev automake
+	sudo apt-get install libevent-dev automake libncurses-dev pkg-config
 	(cd $(TMUX_DIRNAME)/tmux-src && ./autogen.sh && ./configure && make && sudo make install)
 	# tmux powerline
 	ln -sfi `pwd`/$(TMUX_DIRNAME)/tmux-powerline ~/.tmux-powerline
