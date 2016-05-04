@@ -19,7 +19,7 @@ font: submodules
 
 utils:
 	# autoenv, autojump, ag
-	pip install autoenv pgcli
+	sudo pip install autoenv pgcli
 	sudo apt-get install autojump silversearcher-ag
 
 bin:
@@ -33,7 +33,7 @@ terminal: font
 bash: submodules font
 	# powerline binding & configuration paths
 	sudo pip install powerline-status powerline-gitstatus
-	root_dir=`pip show powerline-status | grep -i location | grep -Eo /.*$$`
+	root_dir=`sudo pip show powerline-status | grep -i location | grep -Eo \/.*$$`
 	bash_binding=$$root_dir/powerline/bindings/bash/powerline.sh
 	config_dir=`pwd`/$(BASH_DIRNAME)/powerline-configs
 	# powerline binding & configuration installation
@@ -51,7 +51,7 @@ bash: submodules font
 
 tmux: submodules font
 	# tmux binary
-	sudo apt-get install libevent-dev automake
+	sudo apt-get install libevent-dev automake libncurses-dev pkg-config
 	(cd $(TMUX_DIRNAME)/tmux-src && ./autogen.sh && ./configure && make && sudo make install)
 	# tmux powerline
 	ln -sf `pwd`/$(TMUX_DIRNAME)/tmux-powerline ~/.tmux-powerline
