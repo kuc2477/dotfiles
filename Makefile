@@ -19,7 +19,7 @@ font: submodules
 
 utils:
 	# autoenv, autojump, ag
-	pip install autoenv
+	pip install autoenv pgcli
 	sudo apt-get install autojump silversearcher-ag
 
 bin:
@@ -39,28 +39,28 @@ bash: submodules font
 	# powerline binding & configuration installation
 	mkdir -p ~/.config/powerline/colorschemes
 	mkdir -p ~/.config/powerline/themes/shell
-	ln -sfi $$bash_binding ~/.powerline
-	ln -sfi $$config_dir/config.json \
+	ln -sf $$bash_binding ~/.powerline
+	ln -sf $$config_dir/config.json \
 		~/.config/powerline/config.json
-	ln -sfi $$config_dir/colorscheme.json \
+	ln -sf $$config_dir/colorscheme.json \
 		~/.config/powerline/colorschemes/default.json
-	ln -sfi $$config_dir/theme.json \
+	ln -sf $$config_dir/theme.json \
 		~/.config/powerline/themes/shell/default.json
 	# bash configuration
-	ln -sfi `pwd`/$(BASH_DIRNAME)/bashrc ~/.bashrc
+	ln -sf `pwd`/$(BASH_DIRNAME)/bashrc ~/.bashrc
 
 tmux: submodules font
 	# tmux binary
 	sudo apt-get install libevent-dev automake
 	(cd $(TMUX_DIRNAME)/tmux-src && ./autogen.sh && ./configure && make && sudo make install)
 	# tmux powerline
-	ln -sfi `pwd`/$(TMUX_DIRNAME)/tmux-powerline ~/.tmux-powerline
-	ln -sfi `pwd`/$(TMUX_DIRNAME)/tmux-powerlinerc ~/.tmux-powerlinerc
+	ln -sf `pwd`/$(TMUX_DIRNAME)/tmux-powerline ~/.tmux-powerline
+	ln -sf `pwd`/$(TMUX_DIRNAME)/tmux-powerlinerc ~/.tmux-powerlinerc
 	# tmuxp
 	sudo pip install tmuxp
 	# tmux configuration
-	ln -sfi `pwd`/$(TMUX_DIRNAME)/tmux ~/.tmux
-	ln -sfi `pwd`/$(TMUX_DIRNAME)/tmux.conf ~/.tmux.conf
+	ln -sf `pwd`/$(TMUX_DIRNAME)/tmux ~/.tmux
+	ln -sf `pwd`/$(TMUX_DIRNAME)/tmux.conf ~/.tmux.conf
 
 vim-bin-deps:
 	sudo apt-get install build-essential
@@ -70,7 +70,7 @@ vim-bin-deps:
 		libgtk2.0-dev libatk1.0-dev libbonoboui2-dev libcairo2-dev \
 		libx11-dev libxpm-dev libxt-dev
 	# copy lua header files to target directory of vim build path
-	sudo mkdir /usr/include/lua5.1/include
+	sudo mkdir -p /usr/include/lua5.1/include
 	sudo cp /usr/include/lua5.1/*.h /usr/include/lua5.1/include/
 
 vim-bin: submodules vim-bin-deps

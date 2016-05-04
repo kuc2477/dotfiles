@@ -45,7 +45,6 @@ Plug 'burke/matcher', { 'do': 'sudo make && make install' }
 Plug 'rking/ag.vim'
 Plug 'kien/ctrlp.vim'
 Plug 'scrooloose/nerdtree'
-Plug 'jistr/vim-nerdtree-tabs'
 
 " Git interface
 Plug 'airblade/vim-gitgutter'
@@ -170,9 +169,8 @@ au FileType python nnoremap K  :YcmCompleter GetDoc<CR>
 let g:ycm_server_python_interpreter='/usr/bin/python2'
 
 " Nerdtree
-let g:nerdtree_tabs_open_on_console_startup = 1
-let g:nerdtree_tabs_autoclose = 1
-map <C-u> :NERDTreeTabsToggle<CR>
+map <C-u> :NERDTreeToggle<CR>
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " Easymotion
 let g:EasyMotion_smartcase = 1
@@ -376,7 +374,7 @@ set shiftwidth=4
 set tabstop=4
 
 " Remove trailing white spaces
-autocmd BufWritePre * :%s/\s\+$//e
+" autocmd BufWritePre * :%s/\s\+$//e
 
 " Search
 set hlsearch

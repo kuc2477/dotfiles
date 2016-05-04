@@ -68,5 +68,5 @@ target/
 .powerline
 
 # do not add tmux plugins to version control
-tmux/tmux/plugins/*
+tmux/tmux/*
 !tmux/tmux/plugins/tpm
