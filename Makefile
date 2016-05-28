@@ -108,9 +108,8 @@ python:
 		libncurses5-dev
 	# pyenv
 	curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
-
-pypi:
-	sudo ln -sfi `pwd`/pypirc $$HOME/.pypirc
+	#pypi
+	sudo ln -sfi `pwd`/python/pypirc $$HOME/.pypirc
 
 javascript:
 	# nvm
