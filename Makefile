@@ -109,6 +109,9 @@ python:
 	# pyenv
 	curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
 
+pypi:
+	sudo ln -sfi `pwd`/pypirc $$HOME/.pypirc
+
 javascript:
 	# nvm
 	curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash
