@@ -1,10 +1,11 @@
 SHELL = /bin/bash
-.PHONY: terminal bin
+.PHONY: terminal bin javascript
 
 FONT_DIRNAME = fonts
 TMUX_DIRNAME = tmux
 VIM_DIRNAME = vim
 BASH_DIRNAME = bash
+JS_DIRNAME = javascript
 TERMINAL_DIRNAME = terminal
 BIN_DIRNAME = bins
 
@@ -114,6 +115,8 @@ python:
 javascript:
 	# nvm
 	curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash
+	# tern
+	ln -sfi `pwd`/$(JS_DIRNAME)/.tern-project ~/.tern-project
 
 haskell:
 	# stack

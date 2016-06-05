@@ -13,7 +13,7 @@ call plug#begin('~/.vim/plugged')
 " I use YCM as base completion fallback and use neocomplete for viml,
 " bash, haskell specific completion.
 "
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
 Plug 'Shougo/neocomplete.vim'
 
 " Linting interface
@@ -103,8 +103,6 @@ Plug 'ehamberg/vim-cute-python'
 Plug 'django.vim'
 
 " Javascript / JSX
-Plug 'marijnh/tern_for_vim', { 'do': 'npm install' }    " Use tern_for_vim as YCM javascript completion
-                                                        " backend.
 Plug 'mxw/vim-jsx'
 Plug 'pangloss/vim-javascript'
 Plug 'othree/javascript-libraries-syntax.vim'
@@ -246,7 +244,7 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
 " Syntastic language specific settings
-let g:syntastic_python_python_exec = 'usr/bin/python3' " use python3 syntax
+let g:syntastic_python_python_exec = '/usr/bin/python3' " use python3 syntax
 let g:syntastic_javascript_checkers = ['eslint']    " use eslint for javascript
 let g:syntastic_html_tidy_exec = 'tidy'             " use tidy for html5
 let g:syntastic_mode_map = {
