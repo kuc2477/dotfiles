@@ -1,7 +1,7 @@
 {
-    "libs": [ "browser" ],
+    "libs": [ "browser", "jquery", "underscore" ],
     "plugins": {
         "node": {},
-        "es-modules": {}
+        "es_modules": {}
     }
 }
