@@ -34,6 +34,7 @@ Plug 'Shougo/vimproc.vim'
 " Visual supports
 Plug 'severin-lemaignan/vim-minimap'
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'sjl/gundo.vim'
 Plug 'kshenoy/vim-signature'
 Plug 'pgdouyon/vim-evanesco'
@@ -59,10 +60,12 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'terryma/vim-expand-region'
 Plug 'terryma/vim-smooth-scroll'
 Plug 'tpope/vim-surround'
+Plug 'godlygeek/tabular'
 Plug 'Raimondi/delimitMate'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'mattn/emmet-vim'
 Plug 'kuc2477/vim-move'
+Plug 'solarnz/whitespace.vim'
 
 " Motion
 Plug 'Lokaltog/vim-easymotion'
@@ -269,6 +272,7 @@ map <F8> :Gpush
 
 " Airline
 let g:airline#extensions#tabline#enabled = 1
+let g:airline_theme='wombat'
 set term=xterm-256color
 set laststatus=2
 
@@ -347,6 +351,9 @@ map <leader>vl :VimuxRunLastCommand<CR>
 map <Leader>vq :VimuxCloseRunner<CR>
 map <Leader>vx :VimuxInterruptRunner<CR>
 
+" trailing whitespace
+let g:whitespace_ignore = ['vim', 'md', 'markdown', 'rst'] 
+
 "============================General Settings================================"
 
 " Add user local bin to runtime path
@@ -355,7 +362,7 @@ let $PATH = $PATH . ':' . expand("~/.local/bin")
 " Color scheme
 syntax on
 set background=dark
-colorscheme wombat256i
+colorscheme wombat256
 
 " Terminal
 if &term =~ '256color'
@@ -379,9 +386,6 @@ set smarttab
 set smartindent
 set shiftwidth=4
 set tabstop=4
-
-" Remove trailing white spaces
-" autocmd BufWritePre * :%s/\s\+$//e
 
 " Search
 set hlsearch
@@ -409,6 +413,7 @@ vmap <silent> jk <ESC>
 imap <silent> jk <ESC>
 nnoremap <silent>gh zz
 nnoremap ; :
+vnoremap ; :
 
 " Use Ag if both ag and matcher is available
 if executable('ag') && executable('matcher!')
