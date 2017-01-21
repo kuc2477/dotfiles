@@ -359,6 +359,9 @@ let g:whitespace_ignore = ['vim', 'md', 'markdown', 'rst']
 " Add user local bin to runtime path
 let $PATH = $PATH . ':' . expand("~/.local/bin")
 
+" Encoding
+set enc=utf-8
+
 " Color scheme
 syntax on
 set background=dark
