@@ -1,5 +1,5 @@
 SHELL = /bin/bash
-.PHONY: terminal bin javascript
+.PHONY: font utils bin terminal bash tmux vim-bin vim python javascript haskell
 
 FONT_DIRNAME = fonts
 TMUX_DIRNAME = tmux
@@ -18,12 +18,12 @@ submodules:
 font: submodules
 	$(FONT_DIRNAME)/install.sh
 
-utils:
+utils: python-pip db
 	# autoenv, autojump, ag
 	sudo pip install autoenv pgcli
 	sudo apt-get install autojump silversearcher-ag
 
-bin:
+bin: python-pip db
 	sudo chown june -R /usr/local/bin
 	sudo cp ./bin/* /usr/local/bin
 
