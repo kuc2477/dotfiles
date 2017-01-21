@@ -12,18 +12,22 @@ BIN_DIRNAME = bins
 
 all: font utils bash tmux vim python javascript haskell
 
+base:
+	sudo apt-get install python python-pip
+	sudo apt-get install xdg-utils
+
 submodules:
 	git submodule update --init
 
 font: submodules
 	$(FONT_DIRNAME)/install.sh
 
-utils: python-pip db
+utils:
 	# autoenv, autojump, ag
 	sudo pip install autoenv pgcli
 	sudo apt-get install autojump silversearcher-ag
 
-bin: python-pip db
+bin:
 	sudo chown june -R /usr/local/bin
 	sudo cp ./bin/* /usr/local/bin
 
