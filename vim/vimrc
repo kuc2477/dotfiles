@@ -172,7 +172,8 @@ let g:ycm_filetype_blacklist = {
 au FileType python nnoremap <leader>g :YcmCompleter GoTo<CR>
 au FileType python nnoremap <leader>d :YcmCompleter GoToDeclaration<CR>
 au FileType python nnoremap K  :YcmCompleter GetDoc<CR>
-let g:ycm_server_python_interpreter='/usr/bin/python'
+let g:ycm_python_binary_path = '/home/june/.pyenv/shims/python'
+let g:ycm_server_python_interpreter='/home/june/.pyenv/shims/python'
 
 " Nerdtree
 map <C-u> :NERDTreeToggle<CR>

@@ -120,7 +120,6 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # pyenv / pyenv-virtualenv
 export PATH="$HOME/.pyenv/bin:$PATH"
-
 if [ -x "$(which pyenv)" ]; then
   eval "$(pyenv init -)"
   eval "$(pyenv virtualenv-init -)"
@@ -129,6 +128,12 @@ fi
 # nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+# jenv
+export PATH="$HOME/.jenv/bin:$PATH"
+if [ -x "$(which jenv)" ]; then
+  eval "$(jenv init -)"
+fi
 
 # autoenv
 . /usr/local/bin/activate.sh
