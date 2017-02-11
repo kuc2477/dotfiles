@@ -82,11 +82,10 @@ Plug 'honza/vim-snippets'
 " Miscs
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-notes'
+Plug 'reedes/vim-pencil'
 Plug 'jceb/vim-orgmode'
-Plug 'blindFS/vim-taskwarrior'
 Plug 'reedes/vim-wordy'
 Plug 'mickaobrien/vim-stackoverflow'
-Plug 'szw/vim-g'
 Plug 'tyru/open-browser.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
@@ -277,6 +276,9 @@ let g:airline_theme='wombat'
 set term=xterm-256color
 set laststatus=2
 
+" Numbers
+let g:numbers_exclude = ['unite', 'tagbar', 'startify', 'gundo', 'vimshell', 'w3m', 'markdown', 'rst']
+
 " Startify
 let g:startify_custom_header =
     \ map(split(system('fortune | cowsay'), '\n'), '"   ". v:val') + ['', '']
@@ -363,6 +365,11 @@ let $PATH = $PATH . ':' . expand("~/.local/bin")
 " Encoding
 set enc=utf-8
 
+" Enable alternate input methods
+set noimd
+set imi=1
+set ims=-1
+
 " Color scheme
 syntax on
 set background=dark
@@ -415,6 +422,7 @@ nnoremap + :res +10<CR>
 " Life is short
 vmap <silent> jk <ESC>
 imap <silent> jk <ESC>
+lmap <silent> jk <ESC>
 nnoremap <silent>gh zz
 nnoremap ; :
 vnoremap ; :
@@ -491,7 +499,13 @@ au FileType sass setl ts=2 sw=2 sts=2
 au FileType less setl ts=2 sw=2 sts=2
 
 " Miscs
-au! BufRead,BufNewFile *.lr setfiletype markdown
+function SetWritingMode()
+    let g:vim_markdown_folding_disabled = 1
+    setfiletype markdown
+    :Pencil
+    :Goyo
+endfunction
+au! BufRead,BufNewFile *.lr call SetWritingMode()
 au! BufRead,BufNewFile *.cabal setfiletype haskell
 au! BufRead,BufNewFile *.wsgi setfiletype python
 au! BufRead,BufNewFile *.less setfiletype less
