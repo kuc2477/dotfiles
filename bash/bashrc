@@ -120,6 +120,7 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # pyenv / pyenv-virtualenv
 export PATH="$HOME/.pyenv/bin:$PATH"
+export PYTHON_CONFIGURE_OPTS="--enable-shared"
 if [ -x "$(which pyenv)" ]; then
   eval "$(pyenv init -)"
   eval "$(pyenv virtualenv-init -)"

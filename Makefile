@@ -36,23 +36,19 @@ terminal: font
 	ln -sfi $(TERMINAL_DIRNAME)/%gconf.xml ~/.gconf/apps/gnome-terminal/profiles/Default/%gconf.xml
 
 bash: submodules font
-	# powerline binding & configuration paths
+	# powerline binding & configuration path installations
 	sudo pip install powerline-status powerline-gitstatus
-	root_dir=`sudo pip show powerline-status | grep -i location | grep -Eo \/.*$$`
-	bash_binding=$$root_dir/powerline/bindings/bash/powerline.sh
-	config_dir=`pwd`/$(BASH_DIRNAME)/powerline-configs
-	# powerline binding & configuration installation
-	mkdir -p ~/.config/powerline/colorschemes
-	mkdir -p ~/.config/powerline/themes/shell
-	ln -sf $$bash_binding ~/.powerline
-	ln -sf $$config_dir/config.json \
-		~/.config/powerline/config.json
-	ln -sf $$config_dir/colorscheme.json \
-		~/.config/powerline/colorschemes/default.json
-	ln -sf $$config_dir/theme.json \
-		~/.config/powerline/themes/shell/default.json
-	# bash configuration
-	ln -sf `pwd`/$(BASH_DIRNAME)/bashrc ~/.bashrc
+	root_dir=`sudo pip show powerline-status | grep -i location | grep -Eo \/.*$$`; \
+	bash_binding=$$root_dir/powerline/bindings/bash/powerline.sh; \
+	config_dir=`pwd`/$(BASH_DIRNAME)/powerline-configs; \
+	mkdir -p ~/.config/powerline/colorschemes; \
+	mkdir -p ~/.config/powerline/themes/shell; \
+	sudo ln -sf $$bash_binding ~/.powerline; \
+	sudo ln -sf $$config_dir/config.json ~/.config/powerline/config.json; \
+	sudo ln -sf $$config_dir/colorscheme.json ~/.config/powerline/colorschemes/default.json; \
+	sudo ln -sf $$config_dir/theme.json ~/.config/powerline/themes/shell/default.json
+	# bash configuration 
+	sudo ln -sf `pwd`/$(BASH_DIRNAME)/bashrc ~/.bashrc
 
 tmux: submodules font
 	# tmux binary
