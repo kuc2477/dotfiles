@@ -86,6 +86,7 @@ Plug 'reedes/vim-pencil'
 Plug 'jceb/vim-orgmode'
 Plug 'reedes/vim-wordy'
 Plug 'mickaobrien/vim-stackoverflow'
+Plug 'ryanss/vim-hackernews'
 Plug 'tyru/open-browser.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
@@ -172,7 +173,8 @@ au FileType python nnoremap <leader>g :YcmCompleter GoTo<CR>
 au FileType python nnoremap <leader>d :YcmCompleter GoToDeclaration<CR>
 au FileType python nnoremap K  :YcmCompleter GetDoc<CR>
 let g:ycm_python_binary_path = '/home/june/.pyenv/shims/python'
-let g:ycm_server_python_interpreter='/home/june/.pyenv/shims/python'
+let g:ycm_server_python_interpreter='/home/june/.pyenv/shims/python2'
+
 
 " Nerdtree
 map <C-u> :NERDTreeToggle<CR>
@@ -422,7 +424,6 @@ nnoremap + :res +10<CR>
 " Life is short
 vmap <silent> jk <ESC>
 imap <silent> jk <ESC>
-lmap <silent> jk <ESC>
 nnoremap <silent>gh zz
 nnoremap ; :
 vnoremap ; :
@@ -506,6 +507,7 @@ function SetWritingMode()
     :Goyo
 endfunction
 au! BufRead,BufNewFile *.lr call SetWritingMode()
+au! BufRead,BufNewFile *.md call SetWritingMode()
 au! BufRead,BufNewFile *.cabal setfiletype haskell
 au! BufRead,BufNewFile *.wsgi setfiletype python
 au! BufRead,BufNewFile *.less setfiletype less
