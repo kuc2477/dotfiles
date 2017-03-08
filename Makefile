@@ -1,6 +1,16 @@
 SHELL = /bin/bash
 .PHONY: font utils bin terminal bash tmux vim-bin vim python javascript haskell
 
+OS := $(shell uname)
+
+ifeq ($(OS),Darwin)
+INSTALLER := brew install
+NAME_AG := the_silver_searcher
+else
+INSTALLER := sudo apt-get install
+NAME_AG := silversearcher-ag
+endif
+
 FONT_DIRNAME = fonts
 TMUX_DIRNAME = tmux
 VIM_DIRNAME = vim
@@ -25,10 +35,12 @@ font: submodules
 utils:
 	# autoenv, autojump, ag
 	sudo pip install autoenv pgcli
-	sudo apt-get install autojump silversearcher-ag
+	$(INSTALLER) autojump $(NAME_AG)
 
 bin:
+ifeq ($(OS),Darwin)
 	sudo chown june -R /usr/local/bin
+endif
 	sudo cp ./bin/* /usr/local/bin
 
 terminal: font
@@ -37,7 +49,11 @@ terminal: font
 
 bash: submodules font
 	# powerline binding & configuration path installations
+ifeq ($(OS),Darwin)
+	pip install --user powerline-status powerline-gitstatus
+else
 	sudo pip install powerline-status powerline-gitstatus
+endif
 	root_dir=`sudo pip show powerline-status | grep -i location | grep -Eo \/.*$$`; \
 	bash_binding=$$root_dir/powerline/bindings/bash/powerline.sh; \
 	config_dir=`pwd`/$(BASH_DIRNAME)/powerline-configs; \
@@ -47,12 +63,20 @@ bash: submodules font
 	sudo ln -sf $$config_dir/config.json ~/.config/powerline/config.json; \
 	sudo ln -sf $$config_dir/colorscheme.json ~/.config/powerline/colorschemes/default.json; \
 	sudo ln -sf $$config_dir/theme.json ~/.config/powerline/themes/shell/default.json
-	# bash configuration 
-	sudo ln -sf `pwd`/$(BASH_DIRNAME)/bashrc ~/.bashrc
+	# bash configuration
+ifeq ($(OS),Darwin)
+		sudo ln -sf `pwd`/$(BASH_DIRNAME)/bashrc ~/.profile
+else
+		sudo ln -sf `pwd`/$(BASH_DIRNAME)/bashrc ~/.bashrc
+endif
 
 tmux: submodules font
 	# tmux binary
-	sudo apt-get install libevent-dev automake libncurses-dev pkg-config
+ifeq ($(OS),Darwin)
+	$(INSTALLER) libevent automake pkg-config
+else
+	$(INSTALLER) libevent-dev automake libncurses-dev pkg-config
+endif
 	(cd $(TMUX_DIRNAME)/tmux-src && ./autogen.sh && ./configure && make && sudo make install)
 	# tmux powerline
 	ln -sf `pwd`/$(TMUX_DIRNAME)/tmux-powerline ~/.tmux-powerline
@@ -103,10 +127,12 @@ vim: vim-bin vim-deps font
 	vim +PlugInstall +VimProcInstall +qall
 
 python:
+ifneq ($(OS),Darwin)
 	# pyenv dependencies
 	sudo apt-get install -y make build-essential libssl-dev zlib1g-dev \
 		libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
 		libncurses5-dev
+endif
 	# pyenv
 	curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
 	#pypi

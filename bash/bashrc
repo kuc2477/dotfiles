@@ -149,7 +149,8 @@ POWERLINE_BASH_SELECT=1
 . ~/.powerline
 
 # autojump
-. /usr/share/autojump/autojump.sh
+# . /usr/local/bin/autojump.sh
+[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 
 # CUDA
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64"

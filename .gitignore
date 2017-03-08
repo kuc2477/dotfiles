@@ -70,3 +70,6 @@ target/
 # do not add tmux plugins to version control
 tmux/tmux/*
 !tmux/tmux/plugins/tpm
+
+# OSX
+.DS_store
