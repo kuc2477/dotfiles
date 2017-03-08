@@ -6,9 +6,11 @@ OS := $(shell uname)
 ifeq ($(OS),Darwin)
 INSTALLER := brew install
 NAME_AG := the_silver_searcher
+NAME_CTAGS := ctags
 else
 INSTALLER := sudo apt-get install
 NAME_AG := silversearcher-ag
+NAME_CTAGS := exuberant-ctags
 endif
 
 FONT_DIRNAME = fonts
@@ -44,8 +46,10 @@ endif
 	sudo cp ./bin/* /usr/local/bin
 
 terminal: font
+ifeq ($(OS),Darwin)
 	# gnome terminal profile
 	ln -sfi $(TERMINAL_DIRNAME)/%gconf.xml ~/.gconf/apps/gnome-terminal/profiles/Default/%gconf.xml
+endif
 
 bash: submodules font
 	# powerline binding & configuration path installations
@@ -115,7 +119,7 @@ vim-bin: submodules vim-bin-deps
 	cd $(VIM_DIRNAME)/vim-src && make && sudo make install
 
 vim-deps:
-	sudo apt-get install bashdb cmake exuberant-ctags
+	$(INSTALLER) bashdb cmake $(NAME_CTAGS)
 
 vim: vim-bin vim-deps font
 	# vim plugin manager
@@ -134,7 +138,12 @@ ifneq ($(OS),Darwin)
 		libncurses5-dev
 endif
 	# pyenv
+ifeq ($(OS),Darwin)
+	brew update
+	brew install pyenv pyenv-virtualenv
+else
 	curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
+endif
 	#pypi
 	sudo ln -sfi `pwd`/python/pypirc $$HOME/.pypirc
 
