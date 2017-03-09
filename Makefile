@@ -25,8 +25,10 @@ BIN_DIRNAME = bins
 all: font utils bash tmux vim python javascript haskell
 
 base:
-	sudo apt-get install python python-pip
+	$(INSTALLER) python python-pip
+ifneq ($(OS),Darwin)
 	sudo apt-get install xdg-utils
+endif
 
 submodules:
 	git submodule update --init

@@ -15,6 +15,7 @@ call plug#begin('~/.vim/plugged')
 "
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
 Plug 'Shougo/neocomplete.vim'
+Plug 'ervandew/supertab'
 
 " Linting interface
 Plug 'scrooloose/syntastic', {
@@ -174,6 +175,9 @@ au FileType python nnoremap <leader>d :YcmCompleter GoToDeclaration<CR>
 au FileType python nnoremap K  :YcmCompleter GetDoc<CR>
 let g:ycm_python_binary_path = '/home/june/.pyenv/shims/python'
 let g:ycm_server_python_interpreter='/home/june/.pyenv/shims/python2'
+
+" Supertab
+let g:SuperTabDefaultCompletionType = "<c-n>"
 
 
 " Nerdtree

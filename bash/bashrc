@@ -85,9 +85,10 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 # some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
+alias ls="ls -G"
+alias ll='ls -alFG'
+alias la='ls -AG'
+alias l='ls -CFG'
 alias tmux='tmux -2'
 alias vi='vim'
 
@@ -142,6 +143,7 @@ fi
 # fzf
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
+PATH=$HOME/.local/bin:$PATH
 # powerline
 powerline-daemon -q
 POWERLINE_BASH_CONTINUATION=1
