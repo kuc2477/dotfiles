@@ -66,7 +66,7 @@ endif
 bash: submodules font
 	# powerline binding & configuration path installations
 ifeq ($(OS),Darwin)
-	pip install --user powerline-status powerline-gitstatus
+	pip install powerline-status powerline-gitstatus
 else
 	sudo pip install powerline-status powerline-gitstatus
 endif
