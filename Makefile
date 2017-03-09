@@ -135,7 +135,7 @@ ifneq ($(OS),Darwin)
 	   	--enable-cscope
 	cd $(VIM_DIRNAME)/vim-src && make && sudo make install
 else
-	brew install --with-cscope --with-lua --with-override-system-vim
+	brew install macvim --with-cscope --with-lua --with-override-system-vim
 endif
 
 vim-deps:
