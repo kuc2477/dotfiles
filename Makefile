@@ -1,7 +1,16 @@
 SHELL = /bin/bash
 .PHONY: font utils bin terminal bash tmux vim-bin vim python javascript haskell
 
+
 OS := $(shell uname)
+FONT_DIRNAME = fonts
+TMUX_DIRNAME = tmux
+VIM_DIRNAME = vim
+BASH_DIRNAME = bash
+JS_DIRNAME = javascript
+TERMINAL_DIRNAME = terminal
+BIN_DIRNAME = bins
+
 
 ifeq ($(OS),Darwin)
 INSTALLER := brew install
@@ -13,14 +22,10 @@ NAME_AG := silversearcher-ag
 NAME_CTAGS := exuberant-ctags
 endif
 
-FONT_DIRNAME = fonts
-TMUX_DIRNAME = tmux
-VIM_DIRNAME = vim
-BASH_DIRNAME = bash
-JS_DIRNAME = javascript
-TERMINAL_DIRNAME = terminal
-BIN_DIRNAME = bins
 
+# =======
+# TARGETS
+# =======
 
 all: font utils bash tmux vim python javascript haskell
 
@@ -39,13 +44,18 @@ font: submodules
 utils:
 	# autoenv, autojump, ag
 	sudo pip install autoenv pgcli
-	$(INSTALLER) autojump $(NAME_AG)
+	$(INSTALLER) autojump $(NAME_AG) ranger
+	# fzf
+	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+	~/.fzf/install
 
 bin:
-ifeq ($(OS),Darwin)
-	sudo chown june -R /usr/local/bin
-endif
+ifneq ($(OS),Darwin)
+	sudo chown -R `whoami` /usr/local/bin
 	sudo cp ./bin/* /usr/local/bin
+else
+	@echo 'Binaries are only supported for Linux Distros'
+endif
 
 terminal: font
 ifeq ($(OS),Darwin)
@@ -94,17 +104,22 @@ endif
 	ln -sf `pwd`/$(TMUX_DIRNAME)/tmux.conf ~/.tmux.conf
 
 vim-bin-deps:
+ifeq ($(OS),Darwin)
+	brew install lua
+else
 	sudo apt-get install build-essential
 	sudo apt-get install \
-		liblua5.1-dev luajit libluajit-5.1 python-dev ruby-dev \
+		liblua5.2-dev luajit libluajit-5.2 python-dev ruby-dev \
 		libperl-dev libncurses5-dev libgnome2-dev libgnomeui-dev \
 		libgtk2.0-dev libatk1.0-dev libbonoboui2-dev libcairo2-dev \
 		libx11-dev libxpm-dev libxt-dev
 	# copy lua header files to target directory of vim build path
-	sudo mkdir -p /usr/include/lua5.1/include
-	sudo cp /usr/include/lua5.1/*.h /usr/include/lua5.1/include/
+	sudo mkdir -p /usr/include/lua5.2/include
+	sudo cp /usr/include/lua5.2/*.h /usr/include/lua5.2/include/
+endif
 
 vim-bin: submodules vim-bin-deps
+ifneq ($(OS),Darwin)
 	cd $(VIM_DIRNAME)/vim-src && ./configure --with-features=huge \
 	   	--enable-rubyinterp \
 	   	--enable-largefile \
@@ -114,11 +129,14 @@ vim-bin: submodules vim-bin-deps
 	   	--enable-perlinterp \
 	   	--enable-luainterp \
 	   	--with-luajit \
+	   	--with-lua-prefix=/usr/local/include/lua5.2 \
 	   	--enable-gui=auto \
 	   	--enable-fail-if-missing \
-	   	--with-lua-prefix=/usr/include/lua5.1 \
 	   	--enable-cscope
 	cd $(VIM_DIRNAME)/vim-src && make && sudo make install
+else
+	brew install --with-cscope --with-lua --with-override-system-vim
+endif
 
 vim-deps:
 	$(INSTALLER) bashdb cmake $(NAME_CTAGS)

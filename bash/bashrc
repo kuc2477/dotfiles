@@ -90,7 +90,13 @@ alias ll='ls -alFG'
 alias la='ls -AG'
 alias l='ls -CFG'
 alias tmux='tmux -2'
-alias vi='vim'
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  alias vi='mvim -v'
+else
+  alias vi='vim'
+fi
+
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -143,7 +149,6 @@ fi
 # fzf
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-PATH=$HOME/.local/bin:$PATH
 # powerline
 powerline-daemon -q
 POWERLINE_BASH_CONTINUATION=1

@@ -2,6 +2,15 @@
 set nocompatible
 
 let g:plug_timeout = 300
+let s:osname = substitute(system('uname'), "\n", "", "")
+let s:username = substitute(system('whoami'), "\n", "", "")
+
+" ABSOLUTE PATH TO HOME DIRECTORY
+if s:osname == 'Darwin'
+    let s:home_path = '/Users/'.s:username
+else
+    let s:home_path = '/home/'.s:username
+endif
 
 "============================Plug List======================================"
 
@@ -173,12 +182,12 @@ let g:ycm_filetype_blacklist = {
 au FileType python nnoremap <leader>g :YcmCompleter GoTo<CR>
 au FileType python nnoremap <leader>d :YcmCompleter GoToDeclaration<CR>
 au FileType python nnoremap K  :YcmCompleter GetDoc<CR>
-let g:ycm_python_binary_path = '/home/june/.pyenv/shims/python'
-let g:ycm_server_python_interpreter='/home/june/.pyenv/shims/python2'
+let s:python_shim_path = s:home_path.'/.pyenv/shims'
+let g:ycm_python_binary_path = s:python_shim_path.'/python'
+let g:ycm_server_python_interpreter = s:python_shim_path.'/python2'
 
 " Supertab
 let g:SuperTabDefaultCompletionType = "<c-n>"
-
 
 " Nerdtree
 map <C-u> :NERDTreeToggle<CR>
