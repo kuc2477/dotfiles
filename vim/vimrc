@@ -113,6 +113,7 @@ Plug 'altercation/vim-colors-solarized'
 
 " Python
 Plug 'davidhalter/jedi-vim'
+Plug 'python-mode/python-mode'
 Plug 'hynek/vim-python-pep8-indent'
 Plug 'ehamberg/vim-cute-python'
 Plug 'django.vim'
@@ -322,6 +323,12 @@ au FileType haskell nnoremap <buffer> <leader>t :GhcModTypeClear<CR>
 au BufReadPost *.hs GhcModCheckAndLintAsync
 au BufWritePost *.hs GhcModCheckAndLintAsync
 
+" Python-Mode
+au filetype python let g:pymode_lint = 0
+au filetype python let g:pymode_rope = 0
+au filetype python let g:pymode_rope_completion = 0
+au filetype python let g:pymode_python = 'python3'
+
 " Jedi-vim
 au filetype python let g:jedi#completions_enabled = 0
 au filetype python let g:jedi#goto_definitions_command = '<C-d>'
@@ -376,6 +383,16 @@ let g:whitespace_ignore = ['vim', 'md', 'markdown', 'rst']
 
 " Add user local bin to runtime path
 let $PATH = $PATH . ':' . expand("~/.local/bin")
+
+" Clipboard
+set clipboard=unnamed
+if s:osname == 'Darwin' 
+    vnoremap <C-c> :w !pbcopy<CR><CR> 
+    noremap <C-v> :r !pbpaste<CR><CR>
+else
+    vnoremap <C-c> :w !xclip -i -sel -c<CR><CR> 
+    noremap <C-v> :r !xclip -o -sel -c<CR><CR>
+endif
 
 " Encoding
 set enc=utf-8
