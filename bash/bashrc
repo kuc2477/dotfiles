@@ -85,12 +85,15 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 # some more ls aliases
-alias ls="ls -G"
-alias ll='ls -alFG'
-alias la='ls -AG'
-alias l='ls -CFG'
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  alias ls="ls -G"
+  alias ll='ls -alFG'
+  alias la='ls -AG'
+  alias l='ls -CFG'
+fi
 alias tmux='tmux -2'
 
+# vim alias
 if [[ "$OSTYPE" == "darwin"* ]]; then
   alias vi='mvim -v'
 else
@@ -156,7 +159,7 @@ POWERLINE_BASH_SELECT=1
 . ~/.powerline
 
 # autojump
-# . /usr/local/bin/autojump.sh
+[ -f /usr/share/autojump/autojump.sh ] && . /usr/share/autojump/autojump.sh
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 
 # CUDA
