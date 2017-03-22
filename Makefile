@@ -41,7 +41,7 @@ submodules:
 font: submodules
 	$(FONT_DIRNAME)/install.sh
 
-utils:
+utils: base
 	# autoenv, autojump, ag
 	sudo pip install autoenv pgcli
 	$(INSTALLER) autojump $(NAME_AG) ranger
@@ -63,7 +63,7 @@ ifeq ($(OS),Darwin)
 	ln -sfi $(TERMINAL_DIRNAME)/%gconf.xml ~/.gconf/apps/gnome-terminal/profiles/Default/%gconf.xml
 endif
 
-bash: submodules font
+bash: submodules font base
 	# install powerline
 ifeq ($(OS),Darwin)
 	pip install powerline-status powerline-gitstatus
@@ -145,7 +145,7 @@ endif
 vim-deps:
 	$(INSTALLER) bashdb cmake $(NAME_CTAGS)
 
-vim: vim-bin vim-deps font
+vim: vim-bin vim-deps font base
 	# vim plugin manager
 	curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 	   	https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
