@@ -90,6 +90,7 @@ tmux: submodules font
 	# tmux binary
 ifeq ($(OS),Darwin)
 	$(INSTALLER) libevent automake pkg-config
+	$(INSTALLER) reattach-to-user-namespace
 else
 	$(INSTALLER) libevent-dev automake libncurses-dev pkg-config
 endif

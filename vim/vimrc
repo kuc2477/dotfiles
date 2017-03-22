@@ -161,6 +161,9 @@ Plug 'Rykka/InstantRst', { 'do': 'sudo pip install instant-rst' }
 " LaTeX
 Plug 'lervag/vimtex'
 
+" Thrift
+Plug 'solarnz/thrift.vim'
+
 call plug#end()
 filetype plugin indent on
 
@@ -505,6 +508,7 @@ au FileType octave if &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complet
 au FileType bash,sh setl ts=2 sw=2 sts=2
 au FileType haskell setl sw=2
 au FileType cabal setl ts=2 sw=2 sts=2
+au FileType thrift setl ts=2 sw=2 sts=2
 au FileType javascript setl ts=2 sw=2 sts=2
 au FileType html setl ts=2 sw=2 sts=2
 au FileType css setl ts=2 sw=2 sts=2
