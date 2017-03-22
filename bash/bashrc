@@ -125,6 +125,11 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# enable extra autocompletions
+if [ -f ~/.git-completion.bash ]; then
+  . ~/.git-completion.bash
+fi
+
 # add local bins to rtp
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"

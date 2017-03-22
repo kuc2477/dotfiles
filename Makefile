@@ -64,12 +64,13 @@ ifeq ($(OS),Darwin)
 endif
 
 bash: submodules font
-	# powerline binding & configuration path installations
+	# install powerline
 ifeq ($(OS),Darwin)
 	pip install powerline-status powerline-gitstatus
 else
 	sudo pip install powerline-status powerline-gitstatus
 endif
+	# install powerline binding and configurations
 	root_dir=`sudo pip show powerline-status | grep -i location | grep -Eo \/.*$$`; \
 	bash_binding=$$root_dir/powerline/bindings/bash/powerline.sh; \
 	config_dir=`pwd`/$(BASH_DIRNAME)/powerline-configs; \
@@ -79,7 +80,9 @@ endif
 	sudo ln -sf $$config_dir/config.json ~/.config/powerline/config.json; \
 	sudo ln -sf $$config_dir/colorscheme.json ~/.config/powerline/colorschemes/default.json; \
 	sudo ln -sf $$config_dir/theme.json ~/.config/powerline/themes/shell/default.json
-	# bash configuration
+	# install bash autocompletions
+	sudo ln -sf `pwd`/$(BASH_DIRNAME)/autocompletions/git-completion.bash ~/.git-completion.bash
+	# install bash configuration
 ifeq ($(OS),Darwin)
 		sudo ln -sf `pwd`/$(BASH_DIRNAME)/bashrc ~/.profile
 else
