@@ -46,7 +46,7 @@ utils:
 	sudo pip install autoenv pgcli
 	$(INSTALLER) autojump $(NAME_AG) ranger
 	# fzf
-	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+	if [ ! -d "$$HOME/.fzf" ]; then git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf; fi
 	~/.fzf/install
 
 bin:
