@@ -168,8 +168,10 @@ ifeq ($(OS),Darwin)
 else
 	curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
 endif
-	#pypi
+	# pypi
 	sudo ln -sfi `pwd`/python/pypirc $$HOME/.pypirc
+	# pythonrc
+	sudo ln -sfi `pwd`/python/pythonrc.py $$HOME/.pythonrc.py
 
 java:
 	#jenv
