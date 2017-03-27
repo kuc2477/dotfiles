@@ -9,6 +9,7 @@ VIM_DIRNAME = vim
 BASH_DIRNAME = bash
 JS_DIRNAME = javascript
 TERMINAL_DIRNAME = terminal
+PYTHON_DIRNAME = python
 BIN_DIRNAME = bins
 
 
@@ -54,7 +55,7 @@ ifneq ($(OS),Darwin)
 	sudo chown -R `whoami` /usr/local/bin
 	sudo cp ./bin/* /usr/local/bin
 else
-	@echo 'Binaries are only supported for Linux Distros'
+	brew cask install pgweb
 endif
 
 terminal: font
@@ -154,7 +155,7 @@ vim: vim-bin vim-deps font base
 	# vim plugins
 	vim +PlugInstall +VimProcInstall +qall
 
-python:
+python: base
 ifneq ($(OS),Darwin)
 	# pyenv dependencies
 	sudo apt-get install -y make build-essential libssl-dev zlib1g-dev \
@@ -168,8 +169,10 @@ ifeq ($(OS),Darwin)
 else
 	curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
 endif
-	#pypi
-	sudo ln -sfi `pwd`/python/pypirc $$HOME/.pypirc
+	# install pypi configuration
+	sudo ln -sfi `pwd`/$(PYTHON_DIRNAME)/pypirc $$HOME/.pypirc
+	# install pythonrc
+	ln -sfi `pwd`/$(PYTHON_DIRNAME)/pythonrc.py $$HOME/.pythonrc.py
 
 java:
 	#jenv
@@ -180,7 +183,7 @@ javascript:
 	# nvm
 	curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash
 	# tern
-	ln -sfi `pwd`/$(JS_DIRNAME)/.tern-project ~/.tern-project
+	ln -sfi `pwd`/$(JS_DIRNAME)/tern-project ~/.tern-project
 
 haskell:
 	# stack

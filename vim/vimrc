@@ -50,12 +50,14 @@ Plug 'kshenoy/vim-signature'
 Plug 'pgdouyon/vim-evanesco'
 Plug 'gorkunov/smartpairs.vim'
 Plug 'myusuf3/numbers.vim'
+Plug 'ntpeters/vim-better-whitespace'
 
 " File navigation
 Plug 'burke/matcher', { 'do': 'sudo make && make install' }
 Plug 'rking/ag.vim'
 Plug 'kien/ctrlp.vim'
 Plug 'scrooloose/nerdtree'
+Plug 'jeetsukumaran/vim-buffergator'
 
 " Git interface
 Plug 'airblade/vim-gitgutter'
@@ -196,6 +198,10 @@ let g:SuperTabDefaultCompletionType = "<c-n>"
 " Nerdtree
 map <C-u> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" Buffergator
+let g:buffergator_supress_keymaps = 1
+noremap l; :BuffergatorToggle<CR>
 
 " Easymotion
 let g:EasyMotion_smartcase = 1
@@ -388,14 +394,14 @@ let g:whitespace_ignore = ['vim', 'md', 'markdown', 'rst']
 let $PATH = $PATH . ':' . expand("~/.local/bin")
 
 " Clipboard
-set clipboard=unnamed
-if s:osname == 'Darwin' 
-    vnoremap <C-c> :w !pbcopy<CR><CR> 
-    noremap <C-v> :r !pbpaste<CR><CR>
-else
-    vnoremap <C-c> :w !xclip -i -sel -c<CR><CR> 
-    noremap <C-v> :r !xclip -o -sel -c<CR><CR>
-endif
+"set clipboard=unnamed
+"if s:osname == 'Darwin' 
+    "vnoremap <C-c> :w !pbcopy<CR><CR> 
+    "noremap <C-v> :r !pbpaste<CR><CR>
+"else
+    "vnoremap <C-c> :w !xclip -i -sel -c<CR><CR> 
+    "noremap <C-v> :r !xclip -o -sel -c<CR><CR>
+"endif
 
 " Encoding
 set enc=utf-8
