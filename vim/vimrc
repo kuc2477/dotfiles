@@ -77,7 +77,6 @@ Plug 'Raimondi/delimitMate'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'mattn/emmet-vim'
 Plug 'kuc2477/vim-move'
-Plug 'solarnz/whitespace.vim'
 
 " Motion
 Plug 'Lokaltog/vim-easymotion'
@@ -378,8 +377,9 @@ map <leader>vl :VimuxRunLastCommand<CR>
 map <Leader>vq :VimuxCloseRunner<CR>
 map <Leader>vx :VimuxInterruptRunner<CR>
 
-" trailing whitespace
-let g:whitespace_ignore = ['vim', 'md', 'markdown', 'rst'] 
+" vim-better-whitespace
+autocmd BufEnter * EnableStripWhitespaceOnSave
+
 
 "============================General Settings================================"
 
@@ -388,11 +388,11 @@ let $PATH = $PATH . ':' . expand("~/.local/bin")
 
 " Clipboard
 "set clipboard=unnamed
-"if s:osname == 'Darwin' 
-    "vnoremap <C-c> :w !pbcopy<CR><CR> 
+"if s:osname == 'Darwin'
+    "vnoremap <C-c> :w !pbcopy<CR><CR>
     "noremap <C-v> :r !pbpaste<CR><CR>
 "else
-    "vnoremap <C-c> :w !xclip -i -sel -c<CR><CR> 
+    "vnoremap <C-c> :w !xclip -i -sel -c<CR><CR>
     "noremap <C-v> :r !xclip -o -sel -c<CR><CR>
 "endif
 
@@ -453,12 +453,21 @@ nnoremap = :vertical res +10<CR>
 nnoremap _ :res -10<CR>
 nnoremap + :res +10<CR>
 
-nnoremap <leader>w :call WritingMode()<CR>
-function WritingMode()
-    let g:vim_markdown_folding_disabled = 1
-    :Pencil
+" Writing mode
+function! ToggleWritingMode()
+    if g:in_writing_mode
+        let g:in_writing_mode=0
+        let g:vim_markdown_folding_disabled=1
+        :PencilOff
+    else
+        let g:in_writing_mode=1
+        let g:vim_markdown_folding_disabled=0
+        :Pencil
+    endif
     :Goyo
 endfunction
+let g:in_writing_mode=0
+nnoremap <leader>w :call ToggleWritingMode()<CR>
 
 " Life is short
 vmap <silent> jk <ESC>
