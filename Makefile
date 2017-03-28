@@ -82,6 +82,7 @@ endif
 	sudo ln -sf $$config_dir/colorscheme.json ~/.config/powerline/colorschemes/default.json; \
 	sudo ln -sf $$config_dir/theme.json ~/.config/powerline/themes/shell/default.json
 	# install autocompletions
+	$(INSTALLER) bash-completion
 	sudo ln -sf `pwd`/$(BASH_DIRNAME)/autocompletions/git-completion.bash ~/.git-completion.bash
 	sudo ln -sf `pwd`/$(BASH_DIRNAME)/autocompletions/docker-completion.bash ~/.docker-completion.bash
 	sudo ln -sf `pwd`/$(BASH_DIRNAME)/autocompletions/docker-compose-completion.bash ~/.docker-compose-completion.bash

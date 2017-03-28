@@ -90,6 +90,10 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   alias ll='ls -alFG'
   alias la='ls -AG'
   alias l='ls -CFG'
+else
+  alias ll='ls -alF'
+  alias la='ls -A'
+  alias l='ls -CF'
 fi
 alias tmux='tmux -2'
 
@@ -124,6 +128,13 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  if [ -f $(brew --prefix)/etc/bash_completion ]; then
+    . $(brew --prefix)/etc/bash_completion
+  fi
+fi
+
 
 # enable extra autocompletions
 if [ -f ~/.git-completion.bash ]; then
