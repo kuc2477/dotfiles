@@ -31,8 +31,8 @@ endif
 all: font utils bash tmux vim python javascript haskell
 
 base:
-	$(INSTALLER) python python-pip
 ifneq ($(OS),Darwin)
+	$(INSTALLER) python python-pip
 	sudo apt-get install xdg-utils
 endif
 
@@ -81,8 +81,10 @@ endif
 	sudo ln -sf $$config_dir/config.json ~/.config/powerline/config.json; \
 	sudo ln -sf $$config_dir/colorscheme.json ~/.config/powerline/colorschemes/default.json; \
 	sudo ln -sf $$config_dir/theme.json ~/.config/powerline/themes/shell/default.json
-	# install bash autocompletions
+	# install autocompletions
 	sudo ln -sf `pwd`/$(BASH_DIRNAME)/autocompletions/git-completion.bash ~/.git-completion.bash
+	sudo ln -sf `pwd`/$(BASH_DIRNAME)/autocompletions/docker-completion.bash ~/.docker-completion.bash
+	sudo ln -sf `pwd`/$(BASH_DIRNAME)/autocompletions/docker-compose-completion.bash ~/.docker-compose-completion.bash
 	# install bash configuration
 ifeq ($(OS),Darwin)
 		sudo ln -sf `pwd`/$(BASH_DIRNAME)/bashrc ~/.profile

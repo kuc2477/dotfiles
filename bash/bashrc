@@ -129,6 +129,10 @@ fi
 if [ -f ~/.git-completion.bash ]; then
   . ~/.git-completion.bash
 fi
+if [ -f ~/.docker-completion.bash ]; then
+  . ~/.docker-completion.bash
+fi
+
 
 # add local bins to rtp
 export PATH="$HOME/.local/bin:$PATH"
