@@ -55,7 +55,8 @@ Plug 'ntpeters/vim-better-whitespace'
 " File navigation
 Plug 'burke/matcher', { 'do': 'sudo make && make install' }
 Plug 'rking/ag.vim'
-Plug 'kien/ctrlp.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'jeetsukumaran/vim-buffergator'
 
@@ -204,6 +205,11 @@ noremap l; :BuffergatorToggle<CR>
 " Easymotion
 let g:EasyMotion_smartcase = 1
 nmap <C-f> <Plug>(easymotion-sn)
+
+" Fzf
+noremap <silent> <C-p> :FZF -m<CR>
+let g:fzf_layout = { 'down': '~20%' }
+
 
 " Ctrlp
 let g:ctrlp_cmd = 'CtrlPMixed'
