@@ -55,6 +55,8 @@ Plug 'ntpeters/vim-better-whitespace'
 " File navigation
 Plug 'burke/matcher', { 'do': 'sudo make && make install' }
 Plug 'rking/ag.vim'
+Plug 'kien/ctrlp.vim'
+Plug 'tacahiroy/ctrlp-funky'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree'
@@ -207,13 +209,16 @@ let g:EasyMotion_smartcase = 1
 nmap <C-f> <Plug>(easymotion-sn)
 
 " Fzf
-noremap <silent> <C-p> :FZF -m<CR>
 let g:fzf_layout = { 'down': '~20%' }
 
 
 " Ctrlp
 let g:ctrlp_cmd = 'CtrlPMixed'
 let g:ctrlp_custom_ignore = {'dir': 'build'}
+
+" Ctrlp-Funky
+nnoremap <leader>f :CtrlPFunky<Cr>
+nnoremap <leader>F :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
 
 " Tagbar
 let g:tagbar_autofocus = 1
