@@ -267,8 +267,10 @@ hi IndentGuidesOdd ctermbg=black
 hi IndentGuidesEven ctermbg=darkgrey
 
 " Vim-smooth-scroll
-noremap <silent> gk :call smooth_scroll#up(&scroll, 0, 6)<CR>
-noremap <silent> gj :call smooth_scroll#down(&scroll, 0, 6)<CR>
+noremap <silent> gk :call smooth_scroll#up(&scroll, 0, 9)<CR>
+noremap <silent> gj :call smooth_scroll#down(&scroll, 0, 9)<CR>
+noremap <silent> gkk :call smooth_scroll#up(&scroll*2, 0, 9)<CR>
+noremap <silent> gjj :call smooth_scroll#down(&scroll*2, 0, 9)<CR>
 
 " UltiSnips
 let g:UltiSnipsExpandTrigger="<C-e>"
@@ -396,16 +398,6 @@ autocmd BufEnter * EnableStripWhitespaceOnSave
 
 " Add user local bin to runtime path
 let $PATH = $PATH . ':' . expand("~/.local/bin")
-
-" Clipboard
-"set clipboard=unnamed
-"if s:osname == 'Darwin'
-    "vnoremap <C-c> :w !pbcopy<CR><CR>
-    "noremap <C-v> :r !pbpaste<CR><CR>
-"else
-    "vnoremap <C-c> :w !xclip -i -sel -c<CR><CR>
-    "noremap <C-v> :r !xclip -o -sel -c<CR><CR>
-"endif
 
 " Encoding
 set enc=utf-8
