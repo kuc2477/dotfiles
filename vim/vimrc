@@ -547,18 +547,6 @@ au FileType haskell :NeoCompleteEnable
 au BufRead,BufNewFile *.m,*.oct setfiletype octave
 au FileType octave if &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
 
-" Indentations
-au FileType bash,sh setl ts=2 sw=2 sts=2
-au FileType haskell setl sw=2
-au FileType cabal setl ts=2 sw=2 sts=2
-au FileType thrift setl ts=2 sw=2 sts=2
-au FileType javascript setl ts=2 sw=2 sts=2
-au FileType html setl ts=2 sw=2 sts=2
-au FileType css setl ts=2 sw=2 sts=2
-au FileType scss setl ts=2 sw=2 sts=2
-au FileType sass setl ts=2 sw=2 sts=2
-au FileType less setl ts=2 sw=2 sts=2
-
 " Miscs
 au! BufRead,BufNewFile *.lr setfiletype markdown
 au! BufRead,BufNewFile *.md setfiletype markdown
@@ -566,3 +554,18 @@ au! BufRead,BufNewFile *.cabal setfiletype haskell
 au! BufRead,BufNewFile *.wsgi setfiletype python
 au! BufRead,BufNewFile *.less setfiletype less
 au! BufRead,BufNewFile *.json,*.babelrc,*.eslintrc setfiletype json
+au! BufRead,BufNewFile *.html setfiletype htmldjango
+au FileType html setl ts=2 sw=2 sts=2
+
+" Indentations
+au FileType bash,sh setl ts=2 sw=2 sts=2
+au FileType haskell setl sw=2
+au FileType cabal setl ts=2 sw=2 sts=2
+au FileType thrift setl ts=2 sw=2 sts=2
+au FileType javascript setl ts=2 sw=2 sts=2
+au FileType html setl ts=2 sw=2 sts=2
+au FileType htmldjango setl ts=2 sw=2 sts=2
+au FileType css setl ts=2 sw=2 sts=2
+au FileType scss setl ts=2 sw=2 sts=2
+au FileType sass setl ts=2 sw=2 sts=2
+au FileType less setl ts=2 sw=2 sts=2
