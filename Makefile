@@ -167,15 +167,14 @@ ifneq ($(OS),Darwin)
 endif
 	# pyenv
 ifeq ($(OS),Darwin)
-	brew update
-	brew install pyenv pyenv-virtualenv
+	command -v pyenv >/dev/null || (brew update && brew install pyenv pyenv-virtualenv)
 else
-	curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
+	command -v pyenv >/dev/null || (curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash)
 endif
-	# install pypi configuration
-	sudo ln -sfi `pwd`/$(PYTHON_DIRNAME)/pypirc $$HOME/.pypirc
-	# install pythonrc
-	ln -sfi `pwd`/$(PYTHON_DIRNAME)/pythonrc.py $$HOME/.pythonrc.py
+	# install pypirc, pythonrc, pdbrc
+	ln -sf `pwd`/$(PYTHON_DIRNAME)/pypirc $$HOME/.pypirc
+	ln -sf `pwd`/$(PYTHON_DIRNAME)/pythonrc.py $$HOME/.pythonrc.py
+	ln -sf `pwd`/$(PYTHON_DIRNAME)/pdbrc.py $$HOME/.pdbrc.py
 
 java:
 	#jenv
