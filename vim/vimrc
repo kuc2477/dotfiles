@@ -5,13 +5,15 @@ let g:plug_timeout = 300
 let s:osname = substitute(system('uname'), "\n", "", "")
 let s:username = substitute(system('whoami'), "\n", "", "")
 
-" ABSOLUTE PATH TO HOME DIRECTORY
+" PLATFORM DEPENDENT VALUES
 if s:osname == 'Darwin'
-    let s:home_path = '/Users/'.s:username
-    let s:installer = 'brew install '
+    let s:HOME_PATH = '/Users/'.s:username
+    let g:INSTALLER = 'brew install '
+    let g:NAME_CTAGS = 'ctags'
 else
-    let s:home_path = '/home/'.s:username
-    let s:installer = 'sudo apt get install '
+    let s:HOME_PATH = '/home/'.s:username
+    let g:INSTALLER = 'sudo apt get install '
+    let g:NAME_CTAGS = 'exuberant-ctags'
 endif
 
 "============================Plug List======================================"
@@ -33,8 +35,9 @@ Plug 'ervandew/supertab'
 " Linting interface
 Plug 'scrooloose/syntastic', {
             \'do':
-            \'sudo pip install flake8 && ' +
-            \'sudo npm -g install eslint'
+            \'sudo pip install flake8 && ' .
+            \'sudo npm -g install eslint && ' .
+            \g:INSTALLER .  'shellcheck'
             \}
 
 " Easy Commenting
@@ -89,7 +92,7 @@ Plug 'Lokaltog/vim-easymotion'
 Plug 'justinmk/vim-sneak'
 
 " Tag
-Plug 'xolox/vim-easytags', { 'do': s:installer . 'exuberant-ctags'}
+Plug 'xolox/vim-easytags', { 'do': g:INSTALLER . g:NAME_CTAGS }
 Plug 'majutsushi/tagbar', { 'do': 'sudo stack install ghc-mod hasktags' }
 
 " Snippet
@@ -192,7 +195,7 @@ let g:ycm_filetype_blacklist = {
 au FileType python nnoremap <leader>g :YcmCompleter GoTo<CR>
 au FileType python nnoremap <leader>d :YcmCompleter GoToDeclaration<CR>
 au FileType python nnoremap K  :YcmCompleter GetDoc<CR>
-let s:python_shim_path = s:home_path.'/.pyenv/shims'
+let s:python_shim_path = s:HOME_PATH.'/.pyenv/shims'
 let g:ycm_python_binary_path = s:python_shim_path.'/python'
 let g:ycm_server_python_interpreter = s:python_shim_path.'/python2'
 
