@@ -8,8 +8,10 @@ let s:username = substitute(system('whoami'), "\n", "", "")
 " ABSOLUTE PATH TO HOME DIRECTORY
 if s:osname == 'Darwin'
     let s:home_path = '/Users/'.s:username
+    let s:installer = 'brew install '
 else
     let s:home_path = '/home/'.s:username
+    let s:installer = 'sudo apt get install '
 endif
 
 "============================Plug List======================================"
@@ -22,7 +24,9 @@ call plug#begin('~/.vim/plugged')
 " I use YCM as base completion fallback and use neocomplete for viml,
 " bash, haskell specific completion.
 "
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
+Plug 'Valloric/YouCompleteMe', {
+            \'do': 'install.py --tern-completer'
+            \}
 Plug 'Shougo/neocomplete.vim'
 Plug 'ervandew/supertab'
 
@@ -30,7 +34,7 @@ Plug 'ervandew/supertab'
 Plug 'scrooloose/syntastic', {
             \'do':
             \'sudo pip install flake8 && ' +
-            \'sudo npm -g instsall eslint'
+            \'sudo npm -g install eslint'
             \}
 
 " Easy Commenting
@@ -57,7 +61,6 @@ Plug 'burke/matcher', { 'do': 'sudo make && make install' }
 Plug 'rking/ag.vim'
 Plug 'kien/ctrlp.vim'
 Plug 'tacahiroy/ctrlp-funky'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'jeetsukumaran/vim-buffergator'
@@ -86,7 +89,7 @@ Plug 'Lokaltog/vim-easymotion'
 Plug 'justinmk/vim-sneak'
 
 " Tag
-Plug 'xolox/vim-easytags', { 'do': 'sudo apt-get install exuberant-ctags'}
+Plug 'xolox/vim-easytags', { 'do': s:installer . 'exuberant-ctags'}
 Plug 'majutsushi/tagbar', { 'do': 'sudo stack install ghc-mod hasktags' }
 
 " Snippet

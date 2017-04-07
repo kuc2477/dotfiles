@@ -2,7 +2,7 @@ SHELL = /bin/bash
 .PHONY: font utils bin terminal bash tmux vim-bin vim python javascript haskell
 
 
-OS := $(shell uname)
+# DIRNAMES
 FONT_DIRNAME = fonts
 TMUX_DIRNAME = tmux
 VIM_DIRNAME = vim
@@ -12,7 +12,8 @@ TERMINAL_DIRNAME = terminal
 PYTHON_DIRNAME = python
 BIN_DIRNAME = bins
 
-
+# PLATFORM DEPENDENT NAMES
+OS := $(shell uname)
 ifeq ($(OS),Darwin)
 INSTALLER := brew install
 NAME_AG := the_silver_searcher
@@ -24,13 +25,23 @@ NAME_CTAGS := exuberant-ctags
 endif
 
 
+# =================
+# COMPOSITE TARGETS
+# =================
+#
+all: font utils bash tmux vim python javascript haskell
+
+environment: terminal bash tmux bin utils
+
+langs: python java javascript haskell
+
+editor: vim
+
+
 # =======
 # TARGETS
 # =======
 
-all: font utils bash tmux vim python javascript haskell
-
-base:
 ifneq ($(OS),Darwin)
 	$(INSTALLER) python python-pip
 	sudo apt-get install xdg-utils
@@ -47,8 +58,7 @@ utils: base
 	sudo pip install autoenv pgcli
 	$(INSTALLER) autojump $(NAME_AG) ranger tig
 	# fzf
-	if [ ! -d "$$HOME/.fzf" ]; then git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf; fi
-	~/.fzf/install
+	if [ ! -d "$$HOME/.fzf" ]; then git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install --all; fi
 
 bin:
 ifneq ($(OS),Darwin)
@@ -59,7 +69,7 @@ else
 endif
 
 terminal: font
-ifeq ($(OS),Darwin)
+ifneq ($(OS),Darwin)
 	# gnome terminal profile
 	ln -sfi $(TERMINAL_DIRNAME)/%gconf.xml ~/.gconf/apps/gnome-terminal/profiles/Default/%gconf.xml
 endif
@@ -184,14 +194,10 @@ java:
 javascript:
 	# nvm
 	command -v nvm >/dev/null || (curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash)
+	nvm install node
 	# tern
 	ln -sf `pwd`/$(JS_DIRNAME)/tern-project ~/.tern-project
 
 haskell:
 	# stack
-	sudo apt-key adv \
-		--keyserver keyserver.ubuntu.com \
-		--recv-keys 575159689BEFB442
-	echo 'deb http://download.fpcomplete.com/ubuntu trusty main' | \
-	   	sudo tee /etc/apt/sources.list.d/fpco.list
-	sudo apt-get update && sudo apt-get install stack -y
+	curl -sSL https://get.haskellstack.org/ | sh
