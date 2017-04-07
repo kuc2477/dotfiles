@@ -45,7 +45,7 @@ font: submodules
 utils: base
 	# autoenv, autojump, ag
 	sudo pip install autoenv pgcli
-	$(INSTALLER) autojump $(NAME_AG) ranger
+	$(INSTALLER) autojump $(NAME_AG) ranger tig
 	# fzf
 	if [ ! -d "$$HOME/.fzf" ]; then git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf; fi
 	~/.fzf/install
@@ -83,14 +83,14 @@ endif
 	sudo ln -sf $$config_dir/theme.json ~/.config/powerline/themes/shell/default.json
 	# install autocompletions
 	$(INSTALLER) bash-completion
-	sudo ln -sf `pwd`/$(BASH_DIRNAME)/autocompletions/git-completion.bash ~/.git-completion.bash
-	sudo ln -sf `pwd`/$(BASH_DIRNAME)/autocompletions/docker-completion.bash ~/.docker-completion.bash
-	sudo ln -sf `pwd`/$(BASH_DIRNAME)/autocompletions/docker-compose-completion.bash ~/.docker-compose-completion.bash
+	ln -sf `pwd`/$(BASH_DIRNAME)/autocompletions/git-completion.bash ~/.git-completion.bash
+	ln -sf `pwd`/$(BASH_DIRNAME)/autocompletions/docker-completion.bash ~/.docker-completion.bash
+	ln -sf `pwd`/$(BASH_DIRNAME)/autocompletions/docker-compose-completion.bash ~/.docker-compose-completion.bash
 	# install bash configuration
 ifeq ($(OS),Darwin)
-		sudo ln -sf `pwd`/$(BASH_DIRNAME)/bashrc ~/.profile
+		ln -sf `pwd`/$(BASH_DIRNAME)/bashrc ~/.profile
 else
-		sudo ln -sf `pwd`/$(BASH_DIRNAME)/bashrc ~/.bashrc
+		ln -sf `pwd`/$(BASH_DIRNAME)/bashrc ~/.bashrc
 endif
 
 tmux: submodules font
@@ -183,9 +183,9 @@ java:
 
 javascript:
 	# nvm
-	curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash
+	command -v nvm >/dev/null || (curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash)
 	# tern
-	ln -sfi `pwd`/$(JS_DIRNAME)/tern-project ~/.tern-project
+	ln -sf `pwd`/$(JS_DIRNAME)/tern-project ~/.tern-project
 
 haskell:
 	# stack
