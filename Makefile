@@ -61,9 +61,9 @@ ifneq ($(OS),Darwin)
 else
 	brew cask install pgweb
 endif
-	# autoenv, autojump, ag
-	sudo pip install autoenv pgcli
-	$(INSTALLER) autojump $(NAME_AG) ranger tig
+	# autoenv, autojump, ag, irssi
+	sudo pip install autoenv pgcli saws
+	$(INSTALLER) autojump $(NAME_AG) ranger tig irssi
 	# fzf
 	if [ ! -d "$$HOME/.fzf" ]; then git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install --all; fi
 
