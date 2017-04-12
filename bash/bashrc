@@ -95,7 +95,9 @@ else
   alias la='ls -A'
   alias l='ls -CF'
 fi
-alias tmux='tmux -2'
+if [[ -x "$(command -v tmux)" ]]; then
+  alias tmux='tmux -2'
+fi
 
 # vim alias
 if [[ "$OSTYPE" == "darwin"* ]]; then

@@ -64,6 +64,7 @@ Plug 'burke/matcher', { 'do': 'sudo make && make install' }
 Plug 'rking/ag.vim'
 Plug 'kien/ctrlp.vim'
 Plug 'tacahiroy/ctrlp-funky'
+Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'jeetsukumaran/vim-buffergator'
@@ -173,6 +174,10 @@ Plug 'lervag/vimtex'
 
 " Thrift
 Plug 'solarnz/thrift.vim'
+
+" Groovy
+Plug 'vim-scripts/groovy.vim'
+Plug 'vim-scripts/groovyindent-unix'
 
 call plug#end()
 filetype plugin indent on
