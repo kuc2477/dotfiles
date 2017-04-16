@@ -397,7 +397,7 @@ map <Leader>vq :VimuxCloseRunner<CR>
 map <Leader>vx :VimuxInterruptRunner<CR>
 
 " vim-better-whitespace
-autocmd BufEnter * EnableStripWhitespaceOnSave
+autocmd FileType python,javascript,javascript.jsx,html,htmldjango autocmd BufEnter * EnableStripWhitespaceOnSave
 
 
 "============================General Settings================================"
