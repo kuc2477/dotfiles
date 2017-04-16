@@ -1,5 +1,5 @@
 SHELL = /bin/bash
-.PHONY: font utils bin terminal bash tmux vim-bin vim python javascript haskell
+.PHONY: font utils terminal bash tmux vim-bin vim python javascript haskell java
 
 
 # DIRNAMES
@@ -18,30 +18,30 @@ ifeq ($(OS),Darwin)
 INSTALLER := brew install
 NAME_AG := the_silver_searcher
 NAME_CTAGS := ctags
+NAME_BASHRC := .profile
 else
 INSTALLER := sudo apt-get install
 NAME_AG := silversearcher-ag
 NAME_CTAGS := exuberant-ctags
+NAME_BASHRC := .bashrc
 endif
 
 
 # =================
 # COMPOSITE TARGETS
 # =================
-#
-all: font utils bash tmux vim python javascript haskell
 
-environment: terminal bash tmux bin utils
-
+all: langs environment editor
 langs: python java javascript haskell
-
+environment: terminal bash tmux utils
 editor: vim
 
 
-# =======
-# TARGETS
-# =======
+# =======================
+# Elementary Dependencies
+# =======================
 
+base:
 ifneq ($(OS),Darwin)
 	$(INSTALLER) python python-pip
 	sudo apt-get install xdg-utils
@@ -54,19 +54,23 @@ font: submodules
 	$(FONT_DIRNAME)/install.sh
 
 utils: base
-	# autoenv, autojump, ag
-	sudo pip install autoenv pgcli
-	$(INSTALLER) autojump $(NAME_AG) ranger tig
-	# fzf
-	if [ ! -d "$$HOME/.fzf" ]; then git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install --all; fi
-
-bin:
+	# precompiled binaries (tpd, pgweb)
 ifneq ($(OS),Darwin)
 	sudo chown -R `whoami` /usr/local/bin
 	sudo cp ./bin/* /usr/local/bin
 else
 	brew cask install pgweb
 endif
+	# autoenv, autojump, ag, irssi
+	sudo pip install autoenv pgcli saws
+	$(INSTALLER) autojump $(NAME_AG) ranger tig irssi
+	# fzf
+	if [ ! -d "$$HOME/.fzf" ]; then git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install --all; fi
+
+
+# ===========
+# Environment
+# ===========
 
 terminal: font
 ifneq ($(OS),Darwin)
@@ -97,21 +101,19 @@ endif
 	ln -sf `pwd`/$(BASH_DIRNAME)/autocompletions/docker-completion.bash ~/.docker-completion.bash
 	ln -sf `pwd`/$(BASH_DIRNAME)/autocompletions/docker-compose-completion.bash ~/.docker-compose-completion.bash
 	# install bash configuration
-ifeq ($(OS),Darwin)
-		ln -sf `pwd`/$(BASH_DIRNAME)/bashrc ~/.profile
-else
-		ln -sf `pwd`/$(BASH_DIRNAME)/bashrc ~/.bashrc
-endif
+	ln -sf `pwd`/$(BASH_DIRNAME)/bashrc ~/$(NAME_BASHRC)
 
 tmux: submodules font
 	# tmux binary
 ifeq ($(OS),Darwin)
-	$(INSTALLER) libevent automake pkg-config
+	$(INSTALLER) libevent automake
+	command -v pkg-config >/dev/null || $(INSTALLER) pkg-config
 	$(INSTALLER) reattach-to-user-namespace
 else
 	$(INSTALLER) libevent-dev automake libncurses-dev pkg-config
 endif
-	(cd $(TMUX_DIRNAME)/tmux-src && ./autogen.sh && ./configure && make && sudo make install)
+	# compile and install tmux from the source if doesn't exist
+	command -v tmux >/dev/null || (cd $(TMUX_DIRNAME)/tmux-src && ./autogen.sh && ./configure && make && sudo make install)
 	# tmux powerline
 	ln -sf `pwd`/$(TMUX_DIRNAME)/tmux-powerline ~/.tmux-powerline
 	ln -sf `pwd`/$(TMUX_DIRNAME)/tmux-powerlinerc ~/.tmux-powerlinerc
@@ -120,6 +122,11 @@ endif
 	# tmux configuration
 	ln -sf `pwd`/$(TMUX_DIRNAME)/tmux ~/.tmux
 	ln -sf `pwd`/$(TMUX_DIRNAME)/tmux.conf ~/.tmux.conf
+
+
+# ===
+# Vim
+# ===
 
 vim-bin-deps:
 ifeq ($(OS),Darwin)
@@ -159,7 +166,7 @@ endif
 vim-deps:
 	$(INSTALLER) bashdb cmake $(NAME_CTAGS)
 
-vim: vim-bin vim-deps font base
+vim: vim-bin vim-deps font base langs
 	# vim plugin manager
 	curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 	   	https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -167,6 +174,11 @@ vim: vim-bin vim-deps font base
 	ln -sfi `pwd`/$(VIM_DIRNAME)/vimrc ~/.vimrc
 	# vim plugins
 	vim +PlugInstall +VimProcInstall +qall
+
+
+# =========
+# Languages
+# =========
 
 python: base
 ifneq ($(OS),Darwin)
@@ -190,11 +202,11 @@ java:
 	#jenv
 	git clone https://github.com/gcuisinier/jenv.git ~/.jenv
 
-
 javascript:
 	# nvm
 	command -v nvm >/dev/null || (curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash)
-	nvm install node
+	. ~/.nvm/nvm.sh && nvm install node
+	. ~/.nvm/nvm.sh && nvm use node
 	# tern
 	ln -sf `pwd`/$(JS_DIRNAME)/tern-project ~/.tern-project
 
