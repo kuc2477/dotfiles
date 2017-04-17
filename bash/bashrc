@@ -150,6 +150,7 @@ fi
 # add local bins to rtp
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
+export PATH="$HOME/.vim/plugged/vim-superman/bin:$PATH"
 
 # pyenv / pyenv-virtualenv
 export PATH="$HOME/.pyenv/bin:$PATH"

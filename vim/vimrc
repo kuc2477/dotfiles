@@ -114,6 +114,7 @@ Plug 'junegunn/limelight.vim'
 Plug 'mhinz/vim-startify'
 Plug 'esneider/YUNOcommit.vim'
 Plug 'guns/xterm-color-table.vim'
+Plug 'jez/vim-superman'
 
 " Colorschemes
 Plug 'morhetz/gruvbox'
