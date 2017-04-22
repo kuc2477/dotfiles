@@ -106,6 +106,9 @@ else
   alias vi='vim'
 fi
 
+# tiny-care-terminal
+alias tct='tiny-care-terminal'
+
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -150,6 +153,12 @@ fi
 # add local bins to rtp
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
+export PATH="$HOME/.vim/plugged/vim-superman/bin:$PATH"
+
+
+# ============================
+# Lang Specific Configurations
+# ============================
 
 # pyenv / pyenv-virtualenv
 export PATH="$HOME/.pyenv/bin:$PATH"
@@ -177,6 +186,11 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   export JAVA_HOME=$(/usr/libexec/java_home)
 fi
 
+
+# ==============
+# Productivities
+# ==============
+
 # autoenv
 . /usr/local/bin/activate.sh
 
@@ -192,6 +206,21 @@ POWERLINE_BASH_SELECT=1
 # autojump
 [ -f /usr/share/autojump/autojump.sh ] && . /usr/share/autojump/autojump.sh
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+
+# tiny-care-terminal
+export TTC_BOTS='tinycarebot,selfcare_bot,magicrealismbot'
+export TTC_REPOS='~/Works,~/Private'
+export TTC_WEATHER='Seoul'
+export TTC_CELSIUS=true
+export TTC_APIKEYS=false
+export TTC_CONSUMER_SECRET='...'
+export TTC_ACCESS_TOKEN='...'
+export TTC_ACCESS_TOKEN_SECRET='...'
+
+
+# =============
+# Deep Learning
+# =============
 
 # CUDA
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64"

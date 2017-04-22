@@ -53,7 +53,7 @@ submodules:
 font: submodules
 	$(FONT_DIRNAME)/install.sh
 
-utils: base
+utils: base javascript
 	# precompiled binaries (tpd, pgweb)
 ifneq ($(OS),Darwin)
 	sudo chown -R `whoami` /usr/local/bin
@@ -61,6 +61,10 @@ ifneq ($(OS),Darwin)
 else
 	brew cask install pgweb
 endif
+	# git-standup
+	npm install -g git-standup
+	# git-standup, tiny-care-terminal
+	npm install -g tiny-care-terminal
 	# autoenv, autojump, ag, irssi
 	sudo pip install autoenv pgcli saws
 	$(INSTALLER) autojump $(NAME_AG) ranger tig irssi

@@ -113,6 +113,7 @@ Plug 'junegunn/limelight.vim'
 Plug 'mhinz/vim-startify'
 Plug 'esneider/YUNOcommit.vim'
 Plug 'guns/xterm-color-table.vim'
+Plug 'jez/vim-superman'
 
 " Colorschemes
 Plug 'morhetz/gruvbox'
@@ -292,6 +293,7 @@ let g:UltiSnipsEditSplit="vertical"
 set statusline+=%#waringmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
+let g:syntastic_loc_list_height=3
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
@@ -567,6 +569,7 @@ au FileType thrift setl ts=2 sw=2 sts=2
 au FileType javascript setl ts=2 sw=2 sts=2
 au FileType html setl ts=2 sw=2 sts=2
 au FileType htmldjango setl ts=2 sw=2 sts=2
+au FileType yml setl ts=2 sw=2 sts=2
 au FileType css setl ts=2 sw=2 sts=2
 au FileType scss setl ts=2 sw=2 sts=2
 au FileType sass setl ts=2 sw=2 sts=2
