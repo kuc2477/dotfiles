@@ -63,7 +63,6 @@ Plug 'ntpeters/vim-better-whitespace'
 Plug 'burke/matcher', { 'do': 'sudo make && make install' }
 Plug 'rking/ag.vim'
 Plug 'kien/ctrlp.vim'
-Plug 'tacahiroy/ctrlp-funky'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree'
@@ -232,7 +231,7 @@ let g:fzf_layout = { 'down': '~20%' }
 
 " Ctrlp
 let g:ctrlp_cmd = 'CtrlPMixed'
-let g:ctrlp_custom_ignore = {'dir': 'build'}
+let g:ctrlp_custom_ignore = {'dir': 'data'}
 
 " Ctrlp-Funky
 nnoremap <leader>f :CtrlPFunky<Cr>
