@@ -468,10 +468,10 @@ set colorcolumn=79
 highlight ColorColumn ctermbg=red
 
 " Key mappings
-nnoremap <C-I> <tab><CR>
 nnoremap <F9> :tabnew<CR>
 nnoremap <F10> :tabclose<CR>
 nnoremap <tab> :tabnext<CR>
+nnoremap <C-I> <tab><CR>
 nnoremap <S-tab> :tabprevious<CR>
 nnoremap - :vertical res -10<CR>
 nnoremap = :vertical res +10<CR>
