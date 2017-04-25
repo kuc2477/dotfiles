@@ -35,7 +35,7 @@ Plug 'ervandew/supertab'
 " Linting interface
 Plug 'scrooloose/syntastic', {
             \'do':
-            \'sudo pip install flake8 && ' .
+            \'sudo pip install flake8 yamllint && ' .
             \'sudo npm -g install eslint && ' .
             \g:INSTALLER .  'shellcheck'
             \}
@@ -557,6 +557,7 @@ au BufRead,BufNewFile *.m,*.oct setfiletype octave
 au FileType octave if &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
 
 " Miscs
+au! BufRead,BufNewFile Jenkinsfile setfiletype groovy
 au! BufRead,BufNewFile *.lr setfiletype markdown
 au! BufRead,BufNewFile *.md setfiletype markdown
 au! BufRead,BufNewFile *.cabal setfiletype haskell
@@ -572,5 +573,5 @@ au FileType haskell setl sw=2
 au FileType thrift setl ts=2 sw=2 sts=2
 au FileType javascript setl ts=2 sw=2 sts=2
 au FileType html,htmldjango setl ts=2 sw=2 sts=2
-au FileType yml setl ts=2 sw=2 sts=2
+au FileType yaml,yml setl ts=2 sw=2 sts=2 expandtab
 au FileType css,scss,sass,less setl ts=2 sw=2 sts=2
