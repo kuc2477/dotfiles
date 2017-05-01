@@ -411,6 +411,9 @@ map <leader>vl :VimuxRunLastCommand<CR>
 map <Leader>vq :VimuxCloseRunner<CR>
 map <Leader>vx :VimuxInterruptRunner<CR>
 
+" vim-instant-markdown
+let g:instant_markdown_autostart = 0
+
 " vim-better-whitespace
 autocmd FileType python,javascript,javascript.jsx,html,htmldjango autocmd BufEnter * EnableStripWhitespaceOnSave
 
