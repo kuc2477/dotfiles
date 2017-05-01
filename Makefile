@@ -16,11 +16,13 @@ BIN_DIRNAME = bins
 OS := $(shell uname)
 ifeq ($(OS),Darwin)
 INSTALLER := brew install
+INSTALLER_NPM := npm install
 NAME_AG := the_silver_searcher
 NAME_CTAGS := ctags
 NAME_BASHRC := .profile
 else
 INSTALLER := sudo apt-get install
+INSTALLER_NPM := sudo npm install
 NAME_AG := silversearcher-ag
 NAME_CTAGS := exuberant-ctags
 NAME_BASHRC := .bashrc
@@ -61,10 +63,8 @@ ifneq ($(OS),Darwin)
 else
 	brew cask install pgweb
 endif
-	# git-standup
-	npm install -g git-standup
 	# git-standup, tiny-care-terminal
-	npm install -g tiny-care-terminal
+	$(INSTALLER_NPM) -g git-standup tiny-care-terminal
 	# autoenv, autojump, ag, irssi
 	sudo pip install autoenv pgcli saws
 	$(INSTALLER) autojump $(NAME_AG) ranger tig irssi
