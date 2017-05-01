@@ -65,8 +65,9 @@ else
 endif
 	# git-standup, tiny-care-terminal
 	$(INSTALLER_NPM) -g git-standup tiny-care-terminal
-	# autoenv, autojump, ag, irssi
-	sudo pip install autoenv pgcli saws
+	# autoenv, pgcli, saws, feed
+	sudo pip install autoenv pgcli saws TermFeed
+	# autojump, ag, ranger, tig, irssi
 	$(INSTALLER) autojump $(NAME_AG) ranger tig irssi
 	# fzf
 	if [ ! -d "$$HOME/.fzf" ]; then git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install --all; fi

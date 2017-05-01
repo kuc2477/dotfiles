@@ -35,7 +35,7 @@ Plug 'ervandew/supertab'
 " Linting interface
 Plug 'scrooloose/syntastic', {
             \'do':
-            \'sudo pip install flake8 && ' .
+            \'sudo pip install flake8 yamllint && ' .
             \'sudo npm -g install eslint && ' .
             \g:INSTALLER .  'shellcheck'
             \}
@@ -123,7 +123,7 @@ Plug 'xolox/vim-colorscheme-switcher'
 Plug 'altercation/vim-colors-solarized'
 
 " Python
-Plug 'davidhalter/jedi-vim'
+Plug 'davidhalter/jedi-vim', { 'do': 'pip install jedi' }
 Plug 'hynek/vim-python-pep8-indent'
 Plug 'ehamberg/vim-cute-python'
 Plug 'django.vim'
@@ -187,22 +187,28 @@ filetype plugin indent on
 
 " YCM
 "
-" Note: use neocomplete for bash, viml and haskell.
+" NOTE: I use NeoComplete for bash, viml and haskell.
+"       All other languages will fall back to YCM completion.
 "
-" other languages will fall back to YCM based completion .
-"
+nnoremap <leader>g :YcmCompleter GoTo<CR>
+nnoremap <leader>n :YcmCompleter GoToReferences<CR>
+nnoremap K  :YcmCompleter GetDoc<CR>
+let s:python_shim_path = s:HOME_PATH.'/.pyenv/shims'
+let g:ycm_python_binary_path = s:python_shim_path.'/python'
+let g:ycm_server_python_interpreter = s:python_shim_path.'/python2'
 let g:ycm_filetype_blacklist = {
       \ 'sh': 1,
       \ 'bash': 1,
       \ 'vim': 1,
       \ 'haskell': 1,
       \}
-au FileType python nnoremap <leader>g :YcmCompleter GoTo<CR>
-au FileType python nnoremap <leader>d :YcmCompleter GoToDeclaration<CR>
-au FileType python nnoremap K  :YcmCompleter GetDoc<CR>
-let s:python_shim_path = s:HOME_PATH.'/.pyenv/shims'
-let g:ycm_python_binary_path = s:python_shim_path.'/python'
-let g:ycm_server_python_interpreter = s:python_shim_path.'/python2'
+
+" NeoComplete
+"
+" NOTE: I use NeoComplete for bash, viml and haskell.
+"       All other languages will fall back to YCM completion.
+"
+au FileType bash,sh,vim,haskell :NeoCompleteEnable
 
 " Supertab
 let g:SuperTabDefaultCompletionType = "<c-n>"
@@ -343,7 +349,7 @@ let g:move_key_modifier = 'C'
 let g:sneak#s_next = 1
 let g:sneak#use_ic_scs = 1
 
-" vim-expand-region
+" Vim-expand-region
 vmap <C-]> <Plug>(expand_region_expand)
 vmap <C-[> <Plug>(expand_region_shrink)
 
@@ -357,7 +363,10 @@ au BufWritePost *.hs GhcModCheckAndLintAsync
 
 " Jedi-vim
 au filetype python let g:jedi#completions_enabled = 0
-au filetype python let g:jedi#goto_definitions_command = '<C-d>'
+au filetype python let g:jedi#goto_definitions_command = ''
+au filetype python let g:jedi#goto_assignments_command = ''
+au filetype python let g:jedi#usages_command = ''
+au filetype python let g:jedi#popup_on_dot = 0
 au filetype python let g:jedi#use_splits_not_buffers = 'winwidth'
 
 " vim-jsx
@@ -462,6 +471,7 @@ highlight ColorColumn ctermbg=red
 nnoremap <F9> :tabnew<CR>
 nnoremap <F10> :tabclose<CR>
 nnoremap <tab> :tabnext<CR>
+nnoremap <C-I> <tab><CR>
 nnoremap <S-tab> :tabprevious<CR>
 nnoremap - :vertical res -10<CR>
 nnoremap = :vertical res +10<CR>
@@ -531,10 +541,6 @@ endif
 
 "==========================Language Shim Settings============================="
 
-" Bash / VimL
-au FileType bash,sh :NeoCompleteEnable
-au FileType vim :NeoCompleteEnable
-
 " Javascript
 au FileType javascript let g:jsdoc_default_mapping = 1
 au FileType javascript noremap <C-e> :JsDoc<CR>
@@ -545,13 +551,13 @@ au FileType javascript nnoremap [[ ?\(function\s*(.*)\s*{\\|=>\s*{\)<CR>
 au FileType haskell let g:haskellmode_completion_ghc = 0         "turn off haskell mode completion
 au FileType haskell let g:necoghc_enable_detailed_browse = 1     "use detailed browse
 au FileType haskell setlocal omnifunc=necoghc#omnifunc
-au FileType haskell :NeoCompleteEnable
 
 " Octave
 au BufRead,BufNewFile *.m,*.oct setfiletype octave
 au FileType octave if &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
 
 " Miscs
+au! BufRead,BufNewFile Jenkinsfile setfiletype groovy
 au! BufRead,BufNewFile *.lr setfiletype markdown
 au! BufRead,BufNewFile *.md setfiletype markdown
 au! BufRead,BufNewFile *.cabal setfiletype haskell
@@ -564,13 +570,8 @@ au FileType html setl ts=2 sw=2 sts=2
 " Indentations
 au FileType bash,sh setl ts=2 sw=2 sts=2
 au FileType haskell setl sw=2
-au FileType cabal setl ts=2 sw=2 sts=2
 au FileType thrift setl ts=2 sw=2 sts=2
 au FileType javascript setl ts=2 sw=2 sts=2
-au FileType html setl ts=2 sw=2 sts=2
-au FileType htmldjango setl ts=2 sw=2 sts=2
-au FileType yml setl ts=2 sw=2 sts=2
-au FileType css setl ts=2 sw=2 sts=2
-au FileType scss setl ts=2 sw=2 sts=2
-au FileType sass setl ts=2 sw=2 sts=2
-au FileType less setl ts=2 sw=2 sts=2
+au FileType html,htmldjango setl ts=2 sw=2 sts=2
+au FileType yaml,yml setl ts=2 sw=2 sts=2 expandtab
+au FileType css,scss,sass,less setl ts=2 sw=2 sts=2
