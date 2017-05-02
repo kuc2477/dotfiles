@@ -27,7 +27,7 @@ call plug#begin('~/.vim/plugged')
 " bash, haskell specific completion.
 "
 Plug 'Valloric/YouCompleteMe', {
-            \'do': 'install.py --tern-completer'
+            \'do': './install.py --tern-completer'
             \}
 Plug 'Shougo/neocomplete.vim'
 Plug 'ervandew/supertab'
@@ -114,6 +114,7 @@ Plug 'mhinz/vim-startify'
 Plug 'esneider/YUNOcommit.vim'
 Plug 'guns/xterm-color-table.vim'
 Plug 'jez/vim-superman'
+Plug 'Valloric/ListToggle'
 
 " Colorschemes
 Plug 'morhetz/gruvbox'
@@ -470,13 +471,11 @@ highlight ColorColumn ctermbg=red
 " Key mappings
 nnoremap <F9> :tabnew<CR>
 nnoremap <F10> :tabclose<CR>
-nnoremap <tab> :tabnext<CR>
-nnoremap <C-I> <tab><CR>
-nnoremap <S-tab> :tabprevious<CR>
-nnoremap - :vertical res -10<CR>
-nnoremap = :vertical res +10<CR>
-nnoremap _ :res -10<CR>
-nnoremap + :res +10<CR>
+nnoremap gr :tabprevious<CR>
+nnoremap - :res -10<CR>
+nnoremap = :res +10<CR>
+nnoremap _ :vertical res -10<CR>
+nnoremap + :vertical res +10<CR>
 
 " Writing mode
 function! ToggleWritingMode()
