@@ -467,6 +467,9 @@ set incsearch
 set ignorecase
 set smartcase
 
+" Completion list maximum length
+set ph=20
+
 " Settings for display
 set nu
 set colorcolumn=79
