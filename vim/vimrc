@@ -435,7 +435,7 @@ set ims=-1
 " Color scheme
 syntax on
 set background=dark
-colorscheme wombat256
+colorscheme wombat256i
 
 " Terminal
 if &term =~ '256color'
