@@ -319,7 +319,7 @@ def _tmux():
         _link('tmux/tmux.conf', '~/.tmux.conf'),
         _link('tmux/tmux-powerline', '~/.tmux-powerline'),
         _link('tmux/tmux-powerlinerc', '~/.tmux-powerlinerc'),
-        'pip install tmuxp',
+        'sudo pip install tmuxp',
     ]
 
 
