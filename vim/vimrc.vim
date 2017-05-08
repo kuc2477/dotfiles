@@ -22,14 +22,9 @@ filetype off
 call plug#begin('~/.vim/plugged')
 
 " Autocompletion interfaces
-"
-" I use YCM as base completion fallback and use neocomplete for viml,
-" bash, haskell specific completion.
-"
-Plug 'Valloric/YouCompleteMe', {
-            \'do': './install.py --tern-completer'
-            \}
-Plug 'Shougo/neocomplete.vim'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+Plug 'zchee/deoplete-jedi', { 'do': 'pip install jedi' }
 Plug 'ervandew/supertab'
 
 " Linting interface
@@ -127,7 +122,7 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'davidhalter/jedi-vim', { 'do': 'pip install jedi' }
 Plug 'hynek/vim-python-pep8-indent'
 Plug 'ehamberg/vim-cute-python'
-Plug 'django.vim'
+Plug 'vim-scripts/django.vim'
 
 " Javascript / JSX
 Plug 'mxw/vim-jsx'
@@ -186,36 +181,14 @@ filetype plugin indent on
 
 "=============================Plug Settings================================="
 
-" YCM
-"
-" NOTE: I use NeoComplete for bash, viml and haskell.
-"       All other languages will fall back to YCM completion.
-"
-nnoremap <leader>g :YcmCompleter GoTo<CR>
-nnoremap <leader>n :YcmCompleter GoToReferences<CR>
-nnoremap K  :YcmCompleter GetDoc<CR>
-let s:python_shim_path = s:HOME_PATH.'/.pyenv/shims'
-let g:ycm_python_binary_path = s:python_shim_path.'/python'
-let g:ycm_server_python_interpreter = s:python_shim_path.'/python2'
-let g:ycm_filetype_blacklist = {
-      \ 'sh': 1,
-      \ 'bash': 1,
-      \ 'vim': 1,
-      \ 'haskell': 1,
-      \}
-
-" NeoComplete
-"
-" NOTE: I use NeoComplete for bash, viml and haskell.
-"       All other languages will fall back to YCM completion.
-"
-au FileType bash,sh,vim,haskell :NeoCompleteEnable
+" Deoplete
+let g:deoplete#enable_at_startup = 1
 
 " Supertab
 let g:SuperTabDefaultCompletionType = "<c-n>"
 
 " Nerdtree
-map <leader>u :NERDTreeToggle<CR>
+map <leader>o :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " Buffergator
@@ -328,7 +301,6 @@ map <F8> :Gpush
 " Airline
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme='wombat'
-set term=xterm-256color
 set laststatus=2
 
 " Numbers
@@ -363,7 +335,7 @@ au BufReadPost *.hs GhcModCheckAndLintAsync
 au BufWritePost *.hs GhcModCheckAndLintAsync
 
 " Jedi-vim
-au filetype python let g:jedi#completions_enabled = 0
+au filetype python let g:jedi#completions_enabled = 1
 au filetype python let g:jedi#goto_definitions_command = ''
 au filetype python let g:jedi#goto_assignments_command = ''
 au filetype python let g:jedi#usages_command = ''
@@ -439,6 +411,9 @@ set background=dark
 colorscheme wombat256i
 
 " Terminal
+if !has('nvim')
+	set term=xterm-256color
+endif
 if &term =~ '256color'
     " disable Background Color Erase (BCE) so that color schemes
     " render properly when inside 256-color tmux and GNU screen.
@@ -476,7 +451,7 @@ set ph=20
 " Settings for display
 set nu
 set colorcolumn=79
-highlight ColorColumn ctermbg=red
+highlight ColorColumn ctermbg=red ctermfg=white cterm=bold
 
 " Key mappings
 nnoremap <F9> :tabnew<CR>

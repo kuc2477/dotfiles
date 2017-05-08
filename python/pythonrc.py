@@ -6,6 +6,7 @@ def _initialize_python_shell():
         import readline
         readline.parse_and_bind("tab: complete")
     finally:
+        import readline
         import os.path
         history_file = os.path.join(os.environ['HOME'], '.python_history')
         readline.set_history_length(1000)

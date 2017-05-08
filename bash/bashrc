@@ -192,7 +192,7 @@ fi
 # ==============
 
 # autoenv
-. /usr/local/bin/activate.sh
+[ -f /usr/local/bin/activate.sh ] && . /usr/local/bin/activate.sh
 
 # fzf
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
@@ -201,7 +201,7 @@ fi
 powerline-daemon -q
 POWERLINE_BASH_CONTINUATION=1
 POWERLINE_BASH_SELECT=1
-. ~/.powerline
+[ -f ~/.powerline ] && . ~/.powerline
 
 # autojump
 [ -f /usr/share/autojump/autojump.sh ] && . /usr/share/autojump/autojump.sh

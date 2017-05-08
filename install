@@ -1,0 +1,379 @@
+#!/usr/bin/env python
+from __future__ import print_function
+import argparse
+import functools
+import os
+import subprocess
+from sys import platform
+
+
+# SHELL
+SHELL = '/bin/bash'
+
+# UPSTREAM SOURCES
+FZF_URL = 'https://github.com/junegunn/fzf.git ~/.fzf'
+STACK_URL = 'https://get.haskellstack.org/'
+NVM_URL = 'https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh'
+PYENV_URL = (
+    'https://raw.githubusercontent.com/yyuu/pyenv-installer'
+    '/master/bin/pyenv-installer'
+)
+PLUG_URL = (
+    'https://raw.githubusercontent.com/junegunn/vim-plug'
+    '/master/plug.vim'
+)
+
+# SYSTEM SPECIFIC CONFIGURATIONS
+SYSTEM_SPECIFIC_INSTALLER = {
+    'osx': 'brew install',
+    'debian': 'sudo apt-get install -y'
+}
+SYSTEM_SPECIFIC_NAMES = {
+    'ag': {
+        'osx': 'the_silver_searcher',
+        'debian': 'silversearcher-ag'
+    },
+    'libevent': {
+        'osx': 'libevent',
+        'debian': 'libevent-dev'
+    },
+    'ctags': {
+        'osx': 'ctags',
+        'debian': 'exuberant-ctags'
+    },
+    'bashrc': {
+        'osx': '.profile',
+        'debian': '.bashrc'
+    },
+    'neovim': {
+        'osx': 'neovim/neovim/neovim',
+        'debian': 'neovim'
+    }
+}
+
+
+# =========
+# UTILITIES
+# =========
+
+def _system():
+    return 'osx' if _is_osx() else 'debian'
+
+
+def _is_osx():
+    return platform == 'darwin'
+
+
+def _stdout(command):
+    return subprocess.check_output(command, shell=True).strip()
+
+
+def _run(command):
+    if isinstance(command, (list, tuple)):
+        for c in command:
+            os.system(c)
+    else:
+        os.system(command)
+
+
+def _ran(target_name):
+    return registry[target_name].ran
+
+
+def _none_or_empty(string):
+    return string is None or (
+        isinstance(string, str) and
+        len(string.strip()) == 0
+    )
+
+
+def _install_system_packages(package, *packages):
+    installer = SYSTEM_SPECIFIC_INSTALLER[_system()]
+    package_names_for_system = [
+        SYSTEM_SPECIFIC_NAMES[name][_system()]
+        if name in SYSTEM_SPECIFIC_NAMES else name
+        for name in [package] + list(packages)
+    ]
+    return '{} {}'.format(installer, ' '.join(package_names_for_system))
+
+
+def _if_no_command(name, command):
+    return 'command -v {} >/dev/null || ({})'.format(name, command)
+
+
+def _link(path, to, rel=True):
+    if rel:
+        return 'ln -sf `pwd`/{} {}'.format(path, to)
+    else:
+        return 'ln -sf {} {}'.format(path, to)
+
+
+# ===========================
+# TARGET REGISTRY / DECORATOR
+# ===========================
+
+# TARGET REGISTRY
+registry = {}
+
+
+# TARGET DECORATOR
+def target(*args):
+    assert (
+        (len(args) == 1 and isinstance(args[0], list)) or
+        (len(args) == 1 and callable(args[0]))
+    )
+
+    # determine dependencies from given arguements
+    dependencies = [] if callable(args[0]) else args[0]
+
+    # wrapped function runs dependencies before the function itself.
+    def create_wrapped(f):
+        @functools.wraps(f)
+        def wrapped():
+            for dep in dependencies:
+                # run dependencies
+                install_target = registry[dep]
+                install_command = install_target.command
+                has_dependencies = install_target.dependencies
+                if (not _ran(dep) and
+                        (not _none_or_empty(install_command)
+                         or has_dependencies)):
+                    install_target()
+            else:
+                # run the command itself and mark after execution
+                name = f.__name__
+                install_command = f()
+                if (not _ran(name) and not _none_or_empty(install_command)):
+                    _run(install_command)
+                    registry[name].ran = True
+
+        wrapped.command = f()
+        wrapped.dependencies = dependencies
+        return wrapped
+
+    # return decorator in case of target with dependencies
+    if dependencies:
+        def decorator(f):
+            wrapped = create_wrapped(f)
+            registry[f.__name__] = wrapped
+            registry[f.__name__].ran = False
+            return wrapped
+        return decorator
+    # return wrapped function in case of zero dependencies
+    else:
+        wrapped = create_wrapped(args[0])
+        registry[args[0].__name__] = wrapped
+        registry[args[0].__name__].ran = False
+        return wrapped
+
+
+# ==============
+# TARGETS (MAIN)
+# ==============
+
+@target(['vim', 'utils', 'shell'])
+def all():
+    pass
+
+
+@target(['_system_python', '_submodules', '_font'])
+def shell():
+    pwd = _stdout('pwd')
+    root_dir = _stdout(
+        'pip show powerline-status | '
+        'grep -i location | grep -Eo \/.*$'
+    )
+    bash_binding = '{}/powerline/bindings/bash/powerline.sh'.format(root_dir)
+    config_dir = '{}/bash/powerline-configs'.format(pwd)
+
+    return [
+        # powerline
+        'pip install powerline-status powerline-gitstatus',
+        'mkdir -p ~/.config/powerline/colorschemes',
+        'mkdir -p ~/.config/powerline/themes/shell',
+        _link(bash_binding, '~/.powerline', rel=False),
+        _link(
+            '{}/config.json'.format(config_dir),
+            '~/.config/powerline/config.json', rel=False
+        ),
+        _link(
+            '{}/colorscheme.json'.format(config_dir),
+            '~/.config/powerline/colorschemes/default.json', rel=False
+        ),
+        _link(
+            '{}/theme.json'.format(config_dir),
+            '~/.config/powerline/themes/shell/default.json', rel=False
+        ),
+        # autocompletions
+        _link(
+            'bash/autocompletions/git-completion.bash',
+            '~/.git-completion.bash',
+        ),
+        _link(
+            'bash/autocompletions/docker-completion.bash',
+            '~/.docker-completion.bash'
+        ),
+        _link(
+            'bash/autocompletions/docker-compose-completion.bash',
+            '~/.docker-compose-completion.bash'
+        ),
+        # bash configuration
+        _link('bash/bashrc', '~/{}'.format(
+            SYSTEM_SPECIFIC_NAMES['bashrc'][_system()]))
+    ]
+
+
+@target(['_vim_deps'])
+def vim():
+    if _is_osx():
+        prepare_vim_registry = ['brew tap neovim/neovim']
+    else:
+        prepare_vim_registry = [
+            'sudo add-apt-repository ppa:neovim-ppa/stable'
+            'sudo apt-get update'
+        ]
+
+    return prepare_vim_registry + [
+        _install_system_packages('neovim'),
+        'curl -fLo ~/.vim/autoload/plug.vim --create-dirs {}'.format(PLUG_URL),
+        'mkdir -p ~/.config/nvim',
+        _link('vim/init.vim', '~/.config/nvim/init.vim'),
+        _link('vim/vimrc.vim', '~/.vimrc'),
+        'nvim +PlugInstall +VimProcInstall +qall',
+    ]
+
+
+@target(['_system_python', '_javascript', '_tmux'])
+def utils():
+    if _is_osx():
+        install_pgweb = 'brew cask install pgweb'
+    else:
+        install_pgweb = _link('bin/pgweb', '/usr/local/bin')
+
+    install_fzf = (
+        'if [ ! -d "$HOME/.fzf" ]; then git clone --depth=1 '
+        '{} ~/.fzf && ~/.fzf/install --all; fi'.format(FZF_URL)
+    )
+
+    return [
+        install_pgweb,
+        install_fzf,
+        'sudo pip install autoenv pgcli saws TermFeed',
+        'npm install -g git-standup tiny-care-terminal',
+        _install_system_packages('autojump', 'ag', 'ranger', 'tig', 'irssi'),
+    ]
+
+
+# ======================
+# TARGETS (DEPENDENCIES)
+# ======================
+
+@target(['_submodules'])
+def _font():
+    return 'fonts/install.sh'
+
+
+@target
+def _submodules():
+    return 'git submodule update --init'
+
+
+@target
+def _system_python():
+    return _install_system_packages(
+        'python', 'python3', 'python-pip', 'python3-pip'
+    )
+
+
+@target(['_system_python', '_python', '_javascript', '_haskell', '_font'])
+def _vim_deps():
+    return [
+        _install_system_packages('bashdb', 'cmake', 'ctags'),
+        'pip install neovim',
+        'pip3 install neovim'
+    ]
+
+
+@target(['_system_python', '_submodules', '_font'])
+def _tmux():
+    if _is_osx():
+        deps = [
+            'pkg-config', 'libevent', 'automake',
+            'reattach-to-user-namespace'
+        ]
+    else:
+        deps = [
+            'pkg-config', 'libevent', 'automake',
+            'libncurses-dev'
+        ]
+
+    compile_tmux = (
+        'cd {}/tmux-src && ./autogen.sh && ./configure && '
+        'make && sudo make install'
+    )
+
+    return [
+        _install_system_packages(*deps),
+        _if_no_command('tmux', compile_tmux),
+        _link('tmux/tmux', '~/.tmux'),
+        _link('tmux/tmux.conf', '~/.tmux.conf'),
+        _link('tmux/tmux-powerline', '~/.tmux-powerline'),
+        _link('tmux/tmux-powerlinerc', '~/.tmux-powerlinerc'),
+        'pip install tmuxp',
+    ]
+
+
+@target(['_system_python'])
+def _python():
+    if _is_osx():
+        install_pyenv = 'brew update && brew install pyenv pyenv-virtualenv'
+    else:
+        install_pyenv = '{} && (curl -L {} | bash)'.format(
+            _install_system_packages(
+                'make', 'build_essential', 'libssl-dev', 'zlib1g-dev',
+                'libbz2-dev', 'libreadline-dev', 'libsqlite3-dev', 'wget',
+                'curl', 'llvm', 'libncurses5-dev'
+            ), PYENV_URL
+        )
+
+    return [
+        _if_no_command('pyenv', install_pyenv),
+        _link('python/pypirc', '~/.pypirc'),
+        _link('python/pythonrc.py', '~/.pythonrc.py'),
+        _link('python/pdbrc.py', '~/.pdbrc.py'),
+    ]
+
+
+@target
+def _javascript():
+    return [
+        _if_no_command('nvm', 'curl -o- {} | bash'.format(NVM_URL)),
+        '. ~/.nvm/nvm.sh && nvm install node',
+        '. ~/.nvm/nvm.sh && nvm use node',
+        _link('javascript/tern-project', '~/.tern-project'),
+    ]
+
+
+@target
+def _haskell():
+    return [
+        _if_no_command('stack', 'curl -sSL {} | sh'.format(STACK_URL)),
+    ]
+
+
+# ====
+# MAIN
+# ====
+
+# PARSER
+parser = argparse.ArgumentParser('cli for dotfile installation')
+parser.add_argument(
+    'target', metavar='NAME', type=str, nargs='?', default='all',
+    choices=['all', 'vim', 'utils', 'shell'],
+    help='target to install'
+)
+
+
+if __name__ == '__main__':
+    args = parser.parse_args()
+    registry[args.target]()
