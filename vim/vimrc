@@ -45,7 +45,6 @@ Plug 'scrooloose/nerdcommenter'
 
 " Vim feature extensions
 Plug 'tpope/vim-obsession'
-Plug 'tpope/vim-repeat'
 Plug 'Shougo/vimproc.vim'
 
 " Visual supports
@@ -79,17 +78,18 @@ Plug 'benmills/vimux'
 " Text objects / editing supports
 Plug 'terryma/vim-multiple-cursors'
 Plug 'terryma/vim-expand-region'
-Plug 'terryma/vim-smooth-scroll'
 Plug 'tpope/vim-surround'
-Plug 'godlygeek/tabular'
+Plug 'tpope/vim-repeat'
 Plug 'Raimondi/delimitMate'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'mattn/emmet-vim'
+Plug 'godlygeek/tabular'
 Plug 'kuc2477/vim-move'
 
 " Motion
 Plug 'Lokaltog/vim-easymotion'
 Plug 'justinmk/vim-sneak'
+Plug 'terryma/vim-smooth-scroll'
 
 " Tag
 Plug 'xolox/vim-easytags', { 'do': g:INSTALLER . g:NAME_CTAGS }
@@ -215,7 +215,7 @@ au FileType bash,sh,vim,haskell :NeoCompleteEnable
 let g:SuperTabDefaultCompletionType = "<c-n>"
 
 " Nerdtree
-map <C-u> :NERDTreeToggle<CR>
+map <leader>u :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " Buffergator
@@ -453,6 +453,9 @@ au InsertLeave * set timeoutlen=300
 
 " Enable backsapce over everythin in insert mode
 set backspace=indent,eol,start
+
+" Clipboard
+set clipboard=unnamed
 
 " Indentations
 set expandtab
