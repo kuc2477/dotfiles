@@ -255,13 +255,18 @@ def utils():
         '{} ~/.fzf && ~/.fzf/install --all; fi'.format(FZF_URL)
     )
 
-    return [
+    commands = [
         install_pgweb,
         install_fzf,
         'sudo pip install autoenv pgcli saws TermFeed',
         'npm install -g git-standup tiny-care-terminal',
         _install_system_packages('autojump', 'ag', 'ranger', 'tig', 'irssi'),
     ]
+
+    return (
+        commands if _is_osx() else
+        commands + [_install_system_packages('xdg-utils')]
+    )
 
 
 # ======================

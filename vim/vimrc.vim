@@ -159,7 +159,7 @@ Plug 'elzr/vim-json'
 
 " Markdown
 Plug 'plasticboy/vim-markdown'
-Plug 'suan/vim-instant-markdown', { 'do': 'sudo npm -g install instant-markdown-d' }
+Plug 'iamcco/markdown-preview.vim'
 
 " RsT
 Plug 'Rykka/riv.vim'
