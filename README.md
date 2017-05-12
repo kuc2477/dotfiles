@@ -7,7 +7,7 @@ My private environment files for UNIX like systems. Supports **OS X / Debian** o
 ## What's in it?
 - neovim + deoplete + syntastic + tmux for **[UNIX philosophy compliant development]**
 - pyenv + nvm + stack for **sandboxed development in Python, JavaScript and Haskell**
-- autojump, autoenv, tig, ranger, fzf, saws, TermFeed and other **cute cli goodies**
+- autojump, autoenv, tig, ranger, fzf, saws, TermFeed and other **cute CLI goodies**
 
 
 ## How can I use it?
