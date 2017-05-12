@@ -48,7 +48,13 @@ SYSTEM_SPECIFIC_NAMES = {
     'neovim': {
         'osx': 'neovim/neovim/neovim',
         'debian': 'neovim'
-    }
+    },
+    'python-pip': {
+        'osx': None,
+    },
+    'python3-pip': {
+        'osx': None,
+    },
 }
 
 
@@ -71,7 +77,10 @@ def _stdout(command):
 def _run(command):
     if isinstance(command, (list, tuple)):
         for c in command:
-            os.system(c)
+            if callable(c):
+                os.system(c())
+            else:
+                os.system(c)
     else:
         os.system(command)
 
@@ -94,7 +103,9 @@ def _install_system_packages(package, *packages):
         if name in SYSTEM_SPECIFIC_NAMES else name
         for name in [package] + list(packages)
     ]
-    return '{} {}'.format(installer, ' '.join(package_names_for_system))
+    return '{} {}'.format(installer, ' '.join([
+        n for n in package_names_for_system if n is not None
+    ]))
 
 
 def _if_no_command(name, command):
@@ -178,30 +189,34 @@ def all():
 
 @target(['_system_python', '_submodules', '_font'])
 def shell():
-    pwd = _stdout('pwd')
-    root_dir = _stdout(
+    get_powerline_root_dir = (lambda: _stdout(
         'pip show powerline-status | '
-        'grep -i location | grep -Eo \/.*$'
+        'grep -i location | grep -Eo /.*$'
+    ))
+    get_powerline_bash_binding_path = (
+        lambda: '{}/powerline/bindings/bash/powerline.sh'.format(
+            get_powerline_root_dir()
+        )
     )
-    bash_binding = '{}/powerline/bindings/bash/powerline.sh'.format(root_dir)
-    config_dir = '{}/bash/powerline-configs'.format(pwd)
+    powerline_config_dir = '{}/bash/powerline-configs'.format(_stdout('pwd'))
 
     return [
         # powerline
         'pip install powerline-status powerline-gitstatus',
         'mkdir -p ~/.config/powerline/colorschemes',
         'mkdir -p ~/.config/powerline/themes/shell',
-        _link(bash_binding, '~/.powerline', rel=False),
+        (lambda: _link(get_powerline_bash_binding_path(),
+                       '~/.powerline', rel=False)),
         _link(
-            '{}/config.json'.format(config_dir),
+            '{}/config.json'.format(powerline_config_dir),
             '~/.config/powerline/config.json', rel=False
         ),
         _link(
-            '{}/colorscheme.json'.format(config_dir),
+            '{}/colorscheme.json'.format(powerline_config_dir),
             '~/.config/powerline/colorschemes/default.json', rel=False
         ),
         _link(
-            '{}/theme.json'.format(config_dir),
+            '{}/theme.json'.format(powerline_config_dir),
             '~/.config/powerline/themes/shell/default.json', rel=False
         ),
         # autocompletions
@@ -288,6 +303,11 @@ def _system_python():
     return _install_system_packages(
         'python', 'python3', 'python-pip', 'python3-pip'
     )
+
+
+@target(['_system_python'])
+def _powerline_status():
+    return 'pip install powerline-status powerline-gitstatus'
 
 
 @target(['_system_python', '_python', '_javascript', '_haskell', '_font'])

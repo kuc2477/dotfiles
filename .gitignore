@@ -73,3 +73,6 @@ tmux/tmux/*
 
 # OSX
 .DS_store
+
+# npm
+npm-debug*
