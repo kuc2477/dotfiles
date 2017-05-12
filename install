@@ -82,7 +82,10 @@ def _run(command):
             else:
                 os.system(c)
     else:
-        os.system(command)
+        if callable(command):
+            os.system(command())
+        else:
+            os.system(command)
 
 
 def _ran(target_name):
