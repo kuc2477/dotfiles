@@ -55,7 +55,7 @@ Plug 'ntpeters/vim-better-whitespace'
 
 " File navigation
 Plug 'burke/matcher', { 'do': 'sudo make && make install' }
-Plug 'rking/ag.vim'
+Plug 'Numkil/ag.nvim'
 Plug 'kien/ctrlp.vim'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
@@ -335,13 +335,13 @@ au BufReadPost *.hs GhcModCheckAndLintAsync
 au BufWritePost *.hs GhcModCheckAndLintAsync
 
 " Jedi-vim
-au filetype python let g:jedi#completions_enabled = 1
-au filetype python let g:jedi#goto_definitions_command = ''
-au filetype python let g:jedi#goto_assignments_command = ''
-au filetype python let g:jedi#usages_command = ''
+au filetype python let g:jedi#completions_enabled = 0
+au filetype python let g:jedi#goto_definitions_command = '<leader>d'
+au filetype python let g:jedi#goto_assignments_command = '<leader>g'
+au filetype python let g:jedi#usages_command = '<leader>n'
+au filetype python let g:jedi#rename_command = '<leader>r'
 au filetype python let g:jedi#popup_on_dot = 0
 au filetype python let g:jedi#popup_select_first = 1
-au filetype python let g:jedi#use_splits_not_buffers = 'winwidth'
 
 " vim-jsx
 let g:jsx_ext_required = 0
