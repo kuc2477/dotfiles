@@ -13,7 +13,7 @@ My private environment files for UNIX like systems. Supports **OS X / Debian** o
 ## How can I use it?
 Just run the following command if you trust me.
 
-    $ ./install [all | vim | utils | shell]
+    $ ./install [vim | utils | shell]
 
 
 ## Note
