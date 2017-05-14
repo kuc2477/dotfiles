@@ -3,10 +3,6 @@ My private environment files for UNIX like systems. **Supports OS X / Debian out
 
 ![terminal screenshot](/terminal.png?raw=true "terminal screenshot")
 
-## Dependencies
-- bash
-- git
-- curl
 
 ## What's in it?
 - neovim + deoplete + syntastic + tmux for **[UNIX philosophy compliant development]**
@@ -22,11 +18,19 @@ Just run the following command if you trust me.
     $ ./install [vim | utils | shell]
 
 
+## Dependencies
+- bash
+- git
+- curl
+
+
 ## Note
 - This environment has been used and tested only in OS X / Debian systems.
 - Edit your terminal profiles to use installed powerline fonts.
 
+
 ## License
 - MIT 
+
 
 [unix philosophy compliant development]: https://en.wikipedia.org/wiki/Unix_philosophy
