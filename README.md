@@ -1,7 +1,18 @@
 # dotfiles
-My private environment files for UNIX like systems. **Supports OS X / Debian out of the box**.
+My private environment files for UNIX like systems.
 
 ![terminal screenshot](/terminal.png?raw=true "terminal screenshot")
+
+
+## Supported Platforms
+- OS X
+- Debian / Ubuntu
+
+
+## Dependencies
+- bash
+- git
+- curl
 
 
 ## What's in it?
@@ -16,12 +27,6 @@ My private environment files for UNIX like systems. **Supports OS X / Debian out
 Just run the following command if you trust me.
 
     $ ./install [vim | utils | shell]
-
-
-## Dependencies
-- bash
-- git
-- curl
 
 
 ## Note
