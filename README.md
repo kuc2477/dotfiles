@@ -5,6 +5,7 @@ My private environment files for UNIX like systems. **Supports OS X / Debian out
 
 
 ## Dependencies
+- python
 - bash
 - git
 - curl
