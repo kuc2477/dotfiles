@@ -6,6 +6,7 @@ import os
 import os.path
 import subprocess
 import contextlib
+import copy
 from sys import platform
 
 
@@ -102,6 +103,14 @@ def _header(string):
     return '\n' + divider + '\n' + string + '\n' + divider
 
 
+def _breadcrumb(breadcrumb, include_current=False):
+    depth = len(breadcrumb)
+    if include_current:
+        return ('>'.join(breadcrumb)) + '> ' if depth > 0 else ''
+    else:
+        return ('>'.join(breadcrumb[:depth-1]) + '> ') if depth > 1 else ''
+
+
 def _style(string, styles=None, stdout=True):
     # apply styles
     styles = styles or []
@@ -118,33 +127,41 @@ def _style(string, styles=None, stdout=True):
 
 
 @contextlib.contextmanager
-def _log(f, dependencies):
-    # aliases
+def _log_command_with_dependencies(f, dependencies, breadcrumb):
     name = f.__name__
     name_stripped = name.lstrip('_')
     dependencies_stripped = [n.lstrip('_') for n in dependencies]
-    public = not name.startswith('_')
-
-    # styles
-    start_styles = ['fg_cyan'] if public else ['fg_yellow']
-    done_styles = ['bold', 'fg_green'] if public else ['bold']
+    breadcrumb_stripped = [n.lstrip('_') for n in breadcrumb]
+    is_root = len(breadcrumb) == 1
 
     # display installation information on start
-    _style(_header(
-        'Installing {} with dependencies: {}'
-        .format(name_stripped, dependencies_stripped) if dependencies else
-        'Installing {}'.format(name_stripped)
-    ), start_styles)
+    if dependencies and is_root:
+        _style(_header('{}Installing {} with dependencies: {}'.format(
+            _breadcrumb(breadcrumb_stripped), name_stripped,
+            dependencies_stripped
+        )), ['bold', 'fg_cyan'])
+
+    yield
+
+
+@contextlib.contextmanager
+def _log_command(f, breadcrumb):
+    name_stripped = f.__name__.lstrip('_')
+    breadcrumb_stripped = [n.lstrip('_') for n in breadcrumb]
+
+    # styles
+    start_styles = ['fg_yellow']
+    end_styles = ['bold']
+
+    # display installation information on start
+    _style(_header('{}Installing {}'.format(
+        _breadcrumb(breadcrumb_stripped), name_stripped
+    )), start_styles)
 
     yield
 
     # display installation information on done
-    done_message = (
-        'Installed {} with dependencies: {}'
-        .format(name_stripped, dependencies_stripped) if public else
-        'Installed {}!'.format(name_stripped)
-    )
-    _style('\n# {}'.format(done_message), done_styles)
+    _style('\n# Installed {}!'.format(name_stripped), end_styles)
 
 
 def _system():
@@ -248,25 +265,32 @@ def target(*args):
     # wrapped function runs dependencies before the function itself.
     def create_wrapped(f):
         @functools.wraps(f)
-        def wrapped():
+        def wrapped(breadcrumb=None):
+            # dependency breadcrumb
+            name = f.__name__
+            breadcrumb = copy.deepcopy(breadcrumb) or []
+            breadcrumb += [name]
+
             # print installation target information
-            with _log(f, dependencies):
-                name = f.__name__
+            with _log_command_with_dependencies(f, dependencies, breadcrumb):
                 for dep in dependencies:
                     # run dependencies
                     install_target = registry[dep]
                     install_command = install_target.command
                     has_dependencies = install_target.dependencies
-                    if (not _ran(dep) and
-                            (not _none_or_empty(install_command)
-                             or has_dependencies)):
-                        install_target()
+                    not_ran = not _ran(dep)
+                    not_none_or_empty = not _none_or_empty(install_command)
+                    if not_ran and (not_none_or_empty or has_dependencies):
+                        install_target(breadcrumb)
                 else:
                     # run the command itself and mark after execution
                     install_command = f()
-                    if not _ran(name) and not _none_or_empty(install_command):
-                        _run(install_command)
-                        registry[name].ran = True
+                    not_ran = not _ran(name)
+                    not_none_or_empty = not _none_or_empty(install_command)
+                    if not_ran and not_none_or_empty:
+                        with _log_command(f, breadcrumb):
+                            _run(install_command)
+                            registry[name].ran = True
 
         wrapped.command = f()
         wrapped.dependencies = dependencies
