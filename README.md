@@ -17,11 +17,11 @@ My private environment files for UNIX like systems. **Supports OS X / Debian out
 
 
 ## How can I use it?
-![installation recording](/tty.gif?raw=true "installation recording")
-
 Just run the following command if you trust me.
 
     $ ./install [vim | utils | shell]
+
+![installation recording](/tty.gif?raw=true "installation recording")
 
 
 ## Note
