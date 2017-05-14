@@ -10,6 +10,3 @@
 [submodule "tmux/tmux/plugins/tpm"]
 	path = tmux/tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
-[submodule "vim/vim-src"]
-	path = vim/vim-src
-	url = https://github.com/vim/vim.git

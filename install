@@ -49,12 +49,9 @@ SYSTEM_SPECIFIC_NAMES = {
         'osx': 'neovim/neovim/neovim',
         'debian': 'neovim'
     },
-    'python-pip': {
-        'osx': None,
-    },
-    'python3-pip': {
-        'osx': None,
-    },
+    'python-pip': {'osx': None},
+    'python3-pip': {'osx': None},
+    'curl': {'osx': None},
 }
 
 
@@ -75,17 +72,15 @@ def _stdout(command):
 
 
 def _run(command):
+    _run_maybe_thunk_command = (
+        lambda c: os.system(c()) if callable(c)
+        else os.system(c)
+    )
     if isinstance(command, (list, tuple)):
         for c in command:
-            if callable(c):
-                os.system(c())
-            else:
-                os.system(c)
+            _run_maybe_thunk_command(c)
     else:
-        if callable(command):
-            os.system(command())
-        else:
-            os.system(command)
+        _run_maybe_thunk_command(command)
 
 
 def _ran(target_name):
@@ -99,15 +94,24 @@ def _none_or_empty(string):
     )
 
 
+def _system_specific_name(name, system):
+    try:
+        return SYSTEM_SPECIFIC_NAMES[name][system]
+    except KeyError:
+        return name
+
+
 def _install_system_packages(package, *packages):
-    installer = SYSTEM_SPECIFIC_INSTALLER[_system()]
-    package_names_for_system = [
-        SYSTEM_SPECIFIC_NAMES[name][_system()]
-        if name in SYSTEM_SPECIFIC_NAMES else name
+    system = _system()
+    installer = SYSTEM_SPECIFIC_INSTALLER[system]
+    system_specific_package_names = [
+        _system_specific_name(name, system)
         for name in [package] + list(packages)
+        if _system_specific_name(name, system) is not None
     ]
+
     return '{} {}'.format(installer, ' '.join([
-        n for n in package_names_for_system if n is not None
+        n for n in system_specific_package_names
     ]))
 
 
@@ -115,11 +119,11 @@ def _if_no_command(name, command):
     return 'command -v {} >/dev/null || ({})'.format(name, command)
 
 
-def _link(path, to, rel=True):
+def _link(path, to, rel=True, sudo=False):
     if rel:
-        return 'ln -sf `pwd`/{} {}'.format(path, to)
+        return '{} ln -sf `pwd`/{} {}'.format('sudo' if sudo else '', path, to)
     else:
-        return 'ln -sf {} {}'.format(path, to)
+        return '{} ln -sf {} {}'.format('sudo' if sudo else '', path, to)
 
 
 # ===========================
@@ -336,7 +340,7 @@ def _tmux():
         ]
 
     compile_tmux = (
-        'cd {}/tmux-src && ./autogen.sh && ./configure && '
+        'cd tmux/tmux-src && ./autogen.sh && ./configure && '
         'make && sudo make install'
     )
 

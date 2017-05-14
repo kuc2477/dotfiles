@@ -76,3 +76,6 @@ tmux/tmux/*
 
 # npm
 npm-debug*
+
+# env
+.env
