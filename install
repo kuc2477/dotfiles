@@ -70,7 +70,7 @@ Dependencies: bash, curl, git
 SHELL = '/bin/bash'
 
 # UPSTREAM SOURCES
-FZF_URL = 'https://github.com/junegunn/fzf.git ~/.fzf'
+FZF_URL = 'https://github.com/junegunn/fzf.git'
 STACK_URL = 'https://get.haskellstack.org/'
 NVM_URL = 'https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh'
 PYENV_URL = (
@@ -429,7 +429,7 @@ def utils():
 
     install_fzf = (
         'git clone --depth 1 {} ~/.fzf && ~/.fzf/install --all'
-        .format(FZF_URL) if os.path.exists('~/.fzf') else None
+        .format(FZF_URL) if not os.path.exists('~/.fzf') else None
     )
 
     commands = [
@@ -437,7 +437,10 @@ def utils():
         install_fzf,
         'sudo pip install autoenv pgcli saws TermFeed',
         _in_nvm('npm install -g git-standup tiny-care-terminal'),
-        _install_system_packages('autojump', 'ag', 'ranger', 'tig', 'irssi'),
+        _install_system_packages(
+            'cowsay', 'fortune', 'autojump',
+            'ag', 'ranger', 'tig', 'irssi'
+        ),
     ]
 
     return (
