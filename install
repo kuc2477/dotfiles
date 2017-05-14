@@ -544,6 +544,7 @@ def _javascript():
 def _haskell():
     return [
         _if_no_command('stack', 'curl -sSL {} | sh'.format(STACK_URL)),
+        'stack setup',
     ]
 
 

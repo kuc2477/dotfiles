@@ -25,6 +25,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 Plug 'zchee/deoplete-jedi', { 'do': 'pip install jedi' }
+Plug 'eagletmt/neco-ghc', { 'do': 'stack install ghc-mod' }
 Plug 'ervandew/supertab'
 
 " Linting interface
@@ -134,8 +135,6 @@ Plug 'heavenshell/vim-jsdoc'
 Plug 'Twinside/vim-syntax-haskell-cabal'    " Cabal syntax.
 Plug 'dag/vim2hs'                           " Syntax highlighting, unicode conceals.
 Plug 'eagletmt/ghcmod-vim'                  " Use ghc-mod for type information and linting.
-Plug 'eagletmt/neco-ghc'                    " Use neco-ghc for neocomplete haskell completion
-                                            " backend.
 Plug 'Twinside/vim-hoogle'
 
 " Octave
