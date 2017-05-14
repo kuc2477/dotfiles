@@ -1,12 +1,7 @@
 # dotfiles
-My private environment files for UNIX like systems.
+My private environment files for UNIX like systems. **Supports OS X / Debian out of the box**.
 
 ![terminal screenshot](/terminal.png?raw=true "terminal screenshot")
-
-
-## Supported Platforms
-- OS X
-- Debian / Ubuntu
 
 
 ## Dependencies
