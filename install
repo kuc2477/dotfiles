@@ -167,7 +167,7 @@ def _log_command_with_dependencies(f, dependencies, breadcrumb):
         _style(_header('{}Installing {} with dependencies: {}'.format(
             _breadcrumb(breadcrumb_stripped), name_stripped,
             dependencies_stripped
-        ), margin_top=False), ['fg_cyan'])
+        ), margin_top=False), ['fg_cyan', 'bold'])
 
     yield
 
@@ -178,7 +178,7 @@ def _log_command(f, breadcrumb):
     breadcrumb_stripped = [n.lstrip('_') for n in breadcrumb]
 
     # styles
-    start_styles = ['fg_yellow']
+    start_styles = ['fg_yellow', 'bold']
     end_styles = ['bold']
 
     # display installation information on start
