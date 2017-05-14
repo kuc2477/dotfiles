@@ -3,8 +3,46 @@ from __future__ import print_function
 import argparse
 import functools
 import os
+import os.path
 import subprocess
+import contextlib
 from sys import platform
+
+
+# TERMINAL COLORS
+class Colors:
+    reset = '\033[0m'
+    bold = '\033[01m'
+    disable = '\033[02m'
+    underline = '\033[04m'
+    reverse = '\033[07m'
+    strikethrough = '\033[09m'
+    invisible = '\033[08m'
+
+    fg_black = '\033[30m'
+    fg_red = '\033[31m'
+    fg_green = '\033[32m'
+    fg_orange = '\033[33m'
+    fg_blue = '\033[34m'
+    fg_purple = '\033[35m'
+    fg_cyan = '\033[36m'
+    fg_lightgrey = '\033[37m'
+    fg_darkgrey = '\033[90m'
+    fg_lightred = '\033[91m'
+    fg_lightgreen = '\033[92m'
+    fg_yellow = '\033[93m'
+    fg_lightblue = '\033[94m'
+    fg_pink = '\033[95m'
+    fg_lightcyan = '\033[96m'
+
+    bg_black = '\033[40m'
+    bg_red = '\033[41m'
+    bg_green = '\033[42m'
+    bg_orange = '\033[43m'
+    bg_blue = '\033[44m'
+    bg_purple = '\033[45m'
+    bg_cyan = '\033[46m'
+    bg_lightgrey = '\033[47m'
 
 
 # SHELL
@@ -55,9 +93,59 @@ SYSTEM_SPECIFIC_NAMES = {
 }
 
 
-# =========
-# UTILITIES
-# =========
+# ================
+# UTILITIES (CODE)
+# ================
+
+def _header(string):
+    divider = '=' * len(string)
+    return '\n' + divider + '\n' + string + '\n' + divider
+
+
+def _style(string, styles=None, stdout=True):
+    # apply styles
+    styles = styles or []
+    styled = '{}{}'.format(string, Colors.reset)
+    for style in styles:
+        styled = getattr(Colors, style.lower()) + styled
+
+    # print to stdout
+    if stdout:
+        print(styled)
+
+    # return styled string
+    return styled
+
+
+@contextlib.contextmanager
+def _log(f, dependencies):
+    # aliases
+    name = f.__name__
+    name_stripped = name.lstrip('_')
+    dependencies_stripped = [n.lstrip('_') for n in dependencies]
+    public = not name.startswith('_')
+
+    # styles
+    start_styles = ['fg_cyan'] if public else ['fg_yellow']
+    done_styles = ['bold', 'fg_green'] if public else ['bold']
+
+    # display installation information on start
+    _style(_header(
+        'Installing {} with dependencies: {}'
+        .format(name_stripped, dependencies_stripped) if dependencies else
+        'Installing {}'.format(name_stripped)
+    ), start_styles)
+
+    yield
+
+    # display installation information on done
+    done_message = (
+        'Installed {} with dependencies: {}'
+        .format(name_stripped, dependencies_stripped) if public else
+        'Installed {}!'.format(name_stripped)
+    )
+    _style('\n# {}'.format(done_message), done_styles)
+
 
 def _system():
     return 'osx' if _is_osx() else 'debian'
@@ -67,14 +155,28 @@ def _is_osx():
     return platform == 'darwin'
 
 
-def _stdout(command):
-    return subprocess.check_output(command, shell=True).strip()
+def _system_specific_name(name, system):
+    try:
+        return SYSTEM_SPECIFIC_NAMES[name][system]
+    except KeyError:
+        return name
+
+
+def _none_or_empty(command):
+    is_none = command is None
+    empty_string = isinstance(command, str) and len(command.strip()) == 0
+    empty_iterable = (isinstance(command, (list, tuple)) and len(command) == 0)
+    return is_none or empty_string or empty_iterable
+
+
+def _ran(target_name):
+    return registry[target_name].ran
 
 
 def _run(command):
     _run_maybe_thunk_command = (
-        lambda c: os.system(c()) if callable(c)
-        else os.system(c)
+        lambda c: os.system(c()) if callable(c) and c()
+        else c and os.system(c)
     )
     if isinstance(command, (list, tuple)):
         for c in command:
@@ -83,22 +185,16 @@ def _run(command):
         _run_maybe_thunk_command(command)
 
 
-def _ran(target_name):
-    return registry[target_name].ran
+def _stdout(command):
+    return subprocess.check_output(command, shell=True).strip()
 
 
-def _none_or_empty(string):
-    return string is None or (
-        isinstance(string, str) and
-        len(string.strip()) == 0
-    )
+# ===================
+# UTILITIES (COMMAND)
+# ===================
 
-
-def _system_specific_name(name, system):
-    try:
-        return SYSTEM_SPECIFIC_NAMES[name][system]
-    except KeyError:
-        return name
+def _in_nvm(command, version='node'):
+    return '. ~/.nvm/nvm.sh && nvm use {} && ({})'.format(version, command)
 
 
 def _install_system_packages(package, *packages):
@@ -113,6 +209,11 @@ def _install_system_packages(package, *packages):
     return '{} {}'.format(installer, ' '.join([
         n for n in system_specific_package_names
     ]))
+
+
+def _sudo_on_system(command, system):
+    maybe_sudo = 'sudo ' if system == _system() else ''
+    return '{}{}'.format(maybe_sudo, command)
 
 
 def _if_no_command(name, command):
@@ -148,22 +249,24 @@ def target(*args):
     def create_wrapped(f):
         @functools.wraps(f)
         def wrapped():
-            for dep in dependencies:
-                # run dependencies
-                install_target = registry[dep]
-                install_command = install_target.command
-                has_dependencies = install_target.dependencies
-                if (not _ran(dep) and
-                        (not _none_or_empty(install_command)
-                         or has_dependencies)):
-                    install_target()
-            else:
-                # run the command itself and mark after execution
+            # print installation target information
+            with _log(f, dependencies):
                 name = f.__name__
-                install_command = f()
-                if (not _ran(name) and not _none_or_empty(install_command)):
-                    _run(install_command)
-                    registry[name].ran = True
+                for dep in dependencies:
+                    # run dependencies
+                    install_target = registry[dep]
+                    install_command = install_target.command
+                    has_dependencies = install_target.dependencies
+                    if (not _ran(dep) and
+                            (not _none_or_empty(install_command)
+                             or has_dependencies)):
+                        install_target()
+                else:
+                    # run the command itself and mark after execution
+                    install_command = f()
+                    if not _ran(name) and not _none_or_empty(install_command):
+                        _run(install_command)
+                        registry[name].ran = True
 
         wrapped.command = f()
         wrapped.dependencies = dependencies
@@ -251,7 +354,7 @@ def vim():
         prepare_vim_registry = ['brew tap neovim/neovim']
     else:
         prepare_vim_registry = [
-            'sudo add-apt-repository ppa:neovim-ppa/stable'
+            'sudo add-apt-repository ppa:neovim-ppa/stable --yes',
             'sudo apt-get update'
         ]
 
@@ -270,18 +373,18 @@ def utils():
     if _is_osx():
         install_pgweb = 'brew cask install pgweb'
     else:
-        install_pgweb = _link('bin/pgweb', '/usr/local/bin')
+        install_pgweb = _link('bin/pgweb', '/usr/local/bin', sudo=True)
 
     install_fzf = (
-        'if [ ! -d "$HOME/.fzf" ]; then git clone --depth=1 '
-        '{} ~/.fzf && ~/.fzf/install --all; fi'.format(FZF_URL)
+        'git clone --depth 1 {} ~/.fzf && ~/.fzf/install --all'
+        .format(FZF_URL) if os.path.exists('~/.fzf') else None
     )
 
     commands = [
         install_pgweb,
         install_fzf,
         'sudo pip install autoenv pgcli saws TermFeed',
-        'npm install -g git-standup tiny-care-terminal',
+        _in_nvm('npm install -g git-standup tiny-care-terminal'),
         _install_system_packages('autojump', 'ag', 'ranger', 'tig', 'irssi'),
     ]
 
@@ -351,7 +454,6 @@ def _tmux():
         _link('tmux/tmux.conf', '~/.tmux.conf'),
         _link('tmux/tmux-powerline', '~/.tmux-powerline'),
         _link('tmux/tmux-powerlinerc', '~/.tmux-powerlinerc'),
-        'sudo pip install tmuxp',
     ]
 
 

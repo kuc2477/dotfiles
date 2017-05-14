@@ -1,8 +1,11 @@
 # dotfiles
-My private environment files for UNIX like systems. Supports **OS X / Debian** out of the box.
+My private environment files for UNIX like systems. **Supports OS X / Debian out of the box**.
 
 ![terminal screenshot](/terminal.png?raw=true "terminal screenshot")
 
+## Requirements
+- git
+- curl
 
 ## What's in it?
 - neovim + deoplete + syntastic + tmux for **[UNIX philosophy compliant development]**
@@ -17,7 +20,7 @@ Just run the following command if you trust me.
 
 
 ## Note
-- This environment has been tested and used only in OS X / Debian systems.
+- This environment has been used and tested only in OS X / Debian systems.
 - Edit your terminal profiles to use installed powerline fonts.
 
 [unix philosophy compliant development]: https://en.wikipedia.org/wiki/Unix_philosophy
