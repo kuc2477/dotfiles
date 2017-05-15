@@ -95,6 +95,8 @@ else
   alias la='ls -A'
   alias l='ls -CF'
 fi
+
+# tmux alias
 if [[ -x "$(command -v tmux)" ]]; then
   alias tmux='tmux -2'
 fi
@@ -102,8 +104,15 @@ fi
 # vim alias
 if [[ "$OSTYPE" == "darwin"* ]]; then
   alias vi='mvim -v'
+  alias vim='mvim -v'
 else
   alias vi='vim'
+fi
+
+# nvim alias
+if [[ -x "$(command -v nvim)" ]]; then
+  alias vi='nvim'
+  alias vim='nvim'
 fi
 
 # editor env

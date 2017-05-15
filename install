@@ -132,11 +132,13 @@ def _header(string, margin_top=True, margin_bottom=False):
 
 
 def _breadcrumb(breadcrumb, include_current=False):
+    marker = '->'
     depth = len(breadcrumb)
     if include_current:
-        return ('>'.join(breadcrumb)) + '> ' if depth > 0 else ''
+        return '[{}] '.format((marker.join(breadcrumb))) if depth > 0 else ''
     else:
-        return ('>'.join(breadcrumb[:depth-1]) + '> ') if depth > 1 else ''
+        return '[{}] '.format(marker.join(breadcrumb[:depth-1])) \
+            if depth > 1 else ''
 
 
 def _style(string, styles=None, stdout=True):
