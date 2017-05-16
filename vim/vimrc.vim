@@ -21,7 +21,7 @@ endif
 filetype off
 call plug#begin('~/.vim/plugged')
 
-" Autocompletion interfaces
+" Autocompletions
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 Plug 'zchee/deoplete-jedi', { 'do': 'pip install jedi' }
@@ -54,7 +54,7 @@ Plug 'gorkunov/smartpairs.vim'
 Plug 'myusuf3/numbers.vim'
 Plug 'ntpeters/vim-better-whitespace'
 
-" File navigation
+" Browsing
 Plug 'burke/matcher', { 'do': 'sudo make && make install' }
 Plug 'Numkil/ag.nvim'
 Plug 'kien/ctrlp.vim'
@@ -66,6 +66,7 @@ Plug 'jeetsukumaran/vim-buffergator'
 " Git interface
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
+Plug 'junegunn/gv.vim'
 
 " Tmux
 Plug 'christoomey/vim-tmux-navigator'
@@ -76,6 +77,7 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'terryma/vim-expand-region'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
+Plug 'junegunn/vim-peekaboo'
 Plug 'Raimondi/delimitMate'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'mattn/emmet-vim'
