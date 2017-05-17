@@ -60,7 +60,7 @@ Author: Ha Junsoo
 Repository: https://github.com/kuc2477/dotfiles
 Supported Languages: Python, JavaScript, Haskell
 Supported Platforms: OS X, Debian
-Dependencies: bash, curl, git
+Dependencies: Python, Bash, curl, git
 
 --------------------------------------------------{}
 """.format(Colors.bold, Colors.reset)
@@ -438,6 +438,7 @@ def utils():
         install_pgweb,
         install_fzf,
         'sudo pip install autoenv pgcli saws TermFeed',
+        'sudo pip3 install khal',
         _in_nvm('npm install -g git-standup tiny-care-terminal'),
         _install_system_packages(
             'cowsay', 'fortune', 'autojump',
