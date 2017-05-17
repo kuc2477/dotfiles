@@ -431,17 +431,18 @@ def utils():
 
     install_fzf = (
         'git clone --depth 1 {} ~/.fzf && ~/.fzf/install --all'
-        .format(FZF_URL) if not os.path.exists('~/.fzf') else None
+        .format(FZF_URL) if not os.path.exists(os.path.expanduser('~/.fzf'))
+        else None
     )
 
     commands = [
         install_pgweb,
         install_fzf,
-        'sudo pip install autoenv pgcli saws TermFeed',
+        'sudo pip install autoenv pgcli saws TermFeed http-prompt',
         'sudo pip3 install khal',
         _in_nvm('npm install -g git-standup tiny-care-terminal'),
         _install_system_packages(
-            'cowsay', 'fortune', 'autojump',
+            'cowsay', 'fortune', 'autojump', 'task', 'pv', 'jq', 'httpie',
             'ag', 'ranger', 'tig', 'irssi'
         ),
     ]

@@ -60,7 +60,7 @@ Plug 'Numkil/ag.nvim'
 Plug 'kien/ctrlp.vim'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'jeetsukumaran/vim-buffergator'
 
 " Git interface
@@ -90,7 +90,7 @@ Plug 'justinmk/vim-sneak'
 Plug 'terryma/vim-smooth-scroll'
 
 " Tag
-Plug 'xolox/vim-easytags', { 'do': g:INSTALLER . g:NAME_CTAGS }
+Plug 'xolox/vim-easytags', { 'do': g:INSTALLER . g:NAME_CTAGS, 'on': 'TagbarToggle' }
 Plug 'majutsushi/tagbar', { 'do': 'sudo stack install ghc-mod hasktags' }
 
 " Snippet
@@ -112,6 +112,7 @@ Plug 'mhinz/vim-startify'
 Plug 'esneider/YUNOcommit.vim'
 Plug 'guns/xterm-color-table.vim'
 Plug 'jez/vim-superman'
+Plug 'itchyny/calendar.vim'
 Plug 'Valloric/ListToggle'
 
 " Colorschemes
@@ -163,7 +164,7 @@ Plug 'plasticboy/vim-markdown'
 Plug 'iamcco/markdown-preview.vim'
 
 " RsT
-Plug 'Rykka/riv.vim'
+Plug 'Rykka/riv.vim', { 'for': 'rst' }
 Plug 'Rykka/InstantRst', { 'do': 'sudo pip install instant-rst' }
 
 " LaTeX
@@ -189,7 +190,7 @@ let g:deoplete#enable_at_startup = 1
 let g:SuperTabDefaultCompletionType = "<c-n>"
 
 " Nerdtree
-map <leader>o :NERDTreeToggle<CR>
+map <leader>] :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " Buffergator
@@ -263,6 +264,10 @@ noremap <silent> gk :call smooth_scroll#up(&scroll, 0, 9)<CR>
 noremap <silent> gj :call smooth_scroll#down(&scroll, 0, 9)<CR>
 noremap <silent> gkk :call smooth_scroll#up(&scroll*2, 0, 9)<CR>
 noremap <silent> gjj :call smooth_scroll#down(&scroll*2, 0, 9)<CR>
+
+" Calendar.vim
+let g:calendar_google_calendar = 1
+let g:calendar_google_task = 1
 
 " UltiSnips
 let g:UltiSnipsExpandTrigger="<C-e>"
