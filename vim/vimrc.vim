@@ -23,9 +23,9 @@ call plug#begin('~/.vim/plugged')
 
 " Autocompletions
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
-Plug 'zchee/deoplete-jedi', { 'do': 'pip install jedi' }
-Plug 'eagletmt/neco-ghc', { 'do': 'stack install ghc-mod' }
+Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern', 'for': 'javascript.jsx' }
+Plug 'zchee/deoplete-jedi', { 'do': 'pip install jedi', 'for': 'python' }
+Plug 'eagletmt/neco-ghc', { 'do': 'stack install ghc-mod', 'for': 'haskell' }
 Plug 'ervandew/supertab'
 
 " Linting interface
@@ -33,7 +33,7 @@ Plug 'scrooloose/syntastic', {
             \'do':
             \'sudo pip install flake8 yamllint && ' .
             \'sudo npm -g install eslint && ' .
-            \g:INSTALLER .  'shellcheck'
+            \g:INSTALLER .  'shellcheck',
             \}
 
 " Easy Commenting
@@ -80,7 +80,6 @@ Plug 'tpope/vim-repeat'
 Plug 'junegunn/vim-peekaboo'
 Plug 'Raimondi/delimitMate'
 Plug 'michaeljsmith/vim-indent-object'
-Plug 'mattn/emmet-vim'
 Plug 'godlygeek/tabular'
 Plug 'kuc2477/vim-move'
 
@@ -135,19 +134,19 @@ Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'heavenshell/vim-jsdoc'
 
 " Haskell
-Plug 'Twinside/vim-syntax-haskell-cabal'    " Cabal syntax.
-Plug 'dag/vim2hs'                           " Syntax highlighting, unicode conceals.
-Plug 'eagletmt/ghcmod-vim'                  " Use ghc-mod for type information and linting.
-Plug 'Twinside/vim-hoogle'
+Plug 'Twinside/vim-syntax-haskell-cabal', {'for': 'haskell'}
+Plug 'dag/vim2hs', {'for': 'haskell'}                           " Syntax highlighting, unicode conceals.
+Plug 'eagletmt/ghcmod-vim', {'for': 'haskell'}                  " Use ghc-mod for type information and linting.
+Plug 'Twinside/vim-hoogle', {'for': 'haskell'}
 
 " Octave
-Plug 'jvirtanen/vim-octave'
+Plug 'jvirtanen/vim-octave', {'for': 'octave'}
 
 " Bash
-Plug 'kuc2477/bash-support.vim'
+Plug 'kuc2477/bash-support.vim', {'for': 'sh'}
 
 " HTML5
-Plug 'Valloric/MatchTagAlways'
+Plug 'Valloric/MatchTagAlways', {'for': ['html', 'htmldjango', 'javascript.jsx']}
 Plug 'othree/html5.vim'
 
 " CSS / LESS / SCSS

@@ -442,8 +442,8 @@ def utils():
         'sudo pip3 install khal',
         _in_nvm('npm install -g git-standup tiny-care-terminal'),
         _install_system_packages(
-            'cowsay', 'fortune', 'autojump', 'task', 'pv', 'jq', 'httpie',
-            'ag', 'ranger', 'tig', 'irssi'
+            'cowsay', 'fortune', 'autojump', 'task', 'pv', 'jq', 'jid',
+            'httpie', 'ag', 'ranger', 'tig', 'irssi'
         ),
     ]
 
