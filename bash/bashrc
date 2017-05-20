@@ -144,6 +144,8 @@ if ! shopt -oq posix; then
     . /usr/share/bash-completion/bash_completion
   elif [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
+  elif [ -f /sw/etc/bash_completion ]; then
+    . sw/etc/bash_completion
   fi
 fi
 
@@ -160,6 +162,12 @@ if [ -f ~/.git-completion.bash ]; then
 fi
 if [ -f ~/.docker-completion.bash ]; then
   . ~/.docker-completion.bash
+fi
+if [ -f ~/.docker-compose-completion.bash ]; then
+  . ~/.docker-compose-completion.bash
+fi
+if [ -f ~/.tmux-completion.bash ]; then
+  . ~/.tmux-completion.bash
 fi
 
 

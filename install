@@ -422,6 +422,7 @@ def shell():
         # gogh
         install_gogh,
         # autocompletions
+        _install_system_packages('bash-completion'),
         _link(
             'bash/autocompletions/git-completion.bash',
             '~/.git-completion.bash',
@@ -433,6 +434,10 @@ def shell():
         _link(
             'bash/autocompletions/docker-compose-completion.bash',
             '~/.docker-compose-completion.bash'
+        ),
+        _link(
+            'bash/autocompletions/tmux-completion.bash',
+            '~/.tmux-completion.bash'
         ),
         # bash configuration
         _link('bash/bashrc', '~/{}'.format(
