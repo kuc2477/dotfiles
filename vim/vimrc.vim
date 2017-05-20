@@ -119,7 +119,6 @@ Plug 'itchyny/calendar.vim'
 Plug 'morhetz/gruvbox'
 Plug 'junegunn/seoul256.vim'
 Plug 'flazz/vim-colorschemes'
-Plug 'xolox/vim-colorscheme-switcher'
 Plug 'altercation/vim-colors-solarized'
 Plug 'nathanlong/vim-colors-writer'
 
@@ -233,6 +232,8 @@ let g:thematic#themes = {
             \   }
             \}
 let g:thematic#theme_name = 'seoul'
+nnoremap <leader>]] :ThematicNext<CR>
+nnoremap <leader>[[ :ThematicPrevious<CR>
 
 " Tagbar
 let g:tagbar_autofocus = 1
@@ -348,11 +349,6 @@ let g:numbers_exclude = [
 " startify
 let g:startify_custom_header =
     \ map(split(system('fortune | cowsay'), '\n'), '"   ". v:val') + ['', '']
-
-" vim-colorscheme-switcher
-let g:colorscheme_switcher_define_mappings = 0
-nnoremap <leader>]] :NextColorScheme<CR>
-nnoremap <leader>[[ :PrevColorScheme<CR>
 
 " vim-move
 let g:move_key_modifier = 'C'
