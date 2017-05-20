@@ -36,12 +36,17 @@ Plug 'scrooloose/syntastic', {
             \g:INSTALLER .  'shellcheck',
             \}
 
-" Easy Commenting
+" Text objects / Editing supports
+Plug 'terryma/vim-multiple-cursors'
+Plug 'terryma/vim-expand-region'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
 Plug 'scrooloose/nerdcommenter'
-
-" Vim feature extensions
-Plug 'tpope/vim-obsession'
-Plug 'Shougo/vimproc.vim'
+Plug 'junegunn/vim-peekaboo'
+Plug 'Raimondi/delimitMate'
+Plug 'michaeljsmith/vim-indent-object'
+Plug 'godlygeek/tabular'
+Plug 'kuc2477/vim-move'
 
 " Visual supports
 Plug 'severin-lemaignan/vim-minimap'
@@ -63,30 +68,31 @@ Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'jeetsukumaran/vim-buffergator'
 
+" Tmux
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'benmills/vimux'
+
 " Git interface
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 
-" Tmux
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'benmills/vimux'
+" Vim feature extensions
+Plug 'tpope/vim-obsession'
+Plug 'Shougo/vimproc.vim'
 
-" Text objects / editing supports
-Plug 'terryma/vim-multiple-cursors'
-Plug 'terryma/vim-expand-region'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-repeat'
-Plug 'junegunn/vim-peekaboo'
-Plug 'Raimondi/delimitMate'
-Plug 'michaeljsmith/vim-indent-object'
-Plug 'godlygeek/tabular'
-Plug 'kuc2477/vim-move'
+" Writing
+Plug 'reedes/vim-pencil'
+Plug 'reedes/vim-wordy'
+Plug 'reedes/vim-thematic'
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/limelight.vim'
 
 " Motion
 Plug 'Lokaltog/vim-easymotion'
 Plug 'justinmk/vim-sneak'
 Plug 'terryma/vim-smooth-scroll'
+Plug 'reedes/vim-wheel'
 
 " Tag
 Plug 'xolox/vim-easytags', { 'do': g:INSTALLER . g:NAME_CTAGS, 'on': 'TagbarToggle' }
@@ -99,20 +105,13 @@ Plug 'honza/vim-snippets'
 " Miscs
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-notes'
-Plug 'reedes/vim-pencil'
 Plug 'jceb/vim-orgmode'
-Plug 'reedes/vim-wordy'
-Plug 'mickaobrien/vim-stackoverflow'
-Plug 'ryanss/vim-hackernews'
 Plug 'tyru/open-browser.vim'
-Plug 'junegunn/goyo.vim'
-Plug 'junegunn/limelight.vim'
 Plug 'mhinz/vim-startify'
 Plug 'esneider/YUNOcommit.vim'
 Plug 'guns/xterm-color-table.vim'
 Plug 'jez/vim-superman'
 Plug 'itchyny/calendar.vim'
-Plug 'Valloric/ListToggle'
 
 " Colorschemes
 Plug 'morhetz/gruvbox'
@@ -120,6 +119,7 @@ Plug 'junegunn/seoul256.vim'
 Plug 'flazz/vim-colorschemes'
 Plug 'xolox/vim-colorscheme-switcher'
 Plug 'altercation/vim-colors-solarized'
+Plug 'nathanlong/vim-colors-writer'
 
 " Python
 Plug 'davidhalter/jedi-vim', { 'do': 'pip install jedi' }
@@ -182,35 +182,44 @@ filetype plugin indent on
 
 "=============================Plug Settings================================="
 
-" Deoplete
+" deoplete
 let g:deoplete#enable_at_startup = 1
 
-" Supertab
+" supertab
 let g:SuperTabDefaultCompletionType = "<c-n>"
 
-" Nerdtree
+" nerdtree
 map <leader>] :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-" Buffergator
+" buffergator
 let g:buffergator_supress_keymaps = 1
 noremap l; :BuffergatorToggle<CR>
 
-" Easymotion
+" easymotion
 let g:EasyMotion_smartcase = 1
 nmap <C-f> <Plug>(easymotion-sn)
 
-" Fzf
+" fzf
 let g:fzf_layout = { 'down': '~20%' }
-
 
 " Ctrlp
 let g:ctrlp_cmd = 'CtrlPMixed'
 let g:ctrlp_custom_ignore = {'dir': 'data'}
 
-" Ctrlp-Funky
-nnoremap <leader>f :CtrlPFunky<Cr>
-nnoremap <leader>F :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
+" vim-thematic
+let g:thematic#themes = {
+\ 'pencil_dark' :{'colorscheme': 'pencil',
+\                 'background': 'dark',
+\                 'airline-theme': 'badwolf',
+\                 'ruler': 1,
+\                },
+\ 'pencil_lite' :{'colorscheme': 'pencil',
+\                 'background': 'light',
+\                 'airline-theme': 'light',
+\                 'ruler': 1,
+\                },
+\ }
 
 " Tagbar
 let g:tagbar_autofocus = 1
@@ -254,17 +263,26 @@ let g:mta_filetypes = {
     \ 'javascript.jsx': 1
     \ }
 
-" Vim-indent-guides
+" vim-indent-guides
 hi IndentGuidesOdd ctermbg=black
 hi IndentGuidesEven ctermbg=darkgrey
 
-" Vim-smooth-scroll
+" vim-smooth-scroll
 noremap <silent> gk :call smooth_scroll#up(&scroll, 0, 9)<CR>
 noremap <silent> gj :call smooth_scroll#down(&scroll, 0, 9)<CR>
 noremap <silent> gkk :call smooth_scroll#up(&scroll*2, 0, 9)<CR>
 noremap <silent> gjj :call smooth_scroll#down(&scroll*2, 0, 9)<CR>
 
-" Calendar.vim
+"vim-wheel
+let g:wheel#map#up   = '<M-k>'
+let g:wheel#map#down = '<M-j>'
+
+" open-browser.vim
+let g:netrw_nogx = 1 " disable netrw's gx mapping
+nmap gx <Plug>(openbrowser-smart-search)
+vmap gx <Plug>(openbrowser-smart-search)
+
+" calendar.vim
 let g:calendar_google_calendar = 1
 let g:calendar_google_task = 1
 
@@ -296,7 +314,7 @@ let g:syntastic_mode_map = {
 " Gundo
 map <F3> :GundoToggle<CR>
 
-" Fugitive
+" fugitive
 map <F4> :Gdiff<CR>
 map <F5> :Gstatus<CR>
 map <F6> :Gcommit<CR>
@@ -308,29 +326,40 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme='wombat'
 set laststatus=2
 
-" Numbers
-let g:numbers_exclude = ['unite', 'tagbar', 'startify', 'gundo', 'vimshell', 'w3m', 'markdown', 'rst']
+" numbers
+let g:numbers_exclude = [
+            \'unite', 'tagbar', 'startify',
+            \'gundo', 'vimshell', 'w3m',
+            \'markdown', 'rst'
+            \]
 
-" Startify
+" startify
 let g:startify_custom_header =
     \ map(split(system('fortune | cowsay'), '\n'), '"   ". v:val') + ['', '']
 
-" Vim-colorscheme-switcher
+" vim-colorscheme-switcher
 let g:colorscheme_switcher_define_mappings = 0
 nnoremap <leader>]] :NextColorScheme<CR>
 nnoremap <leader>[[ :PrevColorScheme<CR>
 
-" Vim-move
+" vim-move
 let g:move_key_modifier = 'C'
 
-" Vim-sneak
+" vim-sneak
 let g:sneak#s_next = 1
 let g:sneak#use_ic_scs = 1
 
-" Vim-expand-region
+" vim-expand-region
 vmap <C-]> <Plug>(expand_region_expand)
 vmap <C-[> <Plug>(expand_region_shrink)
 
+" limelight.vim
+let g:limelight_conceal_ctermfg = 'gray'
+let g:limelight_conceal_ctermfg = 240
+let g:limelight_paragraph_span = 2
+nnoremap <leader>l :Limelight!!<CR>
+autocmd! User GoyoEnter Limelight
+autocmd! User GoyoLeave Limelight!
 
 " ghc-mod-vim
 au FileType haskell nnoremap <buffer> t :GhcModInfo<CR>
