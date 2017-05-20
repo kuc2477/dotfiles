@@ -81,6 +81,12 @@ PLUG_URL = (
     'https://raw.githubusercontent.com/junegunn/vim-plug'
     '/master/plug.vim'
 )
+SEOUL256_GNOME_URL = (
+    'https://github.com/anuragsoni/seoul256-gnome-terminal.git'
+)
+SEOUL256_ITERM_URL = (
+    'https://github.com/mikker/seoul256-iTerm.git'
+)
 
 # SYSTEM SPECIFIC CONFIGURATIONS
 SYSTEM_SPECIFIC_INSTALLER = {
@@ -263,6 +269,10 @@ def _sudo_on_system(command, system):
     return '{}{}'.format(maybe_sudo, command)
 
 
+def _exists(path):
+    return os.path.exists(os.path.expanduser(path))
+
+
 def _if_no_command(name, command):
     return 'command -v {} >/dev/null || ({})'.format(name, command)
 
@@ -353,6 +363,7 @@ def all():
 
 @target(['_system_python', '_submodules', '_font'])
 def shell():
+    # powerline
     get_powerline_root_dir = (lambda: _stdout(
         'pip show powerline-status | '
         'grep -i location | grep -Eo /.*$'
@@ -363,6 +374,28 @@ def shell():
         )
     )
     powerline_config_dir = '{}/bash/powerline-configs'.format(_stdout('pwd'))
+
+    # seoul256
+    if _is_osx():
+        install_seoul256_path = '~/.config/seoul256-gnome-terminal'
+        install_seoul256 = (
+            'git clone {url} {path}'
+            '. {path}/seoul256-dark.sh'
+        ).format(url=SEOUL256_GNOME_URL, path=install_seoul256_path) \
+            if _exists(install_seoul256_path) else None
+    else:
+        install_seoul256_path = '~/.config/seoul256-iTerm'
+        install_seoul256 = (
+            'git clone {url} {path}'
+        ).format(url=SEOUL256_ITERM_URL, path=install_seoul256_path) \
+            if _exists(install_seoul256_path) else None
+
+    # gogh
+    install_gogh = '{} && {}'.format(
+        _install_system_packages('dconf-cli'),
+        ('wget -O gogh https://git.io/vKOB6 && chmod +x gogh && '
+         'mv ./gogh /usr/local/bin')
+    ) if not _is_osx() else None
 
     return [
         # powerline
@@ -383,6 +416,10 @@ def shell():
             '{}/theme.json'.format(powerline_config_dir),
             '~/.config/powerline/themes/shell/default.json', rel=False
         ),
+        # seoul256
+        install_seoul256,
+        # gogh
+        install_gogh,
         # autocompletions
         _link(
             'bash/autocompletions/git-completion.bash',

@@ -43,6 +43,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'scrooloose/nerdcommenter'
 Plug 'junegunn/vim-peekaboo'
+Plug 'junegunn/vim-easy-align'
 Plug 'Raimondi/delimitMate'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'godlygeek/tabular'
@@ -71,6 +72,7 @@ Plug 'jeetsukumaran/vim-buffergator'
 " Tmux
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'benmills/vimux'
+Plug 'wellle/tmux-complete.vim'
 
 " Git interface
 Plug 'airblade/vim-gitgutter'
@@ -209,17 +211,28 @@ let g:ctrlp_custom_ignore = {'dir': 'data'}
 
 " vim-thematic
 let g:thematic#themes = {
-\ 'pencil_dark' :{'colorscheme': 'pencil',
-\                 'background': 'dark',
-\                 'airline-theme': 'badwolf',
-\                 'ruler': 1,
-\                },
-\ 'pencil_lite' :{'colorscheme': 'pencil',
-\                 'background': 'light',
-\                 'airline-theme': 'light',
-\                 'ruler': 1,
-\                },
-\ }
+            \'seoul': {
+            \       'colorscheme': 'seoul256',
+            \       'background': 'dark',
+            \       'airline-theme': 'zenburn',
+            \   },
+            \'wombat': {
+            \       'colorscheme': 'wombat256i',
+            \       'background': 'dark',
+            \       'airline-theme': 'wombat',
+            \   },
+            \'solarized': {
+            \       'colorscheme': 'solarized',
+            \       'background': 'dark',
+            \       'airline-theme': 'solarized',
+            \   },
+            \'writing': {
+            \       'colorscheme': 'seoul256',
+            \       'background': 'dark',
+            \       'airline-theme': 'zenburn',
+            \   }
+            \}
+let g:thematic#theme_name = 'seoul'
 
 " Tagbar
 let g:tagbar_autofocus = 1
@@ -273,7 +286,7 @@ noremap <silent> gj :call smooth_scroll#down(&scroll, 0, 9)<CR>
 noremap <silent> gkk :call smooth_scroll#up(&scroll*2, 0, 9)<CR>
 noremap <silent> gjj :call smooth_scroll#down(&scroll*2, 0, 9)<CR>
 
-"vim-wheel
+" vim-wheel
 let g:wheel#map#up   = '<M-k>'
 let g:wheel#map#down = '<M-j>'
 
@@ -323,7 +336,6 @@ map <F8> :Gpush
 
 " Airline
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme='wombat'
 set laststatus=2
 
 " numbers
@@ -348,6 +360,10 @@ let g:move_key_modifier = 'C'
 " vim-sneak
 let g:sneak#s_next = 1
 let g:sneak#use_ic_scs = 1
+
+" vim-easy-align
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
 
 " vim-expand-region
 vmap <C-]> <Plug>(expand_region_expand)
@@ -439,10 +455,8 @@ set noimd
 set imi=1
 set ims=-1
 
-" Color scheme
+" Enable syntax
 syntax on
-set background=dark
-colorscheme wombat256i
 
 " Terminal
 if !has('nvim')
@@ -501,10 +515,12 @@ function! ToggleWritingMode()
     if g:in_writing_mode
         let g:in_writing_mode=0
         let g:vim_markdown_folding_disabled=1
+        :Thematic writing
         :PencilOff
     else
         let g:in_writing_mode=1
         let g:vim_markdown_folding_disabled=0
+        :Thematic writing
         :Pencil
     endif
     :Goyo
