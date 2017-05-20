@@ -117,6 +117,7 @@ SYSTEM_SPECIFIC_NAMES = {
     'python-pip': {'osx': None},
     'python3-pip': {'osx': None},
     'curl': {'osx': None},
+    'jid': {'debian': None},
 }
 
 
@@ -461,18 +462,28 @@ def vim():
 
 @target(['_system_python', '_javascript', '_tmux'])
 def utils():
+    # scripts
+    scripts = [
+        'bin/rmswp',
+        'bin/tpd',
+        'bin/rmpyc'
+    ]
+    install_scripts = [_link(s, '/usr/local/bin', sudo=True) for s in scripts]
+
+    # pgweb
     if _is_osx():
         install_pgweb = 'brew cask install pgweb'
     else:
         install_pgweb = _link('bin/pgweb', '/usr/local/bin', sudo=True)
 
+    # fzf
     install_fzf = (
         'git clone --depth 1 {} ~/.fzf && ~/.fzf/install --all'
         .format(FZF_URL) if not os.path.exists(os.path.expanduser('~/.fzf'))
         else None
     )
 
-    commands = [
+    commands = install_scripts + [
         install_pgweb,
         install_fzf,
         'sudo pip install autoenv pgcli saws TermFeed http-prompt',
