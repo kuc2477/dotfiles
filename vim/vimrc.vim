@@ -39,12 +39,14 @@ Plug 'scrooloose/syntastic', {
 " Text objects / Editing supports
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-entire'
+Plug 'lucapette/vim-textobj-underscore'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'coderifous/textobj-word-column.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'terryma/vim-expand-region'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-abolish'
 Plug 'scrooloose/nerdcommenter'
 Plug 'junegunn/vim-peekaboo'
 Plug 'junegunn/vim-easy-align'
@@ -212,7 +214,7 @@ let g:ctrlp_cmd = 'CtrlPMixed'
 let g:ctrlp_custom_ignore = {'dir': 'data'}
 
 " seoul256.vim
-let g:seoul256_background = 233
+let g:seoul256_background = 235
 
 " vim-thematic
 let g:thematic#themes = {
