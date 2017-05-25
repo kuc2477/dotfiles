@@ -1,6 +1,7 @@
 "NOT COMPATIBLE TO LEGACY VI VERSIONS
 set nocompatible
 
+
 let g:plug_timeout = 300
 let s:osname = substitute(system('uname'), "\n", "", "")
 let s:username = substitute(system('whoami'), "\n", "", "")
@@ -239,7 +240,6 @@ let g:thematic#themes = {
             \       'airline-theme': 'zenburn',
             \   }
             \}
-let g:thematic#theme_name = 'seoul'
 nnoremap <leader>]] :ThematicNext<CR>
 nnoremap <leader>[[ :ThematicPrevious<CR>
 
@@ -502,8 +502,11 @@ set ph=20
 
 " Settings for display
 set nu
-set colorcolumn=79
-highlight ColorColumn ctermbg=red ctermfg=white cterm=bold
+set colorcolumn=80
+autocmd VimEnter * :Thematic seoul
+autocmd VimEnter,colorscheme * 
+            \ highlight ColorColumn ctermbg=red ctermfg=white cterm=bold
+
 
 " Key mappings
 nnoremap <F9> :tabnew<CR>
