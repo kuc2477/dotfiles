@@ -521,7 +521,9 @@ def utils():
 
     return (
         commands if _is_osx() else
-        commands + [_install_system_packages('xdg-utils')]
+        commands + [_install_system_packages(
+            'xdg-utils', 'gnome-tweak-tool', 'geary',
+        )]
     )
 
 
