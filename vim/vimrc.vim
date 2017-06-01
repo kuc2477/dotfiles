@@ -196,6 +196,7 @@ let g:SuperTabDefaultCompletionType = "<c-n>"
 
 " nerdtree
 map <leader>] :NERDTreeToggle<CR>
+let NERDTreeIgnore = ['\.pyc$', '__pycache__']
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " buffergator
@@ -440,7 +441,8 @@ map <Leader>vq :VimuxCloseRunner<CR>
 map <Leader>vx :VimuxInterruptRunner<CR>
 
 " vim-instant-markdown
-let g:instant_markdown_autostart = 0
+let g:mkdp_path_to_chrome = "python -mwebbrowser"
+
 
 " vim-better-whitespace
 autocmd FileType python,javascript,javascript.jsx,html,htmldjango autocmd BufEnter * EnableStripWhitespaceOnSave
