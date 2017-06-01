@@ -475,6 +475,23 @@ def utils():
     ]
     install_scripts = [_link(s, '/usr/local/bin', sudo=True) for s in scripts]
 
+    # system dependencies
+    install_system_dependencies = _install_system_packages(
+        'libwebp-dev',
+        'libgraphicsmagick++-dev'
+    )
+
+    # timg
+    install_timg = _if_no_command('timg', (
+        'git clone https://github.com/hzeller/timg.git &&'
+        'cd timg/src &&'
+        'make &&'
+        'sudo make install &&'
+        'cd .. && '
+        'cd .. && '
+        'rm -rf ./timg'
+    ))
+
     # pgweb
     if _is_osx():
         install_pgweb = 'brew cask install pgweb'
@@ -489,6 +506,8 @@ def utils():
     )
 
     commands = install_scripts + [
+        install_system_dependencies,
+        install_timg,
         install_pgweb,
         install_fzf,
         'sudo pip install autoenv pgcli saws TermFeed http-prompt',
@@ -502,7 +521,9 @@ def utils():
 
     return (
         commands if _is_osx() else
-        commands + [_install_system_packages('xdg-utils')]
+        commands + [_install_system_packages(
+            'xdg-utils', 'gnome-tweak-tool', 'geary',
+        )]
     )
 
 
