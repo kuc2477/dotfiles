@@ -442,7 +442,7 @@ map <Leader>vx :VimuxInterruptRunner<CR>
 
 " vim-instant-markdown
 let g:mkdp_path_to_chrome = "python -mwebbrowser"
-
+let g:mkdp_command_for_global = 0
 
 " vim-better-whitespace
 autocmd FileType python,javascript,javascript.jsx,html,htmldjango autocmd BufEnter * EnableStripWhitespaceOnSave
