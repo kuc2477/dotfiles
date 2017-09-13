@@ -71,6 +71,7 @@ SHELL = '/bin/bash'
 
 # UPSTREAM SOURCES
 FZF_URL = 'https://github.com/junegunn/fzf.git'
+HTOP_URL = 'https://hisham.hm/htop/releases/2.0.2/htop-2.0.2.tar.gz'
 STACK_URL = 'https://get.haskellstack.org/'
 NVM_URL = 'https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh'
 PYENV_URL = (
@@ -505,11 +506,24 @@ def utils():
         else None
     )
 
+    # htop 2.02
+    install_htop = ((
+        'sudo apt install libncursesw5-dev && '
+        'wget {HTOP_URL} && '
+        'tar xzf htop-2.0.2.tar.gz && '
+        'rm htop-2.0.2.tar.gz && '
+        'cd htop-2.0.2 && '
+        './configure && make && sudo make install && '
+        'cd .. && '
+        'rm -rf htop-2.0.2'
+    ).format(HTOP_URL=HTOP_URL))
+
     commands = install_scripts + [
         install_system_dependencies,
         install_timg,
         install_pgweb,
         install_fzf,
+        install_htop,
         'sudo pip install autoenv pgcli saws TermFeed http-prompt',
         'sudo pip3 install khal',
         _in_nvm('npm install -g git-standup tiny-care-terminal'),
