@@ -124,6 +124,7 @@ Plug 'itchyny/calendar.vim'
 " Colorschemes
 Plug 'morhetz/gruvbox'
 Plug 'junegunn/seoul256.vim'
+Plug 'NLKNguyen/papercolor-theme'
 Plug 'flazz/vim-colorschemes'
 Plug 'altercation/vim-colors-solarized'
 Plug 'nathanlong/vim-colors-writer'
