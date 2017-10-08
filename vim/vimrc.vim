@@ -45,6 +45,7 @@ Plug 'michaeljsmith/vim-indent-object'
 Plug 'coderifous/textobj-word-column.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'terryma/vim-expand-region'
+Plug 'tweekmonster/braceless.vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-abolish'
@@ -74,6 +75,7 @@ Plug 'kien/ctrlp.vim'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
 Plug 'jeetsukumaran/vim-buffergator'
 
 " Tmux
@@ -205,6 +207,18 @@ let g:SuperTabDefaultCompletionType = "<c-n>"
 " nerdtree
 map <leader>] :NERDTreeToggle<CR>
 let NERDTreeIgnore = ['\.pyc$', '__pycache__']
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "✹",
+    \ "Staged"    : "✚",
+    \ "Untracked" : "✭",
+    \ "Renamed"   : "➜",
+    \ "Unmerged"  : "═",
+    \ "Deleted"   : "✖",
+    \ "Dirty"     : "✗",
+    \ "Clean"     : "✔︎",
+    \ 'Ignored'   : '☒',
+    \ "Unknown"   : "?"
+    \ }
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " buffergator
@@ -304,10 +318,6 @@ let g:mta_filetypes = {
     \ 'javascript.jsx': 1
     \ }
 
-" vim-indent-guides
-hi IndentGuidesOdd ctermbg=black
-hi IndentGuidesEven ctermbg=darkgrey
-
 " vim-smooth-scroll
 noremap <silent> gk :call smooth_scroll#up(&scroll, 0, 9)<CR>
 noremap <silent> gj :call smooth_scroll#down(&scroll, 0, 9)<CR>
@@ -374,8 +384,14 @@ let g:numbers_exclude = [
             \]
 
 " startify
+let g:startify_relative_path       = 1
+let g:startify_change_to_dir       = 1
+let g:startify_change_to_vcs_root  = 1
+let g:startify_session_autoload    = 1
+let g:startify_session_persistence = 1
+let g:startify_custom_indices = ['t', 'n', 'f', 'g', 'h']
 let g:startify_custom_header =
-    \ map(split(system('fortune | cowsay'), '\n'), '"   ". v:val') + ['', '']
+            \ map(split(system("vi -v | grep -i --max-count=1 vim | toilet -F border -f future"), '\n'), '"   ". v:val') + ['', '']
 
 " vim-move
 let g:move_key_modifier = 'C'
@@ -415,6 +431,10 @@ au filetype python let g:jedi#usages_command = '<leader>n'
 au filetype python let g:jedi#rename_command = '<leader>r'
 au filetype python let g:jedi#popup_on_dot = 0
 au filetype python let g:jedi#popup_select_first = 1
+
+" Braceless.vim
+let g:braceless_block_key = 'p'
+autocmd FileType python BracelessEnable +indent +fold +highlight
 
 " vim-jsx
 let g:jsx_ext_required = 0
@@ -524,7 +544,7 @@ set ph=20
 set nu
 set colorcolumn=80
 set bg=dark
-autocmd VimEnter,colorscheme *
+autocmd VimEnter,BufEnter,colorscheme *
             \ highlight ColorColumn ctermbg=red ctermfg=white cterm=bold
 
 
@@ -629,6 +649,7 @@ au! BufRead,BufNewFile *.html setfiletype htmldjango
 au FileType html setl ts=2 sw=2 sts=2
 
 " Indentations
+au FileType python setl nosmartindent
 au FileType bash,sh setl ts=2 sw=2 sts=2
 au FileType haskell setl sw=2
 au FileType thrift setl ts=2 sw=2 sts=2
