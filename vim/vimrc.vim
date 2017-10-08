@@ -126,6 +126,10 @@ Plug 'itchyny/calendar.vim'
 Plug 'flazz/vim-colorschemes'
 Plug 'morhetz/gruvbox'
 Plug 'junegunn/seoul256.vim'
+Plug 'kudabux/vim-srcery-drk'
+Plug 'nightsense/carbonized'
+Plug 'nightsense/wonka'
+Plug 'ajmwagar/vim-deus'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'altercation/vim-colors-solarized'
 Plug 'nathanlong/vim-colors-writer'
@@ -218,14 +222,19 @@ let g:ctrlp_cmd = 'CtrlPMixed'
 let g:ctrlp_custom_ignore = {'dir': 'data'}
 
 " seoul256.vim
-let g:seoul256_background = 235
+let g:seoul256_background = 234
 
 " vim-thematic
 let g:thematic#themes = {
+            \'srcery': {
+            \       'colorscheme': 'srcery-drk',
+            \       'background': 'dark',
+            \       'airline-theme': 'monochrome',
+            \   },
             \'gruvbox': {
             \       'colorscheme': 'gruvbox',
             \       'background': 'dark',
-            \       'airline-theme': 'zenburn',
+            \       'airline-theme': 'gruvbox',
             \   },
             \'seoul': {
             \       'colorscheme': 'seoul256',
@@ -512,7 +521,8 @@ set ph=20
 " Settings for display
 set nu
 set colorcolumn=80
-autocmd VimEnter * :Thematic gruvbox
+set bg=dark
+autocmd VimEnter,BufEnter * Thematic srcery
 autocmd VimEnter,colorscheme *
             \ highlight ColorColumn ctermbg=red ctermfg=white cterm=bold
 
