@@ -126,6 +126,7 @@ Plug 'itchyny/calendar.vim'
 Plug 'flazz/vim-colorschemes'
 Plug 'morhetz/gruvbox'
 Plug 'junegunn/seoul256.vim'
+Plug 'roosta/vim-srcery'
 Plug 'kudabux/vim-srcery-drk'
 Plug 'nightsense/carbonized'
 Plug 'nightsense/wonka'
@@ -137,7 +138,7 @@ Plug 'nathanlong/vim-colors-writer'
 " Python
 Plug 'davidhalter/jedi-vim', { 'do': 'pip install jedi' }
 Plug 'hynek/vim-python-pep8-indent'
-Plug 'ehamberg/vim-cute-python'
+Plug 'kuc2477/vim-cute-python', { 'for': 'python' }
 Plug 'vim-scripts/django.vim'
 
 " Javascript / JSX
@@ -225,8 +226,9 @@ let g:ctrlp_custom_ignore = {'dir': 'data'}
 let g:seoul256_background = 234
 
 " vim-thematic
+let g:thematic#theme_name = 'srcery-dark'
 let g:thematic#themes = {
-            \'srcery': {
+            \'srcery-dark': {
             \       'colorscheme': 'srcery-drk',
             \       'background': 'dark',
             \       'airline-theme': 'monochrome',
@@ -522,7 +524,6 @@ set ph=20
 set nu
 set colorcolumn=80
 set bg=dark
-autocmd VimEnter,BufEnter * Thematic srcery
 autocmd VimEnter,colorscheme *
             \ highlight ColorColumn ctermbg=red ctermfg=white cterm=bold
 
