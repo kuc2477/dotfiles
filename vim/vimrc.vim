@@ -48,6 +48,7 @@ Plug 'terryma/vim-expand-region'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-unimpaired'
 Plug 'scrooloose/nerdcommenter'
 Plug 'junegunn/vim-peekaboo'
 Plug 'junegunn/vim-easy-align'
@@ -122,10 +123,10 @@ Plug 'jez/vim-superman'
 Plug 'itchyny/calendar.vim'
 
 " Colorschemes
+Plug 'flazz/vim-colorschemes'
 Plug 'morhetz/gruvbox'
 Plug 'junegunn/seoul256.vim'
 Plug 'NLKNguyen/papercolor-theme'
-Plug 'flazz/vim-colorschemes'
 Plug 'altercation/vim-colors-solarized'
 Plug 'nathanlong/vim-colors-writer'
 
@@ -221,6 +222,11 @@ let g:seoul256_background = 235
 
 " vim-thematic
 let g:thematic#themes = {
+            \'gruvbox': {
+            \       'colorscheme': 'gruvbox',
+            \       'background': 'dark',
+            \       'airline-theme': 'zenburn',
+            \   },
             \'seoul': {
             \       'colorscheme': 'seoul256',
             \       'background': 'dark',
@@ -506,8 +512,8 @@ set ph=20
 " Settings for display
 set nu
 set colorcolumn=80
-autocmd VimEnter * :Thematic seoul
-autocmd VimEnter,colorscheme * 
+autocmd VimEnter * :Thematic gruvbox
+autocmd VimEnter,colorscheme *
             \ highlight ColorColumn ctermbg=red ctermfg=white cterm=bold
 
 
