@@ -139,7 +139,7 @@ Plug 'nathanlong/vim-colors-writer'
 
 " Python
 Plug 'davidhalter/jedi-vim', { 'do': 'pip install jedi' }
-Plug 'hynek/vim-python-pep8-indent'
+Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'kuc2477/vim-cute-python', { 'for': 'python' }
 Plug 'vim-scripts/django.vim'
 
@@ -391,7 +391,9 @@ let g:startify_session_autoload    = 1
 let g:startify_session_persistence = 1
 let g:startify_custom_indices = ['t', 'n', 'f', 'g', 'h']
 let g:startify_custom_header =
-            \ map(split(system("vi -v | grep -i --max-count=1 vim | toilet -F border -f future"), '\n'), '"   ". v:val') + ['', '']
+            \ map(split(system(
+            \'vi -v | grep -i --max-count=1 vim | toilet -f future "                             $(cat -)                    " '
+            \), '\n'), '"   ". v:val') + ['', '']
 
 " vim-move
 let g:move_key_modifier = 'C'
@@ -434,7 +436,7 @@ au filetype python let g:jedi#popup_select_first = 1
 
 " Braceless.vim
 let g:braceless_block_key = 'p'
-autocmd FileType python BracelessEnable +indent +fold +highlight
+autocmd FileType python BracelessEnable +fold +highlight
 
 " vim-jsx
 let g:jsx_ext_required = 0
@@ -530,6 +532,7 @@ set smarttab
 set smartindent
 set shiftwidth=4
 set tabstop=4
+filetype indent on
 
 " Search
 set hlsearch
@@ -544,7 +547,7 @@ set ph=20
 set nu
 set colorcolumn=80
 set bg=dark
-autocmd VimEnter,BufEnter,colorscheme *
+autocmd VimEnter,BufReadPost,BufEnter,colorscheme *
             \ highlight ColorColumn ctermbg=red ctermfg=white cterm=bold
 
 
@@ -552,10 +555,10 @@ autocmd VimEnter,BufEnter,colorscheme *
 nnoremap <F9> :tabnew<CR>
 nnoremap <F10> :tabclose<CR>
 nnoremap gr :tabprevious<CR>
-nnoremap - :res -10<CR>
-nnoremap = :res +10<CR>
-nnoremap _ :vertical res -10<CR>
-nnoremap + :vertical res +10<CR>
+nnoremap - :vertical res -5<CR>
+nnoremap = :vertical res +5<CR>
+nnoremap _ :res -5<CR>
+nnoremap + :res +5<CR>
 
 " Writing mode
 function! ToggleWritingMode()
@@ -649,7 +652,7 @@ au! BufRead,BufNewFile *.html setfiletype htmldjango
 au FileType html setl ts=2 sw=2 sts=2
 
 " Indentations
-au FileType python setl nosmartindent
+au FileType python inoremap # X<c-h>#<space>
 au FileType bash,sh setl ts=2 sw=2 sts=2
 au FileType haskell setl sw=2
 au FileType thrift setl ts=2 sw=2 sts=2
