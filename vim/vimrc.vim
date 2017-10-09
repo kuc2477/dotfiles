@@ -206,7 +206,7 @@ let g:SuperTabDefaultCompletionType = "<c-n>"
 
 " nerdtree
 map <leader>] :NERDTreeToggle<CR>
-let NERDTreeIgnore = ['\.pyc$', '__pycache__']
+let NERDTreeIgnore = ['\.pyc$', '\.ipynb$', '__pycache__']
 let g:NERDTreeIndicatorMapCustom = {
     \ "Modified"  : "✹",
     \ "Staged"    : "✚",
@@ -437,7 +437,7 @@ au filetype python let g:jedi#popup_select_first = 1
 
 " Braceless.vim
 let g:braceless_block_key = 'p'
-autocmd FileType python BracelessEnable +fold +highlight
+au filetype python BracelessEnable
 
 " vim-jsx
 let g:jsx_ext_required = 0
