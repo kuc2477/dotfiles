@@ -338,9 +338,10 @@ let g:calendar_google_calendar = 1
 let g:calendar_google_task = 1
 
 " UltiSnips
+let g:UltiSnipsSnippetDirectories=["UltiSnips", $HOME."/.snippets"]
 let g:UltiSnipsExpandTrigger="<C-e>"
-let g:UltiSnipsJumpForwardTrigger="<C-e>"
-let g:UltiSnipsJumpBackwardTrigger="<C-b>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<S-tab>"
 let g:UltiSnipsEditSplit="vertical"
 
 " Syntastic
