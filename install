@@ -462,6 +462,7 @@ def vim():
         'mkdir -p ~/.config/nvim',
         _link('vim/init.vim', '~/.config/nvim/init.vim'),
         _link('vim/vimrc.vim', '~/.vimrc'),
+        _link('vim/snippets', '~/.snippets'),
         'nvim +PlugInstall +VimProcInstall +qall',
     ]
 
@@ -528,8 +529,8 @@ def utils():
         'sudo pip3 install khal',
         _in_nvm('npm install -g git-standup tiny-care-terminal'),
         _install_system_packages(
-            'cowsay', 'fortune', 'autojump', 'task', 'pv', 'jq', 'jid',
-            'httpie', 'ag', 'ranger', 'tig', 'irssi'
+            'cowsay', 'fortune', 'toilet', 'autojump', 'task', 'pv', 'jq',
+            'jid', 'httpie', 'ag', 'ranger', 'tig', 'irssi'
         ),
     ]
 
