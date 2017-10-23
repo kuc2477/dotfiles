@@ -23,10 +23,10 @@ filetype off
 call plug#begin('~/.vim/plugged')
 
 " Autocompletions
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/deoplete.nvim',     { 'do': ':UpdateRemotePlugins' }
 Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern', 'for': 'javascript.jsx' }
-Plug 'zchee/deoplete-jedi', { 'do': 'pip install jedi', 'for': 'python' }
-Plug 'eagletmt/neco-ghc', { 'do': 'stack install ghc-mod', 'for': 'haskell' }
+Plug 'zchee/deoplete-jedi',      { 'do': 'pip install jedi', 'for': 'python' }
+Plug 'eagletmt/neco-ghc',        { 'do': 'stack install ghc-mod', 'for': 'haskell' }
 Plug 'ervandew/supertab'
 
 " Linting interface
@@ -67,15 +67,16 @@ Plug 'pgdouyon/vim-evanesco'
 Plug 'gorkunov/smartpairs.vim'
 Plug 'myusuf3/numbers.vim'
 Plug 'ntpeters/vim-better-whitespace'
+Plug 'junegunn/vim-emoji'
 
 " Browsing
-Plug 'burke/matcher', { 'do': 'sudo make && make install' }
+Plug 'burke/matcher',                { 'do': 'sudo make && make install' }
 Plug 'Numkil/ag.nvim'
 Plug 'kien/ctrlp.vim'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
+Plug 'scrooloose/nerdtree',          { 'on': 'NERDTreeToggle' }
+Plug 'Xuyuanp/nerdtree-git-plugin',  { 'on': 'NERDTreeToggle' }
 Plug 'jeetsukumaran/vim-buffergator'
 
 " Tmux
@@ -107,7 +108,7 @@ Plug 'reedes/vim-wheel'
 
 " Tag
 Plug 'xolox/vim-easytags', { 'do': g:INSTALLER . g:NAME_CTAGS, 'on': 'TagbarToggle' }
-Plug 'majutsushi/tagbar', { 'do': 'sudo stack install ghc-mod hasktags' }
+Plug 'majutsushi/tagbar',  { 'do': 'sudo stack install ghc-mod hasktags' }
 
 " Snippet
 Plug 'SirVer/ultisnips'
@@ -138,9 +139,9 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'nathanlong/vim-colors-writer'
 
 " Python
-Plug 'davidhalter/jedi-vim', { 'do': 'pip install jedi' }
+Plug 'davidhalter/jedi-vim',         { 'do': 'pip install jedi' }
 Plug 'Vimjas/vim-python-pep8-indent'
-Plug 'kuc2477/vim-cute-python', { 'for': 'python' }
+Plug 'kuc2477/vim-cute-python',      { 'for': 'python' }
 Plug 'vim-scripts/django.vim'
 
 " Javascript / JSX
@@ -150,10 +151,10 @@ Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'heavenshell/vim-jsdoc'
 
 " Haskell
-Plug 'Twinside/vim-syntax-haskell-cabal', {'for': 'haskell'}
-Plug 'dag/vim2hs', {'for': 'haskell'}                           " Syntax highlighting, unicode conceals.
-Plug 'eagletmt/ghcmod-vim', {'for': 'haskell'}                  " Use ghc-mod for type information and linting.
-Plug 'Twinside/vim-hoogle', {'for': 'haskell'}
+Plug 'Twinside/vim-syntax-haskell-cabal', { 'for': 'haskell'}
+Plug 'dag/vim2hs',                        { 'for': 'haskell'} " syntax highlighting and unicode conceals.
+Plug 'eagletmt/ghcmod-vim',               { 'for': 'haskell'} " use ghc-mod for type information and linting.
+Plug 'Twinside/vim-hoogle',               { 'for': 'haskell'}
 
 " Octave
 Plug 'jvirtanen/vim-octave', {'for': 'octave'}
@@ -179,7 +180,7 @@ Plug 'plasticboy/vim-markdown'
 Plug 'iamcco/markdown-preview.vim'
 
 " RsT
-Plug 'Rykka/riv.vim', { 'for': 'rst' }
+Plug 'Rykka/riv.vim',    { 'for': 'rst' }
 Plug 'Rykka/InstantRst', { 'do': 'sudo pip install instant-rst' }
 
 " LaTeX
@@ -245,7 +246,7 @@ let g:thematic#themes = {
             \'srcery-dark': {
             \       'colorscheme': 'srcery-drk',
             \       'background': 'dark',
-            \       'airline-theme': 'monochrome',
+            \       'airline-theme': 'minimalist',
             \   },
             \'gruvbox': {
             \       'colorscheme': 'gruvbox',
@@ -356,12 +357,13 @@ let g:syntastic_check_on_wq = 0
 
 " Syntastic language specific settings
 let g:syntastic_python_python_exec = '~/.pyenv/shims/python' " use python3 syntax
-let g:syntastic_javascript_checkers = ['eslint']    " use eslint for javascript
-let g:syntastic_html_tidy_exec = 'tidy'             " use tidy for html5
+let g:syntastic_python_checkers = ['flake8']                 " use flake8 for python
+let g:syntastic_javascript_checkers = ['eslint']             " use eslint for javascript
+let g:syntastic_html_tidy_exec = 'tidy'                      " use tidy for html5
 let g:syntastic_mode_map = {
             \'mode': 'active',
             \'passive_filetypes': ['haskell']
-            \}                                     " we use ghc-mod-vim for lint
+            \}                                               " disable syntastic for haskell. we use ghc-mod-vim for it.
 
 " Gundo
 map <F3> :GundoToggle<CR>
@@ -372,6 +374,13 @@ map <F5> :Gstatus<CR>
 map <F6> :Gcommit<CR>
 map <F7> :Gpull
 map <F8> :Gpush
+
+" vim-emoji
+augroup emoji_complete
+  autocmd!
+  autocmd FileType markdown setlocal omnifunc=emoji#complete
+augroup END
+nnoremap <leader>m :%s/:\([^:]\+\):/\=emoji#for(submatch(1), submatch(0))/g<CR>
 
 " Airline
 let g:airline#extensions#tabline#enabled = 1
@@ -390,7 +399,7 @@ let g:startify_change_to_dir       = 1
 let g:startify_change_to_vcs_root  = 1
 let g:startify_session_autoload    = 1
 let g:startify_session_persistence = 1
-let g:startify_custom_indices = ['t', 'n', 'f', 'g', 'h']
+let g:startify_custom_indices = ['s', 'n', 'f', 'r']
 let g:startify_custom_header =
             \ map(split(system(
             \'vi -v | grep -i --max-count=1 vim | toilet -f future "                             $(cat -)                    " '
@@ -524,8 +533,20 @@ au InsertLeave * set timeoutlen=300
 " Enable backsapce over everythin in insert mode
 set backspace=indent,eol,start
 
-" Clipboard
+" Set Clipboard
 set clipboard=unnamed
+
+" Copy to clipboard
+vnoremap  <leader>y  "+y
+nnoremap  <leader>Y  "+yg_
+nnoremap  <leader>y  "+y
+nnoremap  <leader>yy  "+yy
+
+" Paste from clipboard
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
+vnoremap <leader>p "+p
+vnoremap <leader>P "+P
 
 " Indentations
 set expandtab
