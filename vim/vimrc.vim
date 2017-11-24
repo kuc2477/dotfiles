@@ -94,7 +94,7 @@ Plug 'junegunn/gv.vim'
 
 " Vim feature extensions
 Plug 'tpope/vim-obsession'
-Plug 'Shougo/vimproc.vim'
+Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 
 " Writing
 Plug 'reedes/vim-pencil'
