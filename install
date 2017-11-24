@@ -525,7 +525,7 @@ def utils():
         install_pgweb,
         install_fzf,
         install_htop,
-        'sudo pip install autoenv pgcli saws TermFeed http-prompt',
+        'sudo pip install autoenv pgcli saws haxor-news http-prompt',
         'sudo pip3 install khal',
         _in_nvm('npm install -g git-standup tiny-care-terminal'),
         _install_system_packages(

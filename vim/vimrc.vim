@@ -29,6 +29,9 @@ Plug 'zchee/deoplete-jedi',      { 'do': 'pip install jedi', 'for': 'python' }
 Plug 'eagletmt/neco-ghc',        { 'do': 'stack install ghc-mod', 'for': 'haskell' }
 Plug 'ervandew/supertab'
 
+" Coworking
+Plug 'embear/vim-localvimrc'
+
 " Linting interface
 Plug 'scrooloose/syntastic', {
             \'do':
