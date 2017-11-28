@@ -208,6 +208,9 @@ let g:deoplete#enable_at_startup = 1
 " supertab
 let g:SuperTabDefaultCompletionType = "<c-n>"
 
+" localvimrc
+let g:localvimrc_ask = 0
+
 " nerdtree
 map <leader>] :NERDTreeToggle<CR>
 let NERDTreeIgnore = ['\.pyc$', '\.ipynb$', '__pycache__']
