@@ -209,7 +209,9 @@ let g:deoplete#enable_at_startup = 1
 let g:SuperTabDefaultCompletionType = "<c-n>"
 
 " localvimrc
-let g:localvimrc_ask = 0
+let g:localvimrc_ask = 1
+let g:localvimrc_persistent = 2
+let g:localvimrc_event = ["VimEnter", "BufNewFile", "BufRead"]
 
 " nerdtree
 map <leader>] :NERDTreeToggle<CR>
