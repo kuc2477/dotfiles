@@ -48,7 +48,6 @@ Plug 'michaeljsmith/vim-indent-object'
 Plug 'coderifous/textobj-word-column.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'terryma/vim-expand-region'
-Plug 'tweekmonster/braceless.vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-abolish'
@@ -451,10 +450,6 @@ au filetype python let g:jedi#usages_command = '<leader>n'
 au filetype python let g:jedi#rename_command = '<leader>r'
 au filetype python let g:jedi#popup_on_dot = 0
 au filetype python let g:jedi#popup_select_first = 1
-
-" Braceless.vim
-let g:braceless_block_key = 'p'
-au filetype python BracelessEnable
 
 " vim-jsx
 let g:jsx_ext_required = 0
