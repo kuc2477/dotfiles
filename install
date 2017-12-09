@@ -395,8 +395,8 @@ def shell():
     # gogh
     install_gogh = '{} && {}'.format(
         _install_system_packages('dconf-cli'),
-        ('wget -O gogh https://git.io/vKOB6 && chmod +x gogh && '
-         'mv ./gogh /usr/local/bin')
+        ('sudo wget -O /usr/local/bin/gogh https://git.io/vQgMr && '
+         'sudo chmod +x /usr/local/bin/gogh')
     ) if not _is_osx() else None
 
     return [
