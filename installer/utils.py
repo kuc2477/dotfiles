@@ -6,8 +6,6 @@ import subprocess
 from .registries import TARGET_REGISTRY
 from .constants.ascii import Colors
 from .constants.system import SYSTEM_SPECIFIC_NAMES
-
-
 # ================
 # UTILITIES (CODE)
 # ================

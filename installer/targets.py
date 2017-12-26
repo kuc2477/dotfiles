@@ -2,6 +2,7 @@ import os
 import os.path
 from . import commands as C
 from . import utils as U
+from .registries import OPTION_REGISTRY
 from .target import target
 from .constants.urls import (
     SEOUL256_GNOME_URL,
@@ -34,26 +35,32 @@ def shell():
     powerline_config_dir = '{}/bash/powerline-configs'.format(U.stdout('pwd'))
 
     # seoul256
-    if U.is_osx():
+    if not U.is_osx():
         install_seoul256_path = '~/.config/seoul256-gnome-terminal'
         install_seoul256 = (
-            'git clone {url} {path}'
+            'git clone {url} {path} && '
             '. {path}/seoul256-dark.sh'
         ).format(url=SEOUL256_GNOME_URL, path=install_seoul256_path) \
-            if U.exists(install_seoul256_path) else None
+            if not U.exists(install_seoul256_path) else None
     else:
         install_seoul256_path = '~/.config/seoul256-iTerm'
         install_seoul256 = (
-            'git clone {url} {path}'
+            'git clone {url} {path} && '
+            '. {path}/seoul256-dark.sh'
         ).format(url=SEOUL256_ITERM_URL, path=install_seoul256_path) \
-            if U.exists(install_seoul256_path) else None
+            if not U.exists(install_seoul256_path) else None
 
     # gogh
-    install_gogh = '{} && {}'.format(
-        C.install_system_packages('dconf-cli'),
-        ('sudo wget -O /usr/local/bin/gogh https://git.io/vQgMr && '
-         'sudo chmod +x /usr/local/bin/gogh')
+    install_gogh_dependencies = C.install_system_packages('dconf-cli')
+    install_gogh = (
+        'sudo wget -O /usr/local/bin/gogh https://git.io/vQgMr && '
+        'sudo chmod +x /usr/local/bin/gogh'
     ) if not U.is_osx() else None
+
+    # skip gogh installation if user doesn't have sudo authority
+    if not OPTION_REGISTRY['sudo']:
+        U.log_skipping_commands([install_gogh])
+        install_gogh = None
 
     return [
         # powerline
@@ -77,6 +84,7 @@ def shell():
         # seoul256
         install_seoul256,
         # gogh
+        install_gogh_dependencies,
         install_gogh,
         # autocompletions
         C.install_system_packages('bash-completion'),
