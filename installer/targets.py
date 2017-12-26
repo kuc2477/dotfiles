@@ -238,17 +238,18 @@ def tmux():
 @target
 def python():
     if U.is_osx():
+        install_pyenv_system_dependencies = None
         install_pyenv = 'brew update && brew install pyenv pyenv-virtualenv'
     else:
-        install_pyenv = '{} && (curl -L {} | bash)'.format(
-            C.install_system_packages(
-                'make', 'build_essential', 'libssl-dev', 'zlib1g-dev',
-                'libbz2-dev', 'libreadline-dev', 'libsqlite3-dev', 'wget',
-                'curl', 'llvm', 'libncurses5-dev'
-            ), PYENV_URL
+        install_pyenv_system_dependencies = C.install_system_packages(
+            'make', 'build_essential', 'libssl-dev', 'zlib1g-dev',
+            'libbz2-dev', 'libreadline-dev', 'libsqlite3-dev', 'wget',
+            'curl', 'llvm', 'libncurses5-dev'
         )
+        install_pyenv = 'curl -L {} | bash'.format(PYENV_URL)
 
     return [
+        C.if_no_command('pyenv', install_pyenv_system_dependencies),
         C.if_no_command('pyenv', install_pyenv),
         C.link('python/pypirc', '~/.pypirc'),
         C.link('python/pythonrc.py', '~/.pythonrc.py'),
