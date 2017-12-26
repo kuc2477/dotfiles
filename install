@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import argparse
 from installer.constants.ascii import ASCII_ART
 from installer.registries import (
@@ -17,12 +17,10 @@ register_targets()
 
 # define a command parser
 parser = argparse.ArgumentParser('cli for dotfile installation')
+parser.add_argument('--no-sudo', action='store_false', dest='sudo')
 parser.add_argument('target', choices=[
     t for t in TARGET_REGISTRY.keys() if not t.startswith('_')
 ])
-parser.add_argument(
-    '--assume-no-sudo-authority', action='store_false', dest='sudo'
-)
 
 
 if __name__ == '__main__':
