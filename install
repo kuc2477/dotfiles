@@ -473,7 +473,8 @@ def utils():
     scripts = [
         'bin/rmswp',
         'bin/tpd',
-        'bin/rmpyc'
+        'bin/rmpyc',
+        'bin/gwatch',
     ]
     install_scripts = [_link(s, '/usr/local/bin', sudo=True) for s in scripts]
 
