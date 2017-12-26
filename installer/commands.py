@@ -1,9 +1,7 @@
-from .registries import OPTION_REGISTRY
 from .constants.system import SYSTEM_SPECIFIC_INSTALLER
 from .utils import (
     current_system_name,
     system_specific_name,
-    log_skipping_commands,
 )
 
 
@@ -23,10 +21,6 @@ def install_system_packages(package, *packages):
         for name in [package] + list(packages)
         if system_specific_name(name, system) is not None
     ]
-
-    if not OPTION_REGISTRY['sudo']:
-        log_skipping_commands(system_specific_package_names)
-        return
 
     return '{} {}'.format(installer, ' '.join([
         n for n in system_specific_package_names
@@ -48,8 +42,4 @@ def link(path, to, rel=True, sudo=False):
     else:
         c = '{} ln -sf {} {}'.format('sudo' if sudo else '', path, to)
 
-    if not OPTION_REGISTRY['sudo'] and sudo:
-        log_skipping_commands([c])
-        return
-
-    return c
+    return 'if [[ ! -d {to} ]]; then {c}; fi'.format(to=to, c=c)

@@ -3,9 +3,9 @@ import os
 import os.path
 from sys import platform
 import subprocess
-from .registries import TARGET_REGISTRY
+from .registries import TARGET_REGISTRY, OPTION_REGISTRY
 from .constants.ascii import Colors
-from .constants.system import SYSTEM_SPECIFIC_NAMES
+from .constants.system import SYSTEM_SPECIFIC_NAMES, SHELL
 
 
 # ================
@@ -125,16 +125,27 @@ def ran(target_name):
     return TARGET_REGISTRY[target_name].ran
 
 
+def run_maybe_thunk_command(command):
+    is_thunk = callable(command) and command()
+    c = (is_thunk and command()) or (not is_thunk and command)
+    if not c:
+        return
+    elif 'sudo' in c and not OPTION_REGISTRY['sudo']:
+        log_skipping_commands([c])
+        return
+    else:
+        os.system('{shell} -c "{command}"'.format(
+            shell=SHELL,
+            command=c,
+        ))
+
+
 def run(command):
-    _run_maybe_thunk_command = (
-        lambda c: os.system(c()) if callable(c) and c()
-        else c and os.system(c)
-    )
     if isinstance(command, (list, tuple)):
         for c in command:
-            _run_maybe_thunk_command(c)
+            run_maybe_thunk_command(c)
     else:
-        _run_maybe_thunk_command(command)
+        run_maybe_thunk_command(command)
 
 
 def stdout(command):

@@ -2,7 +2,6 @@ import os
 import os.path
 from . import commands as C
 from . import utils as U
-from .registries import OPTION_REGISTRY
 from .target import target
 from .constants.urls import (
     SEOUL256_GNOME_URL,
@@ -11,7 +10,6 @@ from .constants.urls import (
     STACK_URL,
     PYENV_URL,
     FZF_URL,
-    HTOP_URL,
     PLUG_URL,
 )
 
@@ -50,18 +48,6 @@ def shell():
         ).format(url=SEOUL256_ITERM_URL, path=install_seoul256_path) \
             if not U.exists(install_seoul256_path) else None
 
-    # gogh
-    install_gogh_dependencies = C.install_system_packages('dconf-cli')
-    install_gogh = (
-        'sudo wget -O /usr/local/bin/gogh https://git.io/vQgMr && '
-        'sudo chmod +x /usr/local/bin/gogh'
-    ) if not U.is_osx() else None
-
-    # skip gogh installation if user doesn't have sudo authority
-    if not OPTION_REGISTRY['sudo']:
-        U.log_skipping_commands([install_gogh])
-        install_gogh = None
-
     return [
         # powerline
         'pip install powerline-status powerline-gitstatus',
@@ -83,9 +69,6 @@ def shell():
         ),
         # seoul256
         install_seoul256,
-        # gogh
-        install_gogh_dependencies,
-        install_gogh,
         # autocompletions
         C.install_system_packages('bash-completion'),
         C.link(
@@ -134,13 +117,8 @@ def vim():
 
 @target(['javascript', 'tmux'])
 def utils():
-    # scripts
-    scripts = [
-        'bin/rmswp',
-        'bin/tpd',
-        'bin/rmpyc'
-    ]
-    install_scripts = [C.link(s, '/usr/local/bin', sudo=True) for s in scripts]
+    # bins
+    install_scripts = C.link('bin', '~/bin')
 
     # system dependencies
     install_system_dependencies = C.install_system_packages(
@@ -148,22 +126,15 @@ def utils():
         'libgraphicsmagick++-dev'
     )
 
-    # timg
-    install_timg = C.if_no_command('timg', (
-        'git clone https://github.com/hzeller/timg.git &&'
-        'cd timg/src &&'
-        'make &&'
-        'sudo make install &&'
-        'cd .. && '
-        'cd .. && '
-        'rm -rf ./timg'
-    ))
+    # gogh
+    install_gogh_dependencies = C.install_system_packages('dconf-cli')
+    install_gogh = (
+        'wget -O ~/bin/gogh https://git.io/vQgMr && '
+        'chmod +x ~/bin/gogh'
+    ) if not U.is_osx() else None
 
     # pgweb
-    if U.is_osx():
-        install_pgweb = 'brew cask install pgweb'
-    else:
-        install_pgweb = C.link('bin/pgweb', '/usr/local/bin', sudo=True)
+    install_pgweb = 'brew cask install pgweb' if U.is_osx() else None
 
     # fzf
     install_fzf = (
@@ -172,26 +143,13 @@ def utils():
         else None
     )
 
-    # htop 2.02
-    install_htop = ((
-        'sudo apt install libncursesw5-dev && '
-        'wget {HTOP_URL} && '
-        'tar xzf htop-2.0.2.tar.gz && '
-        'rm htop-2.0.2.tar.gz && '
-        'cd htop-2.0.2 && '
-        './configure && make && sudo make install && '
-        'cd .. && '
-        'rm -rf htop-2.0.2'
-    ).format(HTOP_URL=HTOP_URL))
-
     commands = install_scripts + [
+        install_gogh_dependencies,
+        install_gogh,
         install_system_dependencies,
-        install_timg,
         install_pgweb,
         install_fzf,
-        install_htop,
-        'sudo pip install autoenv pgcli saws haxor-news http-prompt',
-        'sudo pip3 install khal',
+        'pip install autoenv pgcli saws haxor-news http-prompt khal',
         C.in_nvm('npm install -g git-standup tiny-care-terminal'),
         C.install_system_packages(
             'cowsay', 'fortune', 'toilet', 'autojump', 'task', 'pv', 'jq',
