@@ -10,11 +10,9 @@ let s:username = substitute(system('whoami'), "\n", "", "")
 if s:osname == 'Darwin'
     let s:HOME_PATH = '/Users/'.s:username
     let g:INSTALLER = 'brew install '
-    let g:NAME_CTAGS = 'ctags'
 else
     let s:HOME_PATH = '/home/'.s:username
     let g:INSTALLER = 'sudo apt get install '
-    let g:NAME_CTAGS = 'exuberant-ctags'
 endif
 
 "============================Plug List======================================"
@@ -35,8 +33,8 @@ Plug 'embear/vim-localvimrc'
 " Linting interface
 Plug 'scrooloose/syntastic', {
             \'do':
-            \'sudo pip install flake8 yamllint && ' .
-            \'sudo npm -g install eslint && ' .
+            \'pip install flake8 yamllint && ' .
+            \'npm -g install eslint && ' .
             \g:INSTALLER .  'shellcheck',
             \}
 
@@ -109,8 +107,8 @@ Plug 'terryma/vim-smooth-scroll'
 Plug 'reedes/vim-wheel'
 
 " Tag
-Plug 'xolox/vim-easytags', { 'do': g:INSTALLER . g:NAME_CTAGS, 'on': 'TagbarToggle' }
-Plug 'majutsushi/tagbar',  { 'do': 'sudo stack install ghc-mod hasktags' }
+Plug 'xolox/vim-easytags', { 'on': 'TagbarToggle' }
+Plug 'majutsushi/tagbar',  { 'do': 'stack install ghc-mod hasktags' }
 
 " Snippet
 Plug 'SirVer/ultisnips'
@@ -183,7 +181,7 @@ Plug 'iamcco/markdown-preview.vim'
 
 " RsT
 Plug 'Rykka/riv.vim',    { 'for': 'rst' }
-Plug 'Rykka/InstantRst', { 'do': 'sudo pip install instant-rst' }
+Plug 'Rykka/InstantRst', { 'do': 'pip install instant-rst' }
 
 " LaTeX
 Plug 'lervag/vimtex'
