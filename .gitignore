@@ -10,8 +10,7 @@ __pycache__/
 .Python
 env/
 build/
-develop-eggs/
-dist/
+develop-eggs/ dist/
 downloads/
 eggs/
 .eggs/
@@ -76,6 +75,8 @@ tmux/tmux/*
 
 # npm
 npm-debug*
+
+bin/gogh
 
 # env
 .env

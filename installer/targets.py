@@ -14,24 +14,39 @@ from .constants.urls import (
 )
 
 
-# ==============
-# TARGETS (MAIN)
-# ==============
+# =========================
+# Shell Environment Targets
+# =========================
+
+@target
+def bashrc():
+    return [
+        # autocompletions
+        C.install_system_packages('bash-completion'),
+        C.link(
+            'bash/autocompletions/git-completion.bash',
+            '~/.git-completion.bash',
+        ),
+        C.link(
+            'bash/autocompletions/docker-completion.bash',
+            '~/.docker-completion.bash'
+        ),
+        C.link(
+            'bash/autocompletions/docker-compose-completion.bash',
+            '~/.docker-compose-completion.bash'
+        ),
+        C.link(
+            'bash/autocompletions/tmux-completion.bash',
+            '~/.tmux-completion.bash'
+        ),
+        # bash configuration
+        C.link('bash/bashrc', '~/.bashrc'),
+        C.link('bash/bash_profile', '~/.bash_profile'),
+    ]
+
 
 @target(['_submodules', '_font'])
-def shell():
-    # powerline
-    get_powerline_root_dir = (lambda: U.stdout(
-        'pip show powerline-status | '
-        'grep -i location | grep -Eo /.*$'
-    ))
-    get_powerline_bash_binding_path = (
-        lambda: '{}/powerline/bindings/bash/powerline.sh'.format(
-            get_powerline_root_dir()
-        )
-    )
-    powerline_config_dir = '{}/bash/powerline-configs'.format(U.stdout('pwd'))
-
+def themes():
     # seoul256
     if not U.is_osx():
         install_seoul256_path = '~/.config/seoul256-gnome-terminal'
@@ -47,6 +62,27 @@ def shell():
             '. {path}/seoul256-dark.sh'
         ).format(url=SEOUL256_ITERM_URL, path=install_seoul256_path) \
             if not U.exists(install_seoul256_path) else None
+
+    return install_seoul256
+
+
+# ================
+# Powerline Target
+# ================
+
+@target(['_submodules', '_font'])
+def powerline():
+    # powerline
+    get_powerline_root_dir = (lambda: U.stdout(
+        'pip show powerline-status | '
+        'grep -i location | grep -Eo /.*$'
+    ))
+    get_powerline_bash_binding_path = (
+        lambda: '{}/powerline/bindings/bash/powerline.sh'.format(
+            get_powerline_root_dir()
+        )
+    )
+    powerline_config_dir = '{}/bash/powerline-configs'.format(U.stdout('pwd'))
 
     return [
         # powerline
@@ -67,32 +103,12 @@ def shell():
             '{}/theme.json'.format(powerline_config_dir),
             '~/.config/powerline/themes/shell/default.json', rel=False
         ),
-        # seoul256
-        install_seoul256,
-        # autocompletions
-        C.install_system_packages('bash-completion'),
-        C.link(
-            'bash/autocompletions/git-completion.bash',
-            '~/.git-completion.bash',
-        ),
-        C.link(
-            'bash/autocompletions/docker-completion.bash',
-            '~/.docker-completion.bash'
-        ),
-        C.link(
-            'bash/autocompletions/docker-compose-completion.bash',
-            '~/.docker-compose-completion.bash'
-        ),
-        C.link(
-            'bash/autocompletions/tmux-completion.bash',
-            '~/.tmux-completion.bash'
-        ),
-        # bash configuration
-        C.link('bash/bashrc', '~/{}'.format(U.system_specific_name(
-            'bashrc', U.current_system_name()
-        )))
     ]
 
+
+# ====================
+# Vim Specific Targets
+# ====================
 
 @target(['_vim_deps'])
 def vim():
@@ -103,67 +119,24 @@ def vim():
             'sudo add-apt-repository ppa:neovim-ppa/stable --yes',
             'sudo apt-get update'
         ]
+    return prepare_vim_registry + [C.install_system_packages('neovim')]
 
-    return prepare_vim_registry + [
-        C.install_system_packages('neovim'),
+
+@target
+def vimrc():
+    return [
         'curl -fLo ~/.vim/autoload/plug.vim --create-dirs {}'.format(PLUG_URL),
         'mkdir -p ~/.config/nvim',
         C.link('vim/init.vim', '~/.config/nvim/init.vim'),
         C.link('vim/vimrc.vim', '~/.vimrc'),
         C.link('vim/snippets', '~/.snippets'),
-        'nvim +PlugInstall +VimProcInstall +qall',
+        'vi +PlugInstall +VimProcInstall +qall',
     ]
 
 
-@target(['javascript', 'tmux'])
-def utils():
-    # bins
-    install_scripts = C.link('bin', '~/bin')
-
-    # system dependencies
-    install_system_dependencies = C.install_system_packages(
-        'libwebp-dev',
-        'libgraphicsmagick++-dev'
-    )
-
-    # gogh
-    install_gogh_dependencies = C.install_system_packages('dconf-cli')
-    install_gogh = (
-        'wget -O ~/bin/gogh https://git.io/vQgMr && '
-        'chmod +x ~/bin/gogh'
-    ) if not U.is_osx() else None
-
-    # pgweb
-    install_pgweb = 'brew cask install pgweb' if U.is_osx() else None
-
-    # fzf
-    install_fzf = (
-        'git clone --depth 1 {} ~/.fzf && ~/.fzf/install --all'
-        .format(FZF_URL) if not os.path.exists(os.path.expanduser('~/.fzf'))
-        else None
-    )
-
-    commands = install_scripts + [
-        install_gogh_dependencies,
-        install_gogh,
-        install_system_dependencies,
-        install_pgweb,
-        install_fzf,
-        'pip install autoenv pgcli saws haxor-news http-prompt khal',
-        C.in_nvm('npm install -g git-standup tiny-care-terminal'),
-        C.install_system_packages(
-            'cowsay', 'fortune', 'toilet', 'autojump', 'task', 'pv', 'jq',
-            'jid', 'httpie', 'ag', 'ranger', 'tig', 'irssi'
-        ),
-    ]
-
-    return (
-        commands if U.is_osx() else
-        commands + [C.install_system_packages(
-            'xdg-utils', 'gnome-tweak-tool', 'geary',
-        )]
-    )
-
+# =====================
+# Tmux Specific Targets
+# =====================
 
 @target(['_submodules', '_font'])
 def tmux():
@@ -186,12 +159,22 @@ def tmux():
     return [
         C.install_system_packages(*deps),
         C.if_no_command('tmux', compile_tmux),
+    ]
+
+
+@target
+def tmuxrc():
+    return [
         C.link('tmux/tmux', '~/.tmux'),
         C.link('tmux/tmux.conf', '~/.tmux.conf'),
         C.link('tmux/tmux-powerline', '~/.tmux-powerline'),
         C.link('tmux/tmux-powerlinerc', '~/.tmux-powerlinerc'),
     ]
 
+
+# =====================================
+# Language Specific Environment Targets
+# =====================================
 
 @target
 def python():
@@ -211,7 +194,6 @@ def python():
         C.if_no_command('pyenv', install_pyenv),
         C.link('python/pypirc', '~/.pypirc'),
         C.link('python/pythonrc.py', '~/.pythonrc.py'),
-        C.link('python/pdbrc.py', '~/.pdbrc.py'),
     ]
 
 
@@ -233,9 +215,64 @@ def haskell():
     ]
 
 
-# ======================
-# TARGETS (DEPENDENCIES)
-# ======================
+# ===============
+# Utility Targets
+# ===============
+
+@target(['javascript'])
+def utils():
+    # system dependencies
+    install_system_dependencies = C.install_system_packages(
+        'libwebp-dev',
+        'libgraphicsmagick++-dev'
+    )
+
+    # bins
+    install_scripts = C.link('bin', '~/bin')
+
+    # gogh
+    install_gogh_dependencies = C.install_system_packages('dconf-cli')
+    install_gogh = (
+        'wget -O ~/bin/gogh https://git.io/vQgMr && '
+        'chmod +x ~/bin/gogh'
+    ) if not U.is_osx() else None
+
+    # pgweb
+    install_pgweb = 'brew cask install pgweb' if U.is_osx() else None
+
+    # fzf
+    install_fzf = (
+        'git clone --depth 1 {} ~/.fzf && ~/.fzf/install --all'
+        .format(FZF_URL) if not os.path.exists(os.path.expanduser('~/.fzf'))
+        else None
+    )
+
+    commands = [
+        install_scripts,
+        install_gogh_dependencies,
+        install_gogh,
+        install_system_dependencies,
+        install_pgweb,
+        install_fzf,
+        'pip install autoenv pgcli saws haxor-news http-prompt khal',
+        C.in_nvm('npm install -g git-standup tiny-care-terminal'),
+        C.install_system_packages(
+            'cowsay', 'fortune', 'toilet', 'autojump', 'task', 'pv', 'jq',
+            'jid', 'httpie', 'ag', 'ranger', 'tig', 'irssi',
+        ),
+    ]
+
+    return (
+        commands if U.is_osx() else
+        commands + [C.install_system_packages(
+            'xdg-utils', 'gnome-tweak-tool', 'geary',
+        )]
+    )
+
+
+# ==================
+# Dependency Targets
+# ==================
 
 @target(['_submodules'])
 def _font():
@@ -245,11 +282,6 @@ def _font():
 @target
 def _submodules():
     return 'git submodule update --init'
-
-
-@target
-def _powerline_status():
-    return 'pip install powerline-status powerline-gitstatus'
 
 
 @target(['python', '_font'])
