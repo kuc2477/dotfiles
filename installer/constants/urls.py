@@ -17,3 +17,6 @@ SEOUL256_GNOME_URL = (
 SEOUL256_ITERM_URL = (
     'https://github.com/mikker/seoul256-iTerm.git'
 )
+JUPYTER_VIM_BINDING_URL = (
+    'https://github.com/lambdalisue/jupyter-vim-binding vim_binding'
+)

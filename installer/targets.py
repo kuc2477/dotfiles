@@ -11,6 +11,7 @@ from .constants.urls import (
     PYENV_URL,
     FZF_URL,
     PLUG_URL,
+    JUPYTER_VIM_BINDING_URL,
 )
 
 
@@ -103,6 +104,33 @@ def powerline():
             '{}/theme.json'.format(powerline_config_dir),
             '~/.config/powerline/themes/shell/default.json', rel=False
         ),
+    ]
+
+
+# ==========================
+# Jupyter Environment Target
+# ==========================
+
+@target
+def jupyter():
+    return [
+        'jupyter',
+        'jupyterthemes',
+        'jupyter_contrib_nbextensions',
+        'jupyter_nbextensions_configurator',
+    ]
+
+
+@target
+def jupyter_configs():
+    jupyter_data_dir = U.stdout('jupyter --data-dir')
+    return [
+        'jt -t gruvboxd',
+        'jupyter contrib nbextension install --user',
+        'jupyter nbextensions_configurator enable --use',
+        'mkdir -p {}/nbextensions'.format(jupyter_data_dir),
+        'cd {}/nbextensions && git clone {} && chmod -R go-w vim_binding'
+        .format(jupyter_data_dir, JUPYTER_VIM_BINDING_URL)
     ]
 
 
