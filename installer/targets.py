@@ -113,12 +113,12 @@ def powerline():
 
 @target
 def jupyter():
-    return [
+    return 'pip install ' + ' '.join([
         'jupyter',
         'jupyterthemes',
         'jupyter_contrib_nbextensions',
         'jupyter_nbextensions_configurator',
-    ]
+    ])
 
 
 @target
