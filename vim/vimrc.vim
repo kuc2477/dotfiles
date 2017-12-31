@@ -409,10 +409,6 @@ let g:startify_change_to_vcs_root  = 1
 let g:startify_session_autoload    = 1
 let g:startify_session_persistence = 1
 let g:startify_custom_indices = ['s', 'n', 'f', 'r']
-let g:startify_custom_header =
-            \ map(split(system(
-            \'vi -v | grep -i --max-count=1 vim | toilet -f future "                             $(cat -)                    " '
-            \), '\n'), '"   ". v:val') + ['', '']
 
 " vim-move
 let g:move_key_modifier = 'C'
