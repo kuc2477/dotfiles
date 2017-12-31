@@ -203,7 +203,7 @@ filetype plugin indent on
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources#jedi#show_docstring = 1
 let g:deoplete#sources#jedi#server_timeout = 30
-let g:deoplete#sources#jedi#python_path = '~/.pyenv/shims/python'
+let g:deoplete#sources#jedi#python_path = expand('~/.pyenv/shims/python')
 
 
 " supertab
@@ -365,7 +365,7 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
 " Syntastic language specific settings
-let g:syntastic_python_python_exec = '~/.pyenv/shims/python' " use python3 syntax
+let g:syntastic_python_python_exec = expand('~/.pyenv/shims/python') " use python3 syntax
 let g:syntastic_python_checkers = ['flake8']                 " use flake8 for python
 let g:syntastic_javascript_checkers = ['eslint']             " use eslint for javascript
 let g:syntastic_html_tidy_exec = 'tidy'                      " use tidy for html5
@@ -452,6 +452,7 @@ au filetype python let g:jedi#usages_command = '<leader>n'
 au filetype python let g:jedi#rename_command = '<leader>r'
 au filetype python let g:jedi#popup_on_dot = 0
 au filetype python let g:jedi#popup_select_first = 1
+let g:python_host_prog = expand('~/.pyenv/shims/python3')
 
 " vim-jsx
 let g:jsx_ext_required = 0
