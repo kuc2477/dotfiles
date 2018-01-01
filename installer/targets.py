@@ -211,7 +211,7 @@ def python():
         install_pyenv = 'brew update && brew install pyenv pyenv-virtualenv'
     else:
         install_pyenv_system_dependencies = C.install_system_packages(
-            'make', 'build_essential', 'libssl-dev', 'zlib1g-dev',
+            'make', 'libssl-dev', 'zlib1g-dev',
             'libbz2-dev', 'libreadline-dev', 'libsqlite3-dev', 'wget',
             'curl', 'llvm', 'libncurses5-dev'
         )
