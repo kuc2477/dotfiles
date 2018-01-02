@@ -59,7 +59,7 @@ Plug 'kuc2477/vim-move'
 
 " Visual supports
 Plug 'severin-lemaignan/vim-minimap'
-Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline', { 'commit': '470e9870f13830580d1938a2dae1be5b6e43d92a' }
 Plug 'vim-airline/vim-airline-themes'
 Plug 'sjl/gundo.vim'
 Plug 'kshenoy/vim-signature'
