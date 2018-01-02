@@ -190,7 +190,7 @@ def tmux():
     ]
 
 
-@target
+@target(['_submodules', '_font'])
 def tmuxrc():
     return [
         C.link('tmux/tmux', '~/.tmux'),
