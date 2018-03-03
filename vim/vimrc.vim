@@ -216,7 +216,7 @@ let g:localvimrc_event = ["VimEnter", "BufNewFile", "BufRead"]
 
 " nerdtree
 map <leader>] :NERDTreeToggle<CR>
-let NERDTreeIgnore = ['\.pyc$', '\.ipynb$', '__pycache__']
+let NERDTreeIgnore = ['\.pyc$', '__pycache__']
 let g:NERDTreeIndicatorMapCustom = {
     \ "Modified"  : "✹",
     \ "Staged"    : "✚",
@@ -244,7 +244,7 @@ let g:fzf_layout = { 'down': '~20%' }
 
 " Ctrlp
 let g:ctrlp_cmd = 'CtrlPMixed'
-let g:ctrlp_custom_ignore = {'dir': 'data'}
+let g:ctrlp_custom_ignore = {'dir': './data'}
 
 " seoul256.vim
 let g:seoul256_background = 234
