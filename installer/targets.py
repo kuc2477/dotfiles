@@ -275,6 +275,11 @@ def utils():
         else None
     )
 
+    # database related utils (often requires sudo authority)
+    install_db_utils = (
+        'sudo pip install pgcli'
+    )
+
     commands = [
         install_scripts,
         install_gogh_dependencies,
@@ -282,7 +287,8 @@ def utils():
         install_system_dependencies,
         install_pgweb,
         install_fzf,
-        'pip install autoenv pgcli saws haxor-news http-prompt khal',
+        install_db_utils,
+        'pip install autoenv saws haxor-news http-prompt khal',
         C.in_nvm('npm install -g git-standup tiny-care-terminal'),
         C.install_system_packages(
             'cowsay', 'fortune', 'toilet', 'autojump', 'task', 'pv', 'jq',
