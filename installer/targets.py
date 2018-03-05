@@ -43,6 +43,8 @@ def bashrc():
         # bash configuration
         C.link('bash/bashrc', '~/.bashrc'),
         C.link('bash/bash_profile', '~/.bash_profile'),
+        # direnv configuration
+        C.link('bash/direnvrc', '~/.direnvrc')
     ]
 
 
