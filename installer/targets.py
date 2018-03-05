@@ -288,7 +288,7 @@ def utils():
         install_pgweb,
         install_fzf,
         install_db_utils,
-        'pip install autoenv saws haxor-news http-prompt khal',
+        'pip install saws haxor-news http-prompt khal',
         C.in_nvm('npm install -g git-standup tiny-care-terminal'),
         C.install_system_packages(
             'cowsay', 'fortune', 'toilet', 'autojump', 'task', 'pv', 'jq',
