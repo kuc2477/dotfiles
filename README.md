@@ -20,25 +20,27 @@ My private environment files for UNIX like systems. **Supports OS X / Debian out
 ## How can I use it?
 ![installation recording](/tty.gif?raw=true "installation recording")
 
+Just run the following command if you trust me
+
     $ ./install [--no-sudo] {vim, vimrc, python, javascript, haskell, bashrc, tmuxrc, powerline, themes, utils, jupyter_configs}
 
 
 ### Options
-- `[--no-sudo]`: Installation targets that requires root authority will be skipped
+- --no-sudo: Installation targets that requires root authority will be skipped
 
 ### Targets
-- `vim`: [neovim] binary
-- `vimrc`: `vimrc`  and it's plugins
-- `python`: [pyenv] and `pythonrc`
-- `javascript`: [nvm] and `tern-project`
-- `haskell`: [stack]
-- `bashrc`: `bashrc`
-- `powerline`: `powerline` and it's configurations
-- `tmux`: [tmux] binary
-- `tmuxrc`: `tmuxrc`, [tmux-powerline] and it's configurations
-- `utils`: `bins/`, [fzf], [pgweb], [ag], [ranger], [tig], [irssi], [pv], [jq], [jid], [httpie] and more
-- `themes`: Terminal themes
-- `jupyter_configs`: Jupyter Notebook configurations
+- vim: [neovim] binary
+- vimrc: `vimrc`  and it's plugins
+- python: [pyenv] and `pythonrc`
+- javascript: [nvm] and `tern-project`
+- haskell: [stack]
+- bashrc: `bashrc`
+- powerline: `powerline` and it's configurations
+- tmux: [tmux] binary
+- tmuxrc: `tmuxrc`, [tmux-powerline] and it's configurations
+- utils: `bins/`, [fzf], [pgweb], [ag], [ranger], [tig], [irssi], [pv], [jq], [jid], [httpie] and more
+- themes: Terminal themes
+- jupyter_configs: Jupyter Notebook configurations
 
 
 ## Note
@@ -55,6 +57,7 @@ My private environment files for UNIX like systems. **Supports OS X / Debian out
 [neovim]: https://neovim.io/
 [nvm]: https://github.com/creationix/nvm
 [fzf]: https://github.com/junegunn/fzf
+[tmux]: https://github.com/tmux/tmux
 [pgweb]: https://github.com/sosedoff/pgweb
 [ag]: https://github.com/ggreer/the_silver_searcher
 [ranger]: https://github.com/ranger/ranger
