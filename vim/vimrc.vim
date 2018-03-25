@@ -177,7 +177,7 @@ Plug 'elzr/vim-json'
 
 " Markdown
 Plug 'plasticboy/vim-markdown'
-Plug 'iamcco/markdown-preview.vim'
+Plug 'JamshedVesuna/vim-markdown-preview'
 
 " RsT
 Plug 'Rykka/riv.vim',    { 'for': 'rst' }
