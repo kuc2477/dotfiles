@@ -177,7 +177,7 @@ Plug 'elzr/vim-json'
 
 " Markdown
 Plug 'plasticboy/vim-markdown'
-Plug 'JamshedVesuna/vim-markdown-preview'
+Plug 'iamcco/markdown-preview.vim'
 
 " RsT
 Plug 'Rykka/riv.vim',    { 'for': 'rst' }
@@ -448,7 +448,7 @@ au filetype python let g:jedi#usages_command = '<leader>n'
 au filetype python let g:jedi#rename_command = '<leader>r'
 au filetype python let g:jedi#popup_on_dot = 0
 au filetype python let g:jedi#popup_select_first = 1
-let g:python_host_prog = expand('~/.pyenv/shims/python3')
+let g:python_host_prog = expand('~/.pyenv/shims/python')
 
 " vim-jsx
 let g:jsx_ext_required = 0
@@ -492,9 +492,10 @@ map <leader>vl :VimuxRunLastCommand<CR>
 map <Leader>vq :VimuxCloseRunner<CR>
 map <Leader>vx :VimuxInterruptRunner<CR>
 
-" vim-instant-markdown
-let g:mkdp_path_to_chrome = "python -mwebbrowser"
+" markdown-preview.vim
+let g:mkdp_auto_close = 0
 let g:mkdp_command_for_global = 1
+au filetype markdown let g:python_host_prog = expand('~/.pyenv/shims/python2')
 
 " vim-better-whitespace
 autocmd FileType python,javascript,javascript.jsx,html,htmldjango autocmd BufEnter * EnableStripWhitespaceOnSave
