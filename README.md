@@ -22,7 +22,11 @@ My private environment files for UNIX like systems. **Supports OS X / Debian out
 
     $ ./install [--no-sudo] {vim, vimrc, python, javascript, haskell, bashrc, tmuxrc, powerline, themes, utils, jupyter_configs}
 
-- `--no-sudo`: Installation targets that requires root authority will be skipped
+
+### Options
+- `[--no-sudo]`: Installation targets that requires root authority will be skipped
+
+### Targets
 - `vim`: [neovim] binary
 - `vimrc`: `vimrc`  and it's plugins
 - `python`: [pyenv] and `pythonrc`
