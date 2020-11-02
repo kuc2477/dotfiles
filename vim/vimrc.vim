@@ -59,7 +59,7 @@ Plug 'kuc2477/vim-move'
 
 " Visual supports
 Plug 'severin-lemaignan/vim-minimap'
-Plug 'vim-airline/vim-airline', { 'commit': '470e9870f13830580d1938a2dae1be5b6e43d92a' }
+Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'sjl/gundo.vim'
 Plug 'kshenoy/vim-signature'
@@ -89,10 +89,6 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 
-" Vim feature extensions
-Plug 'tpope/vim-obsession'
-Plug 'Shougo/vimproc.vim', { 'do': 'make' }
-
 " Writing
 Plug 'reedes/vim-pencil'
 Plug 'reedes/vim-wordy'
@@ -110,10 +106,6 @@ Plug 'reedes/vim-wheel'
 Plug 'xolox/vim-easytags', { 'on': 'TagbarToggle' }
 Plug 'majutsushi/tagbar',  { 'do': 'stack install ghc-mod hasktags' }
 
-" Snippet
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-
 " Miscs
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-notes'
@@ -124,6 +116,7 @@ Plug 'esneider/YUNOcommit.vim'
 Plug 'guns/xterm-color-table.vim'
 Plug 'jez/vim-superman'
 Plug 'itchyny/calendar.vim'
+Plug 'chrisbra/unicode.vim'
 
 " Colorschemes
 Plug 'flazz/vim-colorschemes'
@@ -156,9 +149,6 @@ Plug 'dag/vim2hs',                        { 'for': 'haskell'} " syntax highlight
 Plug 'eagletmt/ghcmod-vim',               { 'for': 'haskell'} " use ghc-mod for type information and linting.
 Plug 'Twinside/vim-hoogle',               { 'for': 'haskell'}
 
-" Octave
-Plug 'jvirtanen/vim-octave', {'for': 'octave'}
-
 " Bash
 Plug 'kuc2477/bash-support.vim', {'for': 'sh'}
 
@@ -168,8 +158,6 @@ Plug 'othree/html5.vim'
 
 " CSS / LESS / SCSS
 Plug 'JulesWang/css.vim'
-Plug 'groenewege/vim-less'
-Plug 'cakebaker/scss-syntax.vim'
 Plug 'ap/vim-css-color'
 
 " JSON
@@ -179,19 +167,8 @@ Plug 'elzr/vim-json'
 Plug 'plasticboy/vim-markdown'
 Plug 'iamcco/markdown-preview.vim'
 
-" RsT
-Plug 'Rykka/riv.vim',    { 'for': 'rst' }
-Plug 'Rykka/InstantRst', { 'do': 'pip install instant-rst' }
-
 " LaTeX
 Plug 'lervag/vimtex'
-
-" Thrift
-Plug 'solarnz/thrift.vim'
-
-" Groovy
-Plug 'vim-scripts/groovy.vim'
-Plug 'vim-scripts/groovyindent-unix'
 
 call plug#end()
 filetype plugin indent on
@@ -346,13 +323,6 @@ vmap gx <Plug>(openbrowser-smart-search)
 " calendar.vim
 let g:calendar_google_calendar = 1
 let g:calendar_google_task = 1
-
-" UltiSnips
-let g:UltiSnipsSnippetDirectories=["UltiSnips", $HOME."/.snippets"]
-let g:UltiSnipsExpandTrigger="<C-e>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<S-tab>"
-let g:UltiSnipsEditSplit="vertical"
 
 " Syntastic
 set statusline+=%#waringmsg#

@@ -29,14 +29,6 @@ def bashrc():
             '~/.git-completion.bash',
         ),
         C.link(
-            'bash/autocompletions/docker-completion.bash',
-            '~/.docker-completion.bash'
-        ),
-        C.link(
-            'bash/autocompletions/docker-compose-completion.bash',
-            '~/.docker-compose-completion.bash'
-        ),
-        C.link(
             'bash/autocompletions/tmux-completion.bash',
             '~/.tmux-completion.bash'
         ),

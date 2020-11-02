@@ -262,6 +262,7 @@ function usegpu {
 # =============
 
 # CUDA
+LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda/lib64"
 LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda-8.0/lib64"
 LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda-8.0/extras/CUPTI/lib64"
 LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda-9.0/lib64"
@@ -271,3 +272,19 @@ export CUDA_HOME=/usr/local/cuda
 
 # TensorFlow logging
 TF_CPP_MIN_LOG_LEVEL=1
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/june/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/june/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/june/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/june/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
