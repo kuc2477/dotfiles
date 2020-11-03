@@ -114,10 +114,8 @@ else
 fi
 
 # nvim alias
-if [[ -x "$(command -v nvim)" ]]; then
-  alias vi='nvim'
-  alias vim='nvim'
-fi
+alias vi='nvim'
+alias vim='nvim'
 
 # clipboard alias
 alias pbcopy="xclip -selection c"
@@ -183,17 +181,8 @@ fi
 # Lang Specific Configurations
 # ============================
 
-# pyenv / pyenv-virtualenv
-export PATH="$HOME/.pyenv/bin:$PATH"
-export PATH="$HOME/.pyenv/shims:$PATH"
-export PYTHON_CONFIGURE_OPTS="--enable-shared"
-if [ -x "$(which pyenv)" ]; then
-  eval "$(pyenv init -)"
-  eval "$(pyenv virtualenv-init -)"
-fi
-
-# pythonrc
-export PYTHONSTARTUP="$HOME/.pythonrc.py"
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/bin:$PATH"
 
 
 # nvm
@@ -211,37 +200,6 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 fi
 
 
-# ==============
-# Productivities
-# ==============
-
-# direnv
-eval "$(direnv hook bash)"
-
-# fzf
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
-# powerline
-powerline-daemon -q
-POWERLINE_BASH_CONTINUATION=1
-POWERLINE_BASH_SELECT=1
-[ -f ~/.powerline ] && . ~/.powerline
-
-# autojump
-[ -f /usr/share/autojump/autojump.sh ] && . /usr/share/autojump/autojump.sh
-[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
-
-# tiny-care-terminal
-export TTC_BOTS='tinycarebot,selfcare_bot,magicrealismbot'
-export TTC_REPOS='~/Works,~/Private'
-export TTC_WEATHER='Seoul'
-export TTC_CELSIUS=true
-export TTC_APIKEYS=false
-export TTC_CONSUMER_SECRET='...'
-export TTC_ACCESS_TOKEN='...'
-export TTC_ACCESS_TOKEN_SECRET='...'
-
-
 # use gpu
 function usegpu {
     gpu_id="$1"
@@ -256,18 +214,51 @@ function usegpu {
     export CUDA_VISIBLE_DEVICES=$gpu_id
 }
 
-
 # =============
 # Deep Learning
 # =============
 
-# CUDA
-LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda-8.0/lib64"
-LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda-8.0/extras/CUPTI/lib64"
-LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda-9.0/lib64"
-LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda-9.0/extras/CUPTI/lib64"
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH"
-export CUDA_HOME=/usr/local/cuda
-
 # TensorFlow logging
 TF_CPP_MIN_LOG_LEVEL=1
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home_namjune/junsoo.ha/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home_namjune/junsoo.ha/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/home_namjune/junsoo.ha/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home_namjune/junsoo.ha/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+# conda autocompletion
+CONDA_ROOT=$HOME/anaconda3
+if [[ -r $CONDA_ROOT/etc/profile.d/bash_completion.sh ]]; then
+    source $CONDA_ROOT/etc/profile.d/bash_completion.sh
+fi
+
+# ==============
+# Productivities
+# ==============
+
+# powerline
+powerline-daemon -q
+POWERLINE_BASH_CONTINUATION=1
+POWERLINE_BASH_SELECT=1
+[ -f ~/.powerline ] && . ~/.powerline
+
+
+# direnv
+eval "$(direnv hook bash)"
+
+# fzf
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+# autojump
+[ -f /usr/share/autojump/autojump.sh ] && . /usr/share/autojump/autojump.sh
+[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh

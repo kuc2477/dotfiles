@@ -21,7 +21,7 @@ filetype off
 call plug#begin('~/.vim/plugged')
 
 " Autocompletions
-Plug 'Shougo/deoplete.nvim',     { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/deoplete.nvim',     { 'do': ':UpdateRemotePlugins', 'tag': '5.1' }
 Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern', 'for': 'javascript.jsx' }
 Plug 'zchee/deoplete-jedi',      { 'do': 'pip install jedi', 'for': 'python' }
 Plug 'eagletmt/neco-ghc',        { 'do': 'stack install ghc-mod', 'for': 'haskell' }
@@ -56,6 +56,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'Raimondi/delimitMate'
 Plug 'godlygeek/tabular'
 Plug 'kuc2477/vim-move'
+Plug 'tmhedberg/SimpylFold'
 
 " Visual supports
 Plug 'severin-lemaignan/vim-minimap'
@@ -200,10 +201,10 @@ filetype plugin indent on
 "=============================Plug Settings================================="
 
 " deoplete
+let g:deoplete#sources#jedi#python_path = expand('~/anaconda3/bin/python')
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources#jedi#show_docstring = 1
 let g:deoplete#sources#jedi#server_timeout = 30
-let g:deoplete#sources#jedi#python_path = expand('~/.pyenv/shims/python')
 
 
 " supertab
@@ -365,7 +366,7 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
 " Syntastic language specific settings
-let g:syntastic_python_python_exec = expand('~/.pyenv/shims/python') " use python3 syntax
+let g:syntastic_python_python_exec = expand('~/anaconda3/bin/python') " use python3 syntax
 let g:syntastic_python_checkers = ['flake8']                 " use flake8 for python
 let g:syntastic_javascript_checkers = ['eslint']             " use eslint for javascript
 let g:syntastic_html_tidy_exec = 'tidy'                      " use tidy for html5
@@ -448,7 +449,8 @@ au filetype python let g:jedi#usages_command = '<leader>n'
 au filetype python let g:jedi#rename_command = '<leader>r'
 au filetype python let g:jedi#popup_on_dot = 0
 au filetype python let g:jedi#popup_select_first = 1
-let g:python_host_prog = expand('~/.pyenv/shims/python')
+let g:python_host_prog = expand('~/anaconda3/bin/python')
+let g:python3_host_prog = expand('~/anaconda3/bin/python')
 
 " vim-jsx
 let g:jsx_ext_required = 0
@@ -495,10 +497,12 @@ map <Leader>vx :VimuxInterruptRunner<CR>
 " markdown-preview.vim
 let g:mkdp_auto_close = 0
 let g:mkdp_command_for_global = 1
-au filetype markdown let g:python_host_prog = expand('~/.pyenv/shims/python2')
+au filetype markdown let g:python_host_prog = expand('~/anaconda3/bin/python')
 
 " vim-better-whitespace
-autocmd FileType python,javascript,javascript.jsx,html,htmldjango autocmd BufEnter * EnableStripWhitespaceOnSave
+autocmd FileType python,javascript,javascript.jsx,html,htmldjango let g:better_whitespace_enabled=1
+autocmd FileType python,javascript,javascript.jsx,html,htmldjango let g:strip_whitespace_on_save=1
+autocmd FileType python,javascript,javascript.jsx,html,htmldjango let g:strip_whitespace_confirm=0
 
 
 "============================General Settings================================"
@@ -574,6 +578,15 @@ set colorcolumn=80
 set bg=dark
 autocmd VimEnter,BufReadPost,BufEnter,colorscheme *
             \ highlight ColorColumn ctermbg=red ctermfg=white cterm=bold
+
+" Strip trailing whitespaces
+fun! <SID>StripTrailingWhitespaces()
+    let l = line(".")
+    let c = col(".")
+    keepp %s/\s\+$//e
+    call cursor(l, c)
+endfun
+autocmd FileType c,cpp,java,php,ruby,python autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 
 
 " Key mappings
