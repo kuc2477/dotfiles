@@ -6,15 +6,6 @@ let g:plug_timeout = 300
 let s:osname = substitute(system('uname'), "\n", "", "")
 let s:username = substitute(system('whoami'), "\n", "", "")
 
-" PLATFORM DEPENDENT VALUES
-if s:osname == 'Darwin'
-    let s:HOME_PATH = '/Users/'.s:username
-    let g:INSTALLER = 'brew install '
-else
-    let s:HOME_PATH = '/home/'.s:username
-    let g:INSTALLER = 'sudo apt get install '
-endif
-
 "============================Plug List======================================"
 
 filetype off
@@ -22,7 +13,6 @@ call plug#begin('~/.vim/plugged')
 
 " Autocompletions
 Plug 'Shougo/deoplete.nvim',     { 'do': ':UpdateRemotePlugins' }
-Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern', 'for': 'javascript.jsx' }
 Plug 'zchee/deoplete-jedi',      { 'do': 'pip install jedi', 'for': 'python' }
 Plug 'eagletmt/neco-ghc',        { 'do': 'stack install ghc-mod', 'for': 'haskell' }
 Plug 'ervandew/supertab'
@@ -34,8 +24,6 @@ Plug 'embear/vim-localvimrc'
 Plug 'scrooloose/syntastic', {
             \'do':
             \'pip install flake8 yamllint && ' .
-            \'npm -g install eslint && ' .
-            \g:INSTALLER .  'shellcheck',
             \}
 
 " Text objects / Editing supports
@@ -70,10 +58,9 @@ Plug 'ntpeters/vim-better-whitespace'
 Plug 'junegunn/vim-emoji'
 
 " Browsing
-Plug 'burke/matcher',                { 'do': 'sudo make && make install' }
 Plug 'Numkil/ag.nvim'
 Plug 'kien/ctrlp.vim'
-Plug 'junegunn/fzf'
+Plug 'junegunn/fzf', {'do': { -> fzf# install() }}
 Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree',          { 'on': 'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin',  { 'on': 'NERDTreeToggle' }
@@ -110,12 +97,9 @@ Plug 'majutsushi/tagbar',  { 'do': 'stack install ghc-mod hasktags' }
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-notes'
 Plug 'jceb/vim-orgmode'
-Plug 'tyru/open-browser.vim'
 Plug 'mhinz/vim-startify'
 Plug 'esneider/YUNOcommit.vim'
 Plug 'guns/xterm-color-table.vim'
-Plug 'jez/vim-superman'
-Plug 'itchyny/calendar.vim'
 Plug 'chrisbra/unicode.vim'
 
 " Colorschemes
@@ -319,10 +303,6 @@ let g:wheel#map#down = '<M-j>'
 let g:netrw_nogx = 1 " disable netrw's gx mapping
 nmap gx <Plug>(openbrowser-smart-search)
 vmap gx <Plug>(openbrowser-smart-search)
-
-" calendar.vim
-let g:calendar_google_calendar = 1
-let g:calendar_google_task = 1
 
 " Syntastic
 set statusline+=%#waringmsg#

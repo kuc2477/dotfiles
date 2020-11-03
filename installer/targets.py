@@ -4,8 +4,6 @@ from . import commands as C
 from . import utils as U
 from .target import target
 from .constants.urls import (
-    SEOUL256_GNOME_URL,
-    SEOUL256_ITERM_URL,
     NVM_URL,
     STACK_URL,
     PYENV_URL,
@@ -38,27 +36,6 @@ def bashrc():
         # direnv configuration
         C.link('bash/direnvrc', '~/.direnvrc')
     ]
-
-
-@target(['_submodules', '_font'])
-def themes():
-    # seoul256
-    if not U.is_osx():
-        install_seoul256_path = '~/.config/seoul256-gnome-terminal'
-        install_seoul256 = (
-            'git clone {url} {path} && '
-            '. {path}/seoul256-dark.sh'
-        ).format(url=SEOUL256_GNOME_URL, path=install_seoul256_path) \
-            if not U.exists(install_seoul256_path) else None
-    else:
-        install_seoul256_path = '~/.config/seoul256-iTerm'
-        install_seoul256 = (
-            'git clone {url} {path} && '
-            '. {path}/seoul256-dark.sh'
-        ).format(url=SEOUL256_ITERM_URL, path=install_seoul256_path) \
-            if not U.exists(install_seoul256_path) else None
-
-    return install_seoul256
 
 
 # ================
@@ -199,38 +176,13 @@ def tmuxrc():
 # =====================================
 
 @target
-def python():
-    if U.is_osx():
-        install_pyenv_system_dependencies = None
-        install_pyenv = 'brew update && brew install pyenv pyenv-virtualenv'
-    else:
-        install_pyenv_system_dependencies = C.install_system_packages(
-            'make', 'libssl-dev', 'zlib1g-dev',
-            'libbz2-dev', 'libreadline-dev', 'libsqlite3-dev', 'wget',
-            'curl', 'llvm', 'libncurses5-dev'
-        )
-        install_pyenv = 'curl -L {} | bash'.format(PYENV_URL)
-
+def conda():
     return [
-        C.if_no_command('pyenv', install_pyenv_system_dependencies),
-        C.if_no_command('pyenv', install_pyenv),
-        C.link('python/pypirc', '~/.pypirc'),
-        C.link('python/pythonrc.py', '~/.pythonrc.py'),
     ]
 
 
 @target
-def javascript():
-    return [
-        C.if_no_command('nvm', 'curl -o- {} | bash'.format(NVM_URL)),
-        '. ~/.nvm/nvm.sh && nvm install node',
-        '. ~/.nvm/nvm.sh && nvm use node',
-        C.link('javascript/tern-project', '~/.tern-project'),
-    ]
-
-
-@target
-def haskell():
+def stack():
     return [
         C.if_no_command('stack', 'curl -sSL {} | sh'.format(STACK_URL)),
         'stack setup',
@@ -243,24 +195,8 @@ def haskell():
 
 @target(['javascript'])
 def utils():
-    # system dependencies
-    install_system_dependencies = C.install_system_packages(
-        'libwebp-dev',
-        'libgraphicsmagick++-dev'
-    )
-
     # bins
     install_scripts = C.link('bin', '~/bin')
-
-    # gogh
-    install_gogh_dependencies = C.install_system_packages('dconf-cli')
-    install_gogh = (
-        'wget -O ~/bin/gogh https://git.io/vQgMr && '
-        'chmod +x ~/bin/gogh'
-    ) if not U.is_osx() else None
-
-    # pgweb
-    install_pgweb = 'brew cask install pgweb' if U.is_osx() else None
 
     # fzf
     install_fzf = (
@@ -269,53 +205,33 @@ def utils():
         else None
     )
 
-    # database related utils (often requires sudo authority)
-    install_db_utils = (
-        'sudo pip install pgcli'
-    )
-
-    commands = [
+    return [
         install_scripts,
-        install_gogh_dependencies,
-        install_gogh,
-        install_system_dependencies,
-        install_pgweb,
         install_fzf,
-        install_db_utils,
         'pip install saws haxor-news http-prompt khal',
-        C.in_nvm('npm install -g git-standup tiny-care-terminal'),
         C.install_system_packages(
             'cowsay', 'fortune', 'toilet', 'autojump', 'task', 'pv', 'jq',
             'jid', 'httpie', 'ag', 'ranger', 'tig', 'irssi',
         ),
     ]
 
-    return (
-        commands if U.is_osx() else
-        commands + [C.install_system_packages(
-            'xdg-utils', 'gnome-tweak-tool', 'geary',
-        )]
-    )
-
 
 # ==================
 # Dependency Targets
 # ==================
+
+@target
+def _submodules():
+    return 'git submodule update --init'
 
 @target(['_submodules'])
 def _font():
     return 'fonts/install.sh'
 
 
-@target
-def _submodules():
-    return 'git submodule update --init'
-
-
-@target(['python', '_font'])
+@target(['_font'])
 def _vim_deps():
     return [
-        C.install_system_packages('bashdb', 'cmake', 'ctags'),
         'pip install neovim',
         'pip3 install neovim'
     ]
