@@ -6,23 +6,13 @@ let g:plug_timeout = 300
 let s:osname = substitute(system('uname'), "\n", "", "")
 let s:username = substitute(system('whoami'), "\n", "", "")
 
-" PLATFORM DEPENDENT VALUES
-if s:osname == 'Darwin'
-    let s:HOME_PATH = '/Users/'.s:username
-    let g:INSTALLER = 'brew install '
-else
-    let s:HOME_PATH = '/home/'.s:username
-    let g:INSTALLER = 'sudo apt get install '
-endif
-
 "============================Plug List======================================"
 
 filetype off
 call plug#begin('~/.vim/plugged')
 
 " Autocompletions
-Plug 'Shougo/deoplete.nvim',     { 'do': ':UpdateRemotePlugins', 'tag': '5.1' }
-Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern', 'for': 'javascript.jsx' }
+Plug 'Shougo/deoplete.nvim',     { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-jedi',      { 'do': 'pip install jedi', 'for': 'python' }
 Plug 'eagletmt/neco-ghc',        { 'do': 'stack install ghc-mod', 'for': 'haskell' }
 Plug 'ervandew/supertab'
@@ -34,8 +24,6 @@ Plug 'embear/vim-localvimrc'
 Plug 'scrooloose/syntastic', {
             \'do':
             \'pip install flake8 yamllint && ' .
-            \'npm -g install eslint && ' .
-            \g:INSTALLER .  'shellcheck',
             \}
 
 " Text objects / Editing supports
@@ -60,7 +48,7 @@ Plug 'tmhedberg/SimpylFold'
 
 " Visual supports
 Plug 'severin-lemaignan/vim-minimap'
-Plug 'vim-airline/vim-airline', { 'commit': '470e9870f13830580d1938a2dae1be5b6e43d92a' }
+Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'sjl/gundo.vim'
 Plug 'kshenoy/vim-signature'
@@ -71,10 +59,9 @@ Plug 'ntpeters/vim-better-whitespace'
 Plug 'junegunn/vim-emoji'
 
 " Browsing
-Plug 'burke/matcher',                { 'do': 'sudo make && make install' }
 Plug 'Numkil/ag.nvim'
 Plug 'kien/ctrlp.vim'
-Plug 'junegunn/fzf'
+Plug 'junegunn/fzf', {'do': { -> fzf# install() }}
 Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree',          { 'on': 'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin',  { 'on': 'NERDTreeToggle' }
@@ -89,10 +76,6 @@ Plug 'wellle/tmux-complete.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
-
-" Vim feature extensions
-Plug 'tpope/vim-obsession'
-Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 
 " Writing
 Plug 'reedes/vim-pencil'
@@ -111,20 +94,14 @@ Plug 'reedes/vim-wheel'
 Plug 'xolox/vim-easytags', { 'on': 'TagbarToggle' }
 Plug 'majutsushi/tagbar',  { 'do': 'stack install ghc-mod hasktags' }
 
-" Snippet
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-
 " Miscs
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-notes'
 Plug 'jceb/vim-orgmode'
-Plug 'tyru/open-browser.vim'
 Plug 'mhinz/vim-startify'
 Plug 'esneider/YUNOcommit.vim'
 Plug 'guns/xterm-color-table.vim'
-Plug 'jez/vim-superman'
-Plug 'itchyny/calendar.vim'
+Plug 'chrisbra/unicode.vim'
 
 " Colorschemes
 Plug 'flazz/vim-colorschemes'
@@ -157,9 +134,6 @@ Plug 'dag/vim2hs',                        { 'for': 'haskell'} " syntax highlight
 Plug 'eagletmt/ghcmod-vim',               { 'for': 'haskell'} " use ghc-mod for type information and linting.
 Plug 'Twinside/vim-hoogle',               { 'for': 'haskell'}
 
-" Octave
-Plug 'jvirtanen/vim-octave', {'for': 'octave'}
-
 " Bash
 Plug 'kuc2477/bash-support.vim', {'for': 'sh'}
 
@@ -169,8 +143,6 @@ Plug 'othree/html5.vim'
 
 " CSS / LESS / SCSS
 Plug 'JulesWang/css.vim'
-Plug 'groenewege/vim-less'
-Plug 'cakebaker/scss-syntax.vim'
 Plug 'ap/vim-css-color'
 
 " JSON
@@ -180,19 +152,8 @@ Plug 'elzr/vim-json'
 Plug 'plasticboy/vim-markdown'
 Plug 'iamcco/markdown-preview.vim'
 
-" RsT
-Plug 'Rykka/riv.vim',    { 'for': 'rst' }
-Plug 'Rykka/InstantRst', { 'do': 'pip install instant-rst' }
-
 " LaTeX
 Plug 'lervag/vimtex'
-
-" Thrift
-Plug 'solarnz/thrift.vim'
-
-" Groovy
-Plug 'vim-scripts/groovy.vim'
-Plug 'vim-scripts/groovyindent-unix'
 
 call plug#end()
 filetype plugin indent on
@@ -343,17 +304,6 @@ let g:wheel#map#down = '<M-j>'
 let g:netrw_nogx = 1 " disable netrw's gx mapping
 nmap gx <Plug>(openbrowser-smart-search)
 vmap gx <Plug>(openbrowser-smart-search)
-
-" calendar.vim
-let g:calendar_google_calendar = 1
-let g:calendar_google_task = 1
-
-" UltiSnips
-let g:UltiSnipsSnippetDirectories=["UltiSnips", $HOME."/.snippets"]
-let g:UltiSnipsExpandTrigger="<C-e>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<S-tab>"
-let g:UltiSnipsEditSplit="vertical"
 
 " Syntastic
 set statusline+=%#waringmsg#

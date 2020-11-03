@@ -218,9 +218,6 @@ function usegpu {
 # Deep Learning
 # =============
 
-# TensorFlow logging
-TF_CPP_MIN_LOG_LEVEL=1
-
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/home_namjune/junsoo.ha/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
