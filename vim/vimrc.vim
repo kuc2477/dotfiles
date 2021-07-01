@@ -95,7 +95,6 @@ Plug 'majutsushi/tagbar',  { 'do': 'stack install ghc-mod hasktags' }
 
 " Miscs
 Plug 'xolox/vim-misc'
-Plug 'xolox/vim-notes'
 Plug 'jceb/vim-orgmode'
 Plug 'mhinz/vim-startify'
 Plug 'esneider/YUNOcommit.vim'
@@ -397,7 +396,7 @@ au filetype python let g:jedi#usages_command = '<leader>n'
 au filetype python let g:jedi#rename_command = '<leader>r'
 au filetype python let g:jedi#popup_on_dot = 1
 au filetype python let g:jedi#popup_select_first = 1
-au filetype python let g:jedi#use_splits_not_buffers = "left"
+"au filetype python let g:jedi#use_splits_not_buffers = "left"
 let g:python_host_prog = expand('~/anaconda3/bin/python')
 let g:python3_host_prog = expand('~/anaconda3/bin/python')
 
