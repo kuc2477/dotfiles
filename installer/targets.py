@@ -4,6 +4,7 @@ from . import commands as C
 from . import utils as U
 from .target import target
 from .constants.urls import (
+    PLUG_URL,
     STACK_URL,
     FZF_URL,
     JUPYTER_VIM_BINDING_URL,
@@ -129,10 +130,12 @@ def rcs():
         # direnv configuration
         C.link('bash/direnvrc', '~/.direnvrc'),
         # vim
+        'curl -fLo ~/.vim/autoload/plug.vim --create-dirs {}'.format(PLUG_URL),
         'mkdir -p ~/.config/nvim',
         C.link('vim/init.vim', '~/.config/nvim/init.vim'),
         C.link('vim/vimrc.vim', '~/.vimrc'),
         C.link('vim/snippets', '~/.snippets'),
+        'vi +PlugInstall +VimProcInstall +qall'
     ]
 
 
