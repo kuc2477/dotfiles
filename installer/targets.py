@@ -4,43 +4,44 @@ from . import commands as C
 from . import utils as U
 from .target import target
 from .constants.urls import (
-    NVM_URL,
     STACK_URL,
-    PYENV_URL,
     FZF_URL,
-    PLUG_URL,
     JUPYTER_VIM_BINDING_URL,
 )
 
 
-# =========================
-# Shell Environment Targets
-# =========================
+LOCAL_PREFIX = "$HOME/.local/"
+
+COLOR_NONE = "\033[0m"
+COLOR_RED = "\033[0;31m"
+COLOR_GREEN = "\033[0;32m"
+COLOR_YELLOW = "\033[0;33m"
+COLOR_WHITE = "\033[1;37m"
+
 
 @target
-def bashrc():
+def conda():
+    pass
+
+
+@target
+def stack():
     return [
-        # autocompletions
-        C.install_system_packages('bash-completion'),
-        C.link(
-            'bash/autocompletions/git-completion.bash',
-            '~/.git-completion.bash',
-        ),
-        C.link(
-            'bash/autocompletions/tmux-completion.bash',
-            '~/.tmux-completion.bash'
-        ),
-        # bash configuration
-        C.link('bash/bashrc', '~/.bashrc'),
-        C.link('bash/bash_profile', '~/.bash_profile'),
-        # direnv configuration
-        C.link('bash/direnvrc', '~/.direnvrc')
+        C.if_no_command('stack', 'curl -sSL {} | bash'.format(STACK_URL)),
+        'stack setup',
     ]
 
 
-# ================
-# Powerline Target
-# ================
+@target
+def fd():
+    return 'bash installer/linux_locals.sh; install_fd'
+
+
+@target
+def tmux():
+    # TODO: NOT IMPLEMENTED YET
+    pass
+
 
 @target(['_submodules', '_font'])
 def powerline():
@@ -78,151 +79,90 @@ def powerline():
     ]
 
 
-# ==========================
-# Jupyter Environment Target
-# ==========================
-
 @target
 def jupyter():
-    return 'pip install ' + ' '.join([
+    install_jupyter_packages = 'pip install ' + ' '.join([
         'jupyter',
         'jupyterthemes',
         'jupyter_contrib_nbextensions',
         'jupyter_nbextensions_configurator',
     ])
-
-
-@target
-def jupyter_configs():
-    jupyter_data_dir = U.stdout('jupyter --data-dir')
-    return [
+    install_jupyter_nbexts = [
         'jt -t gruvboxd',
         'jupyter contrib nbextension install --user',
         'jupyter nbextensions_configurator enable --use',
-        'mkdir -p {}/nbextensions'.format(jupyter_data_dir),
+        'mkdir -p {}/nbextensions'.format(U.stdout('jupyter --data-dir')),
         'cd {}/nbextensions && git clone {} && chmod -R go-w vim_binding'
-        .format(jupyter_data_dir, JUPYTER_VIM_BINDING_URL)
+        .format(U.stdout('jupyter --data-dir'), JUPYTER_VIM_BINDING_URL)
     ]
-
-
-# ====================
-# Vim Specific Targets
-# ====================
-
-@target(['_vim_deps'])
-def vim():
-    if U.is_osx():
-        prepare_vim_registry = ['brew tap neovim/neovim']
-    else:
-        prepare_vim_registry = [
-            'sudo add-apt-repository ppa:neovim-ppa/stable --yes',
-            'sudo apt-get update'
-        ]
-    return prepare_vim_registry + [C.install_system_packages('neovim')]
+    return [
+        install_jupyter_packages,
+        *install_jupyter_nbexts
+    ]
 
 
 @target
-def vimrc():
+def acs():
     return [
-        'curl -fLo ~/.vim/autoload/plug.vim --create-dirs {}'.format(PLUG_URL),
-        'mkdir -p ~/.config/nvim',
-        C.link('vim/init.vim', '~/.config/nvim/init.vim'),
-        C.link('vim/vimrc.vim', '~/.vimrc'),
-        C.link('vim/snippets', '~/.snippets'),
-        'vi +PlugInstall +VimProcInstall +qall',
+        C.link(
+            'bash/autocompletions/git-completion.bash',
+            '~/.git-completion.bash',
+        ),
+        C.link(
+            'bash/autocompletions/tmux-completion.bash',
+            '~/.tmux-completion.bash'
+        ),
     ]
 
 
-# =====================
-# Tmux Specific Targets
-# =====================
-
-@target(['_submodules', '_font'])
-def tmux():
-    if U.is_osx():
-        deps = [
-            'pkg-config', 'libevent', 'automake',
-            'reattach-to-user-namespace'
-        ]
-    else:
-        deps = [
-            'pkg-config', 'libevent', 'automake',
-            'libncurses-dev'
-        ]
-
-    compile_tmux = (
-        'cd tmux/tmux-src && ./autogen.sh && ./configure && '
-        'make && sudo make install'
-    )
-
+@target
+def rcs():
     return [
-        C.install_system_packages(*deps),
-        C.if_no_command('tmux', compile_tmux),
-    ]
-
-
-@target(['_submodules', '_font'])
-def tmuxrc():
-    return [
+        # tmux
         C.link('tmux/tmux', '~/.tmux'),
         C.link('tmux/tmux.conf', '~/.tmux.conf'),
         C.link('tmux/tmux-powerline', '~/.tmux-powerline'),
         C.link('tmux/tmux-powerlinerc', '~/.tmux-powerlinerc'),
+        # bash configuration
+        C.link('bash/bashrc', '~/.bashrc'),
+        C.link('bash/bash_profile', '~/.bash_profile'),
+        # direnv configuration
+        C.link('bash/direnvrc', '~/.direnvrc'),
+        # vim
+        'mkdir -p ~/.config/nvim',
+        C.link('vim/init.vim', '~/.config/nvim/init.vim'),
+        C.link('vim/vimrc.vim', '~/.vimrc'),
+        C.link('vim/snippets', '~/.snippets'),
     ]
 
-
-# =====================================
-# Language Specific Environment Targets
-# =====================================
 
 @target
-def conda():
-    return [
-    ]
+def bins():
+    return C.link('bin', '~/bin')
 
 
 @target
-def stack():
-    return [
-        C.if_no_command('stack', 'curl -sSL {} | sh'.format(STACK_URL)),
-        'stack setup',
-    ]
-
-
-# ===============
-# Utility Targets
-# ===============
-
-@target(['javascript'])
-def utils():
-    # bins
-    install_scripts = C.link('bin', '~/bin')
-
+def fzf():
     # fzf
-    install_fzf = (
+    return (
         'git clone --depth 1 {} ~/.fzf && ~/.fzf/install --all'
         .format(FZF_URL) if not os.path.exists(os.path.expanduser('~/.fzf'))
         else None
     )
 
-    return [
-        install_scripts,
-        install_fzf,
-        'pip install saws haxor-news http-prompt khal',
-        C.install_system_packages(
-            'cowsay', 'fortune', 'toilet', 'autojump', 'task', 'pv', 'jq',
-            'jid', 'httpie', 'ag', 'ranger', 'tig', 'irssi',
-        ),
-    ]
 
+@target
+def miscs():
+    return C.install_system_packages(
+        'cowsay', 'fortune', 'toilet', 'autojump',
+        'ag', 'ranger', 'tig',
+    )
 
-# ==================
-# Dependency Targets
-# ==================
 
 @target
 def _submodules():
     return 'git submodule update --init'
+
 
 @target(['_submodules'])
 def _font():

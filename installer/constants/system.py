@@ -1,2 +1,0 @@
-# SHELL
-SHELL = '/bin/bash'

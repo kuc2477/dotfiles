@@ -17,14 +17,15 @@ Plug 'zchee/deoplete-jedi',      { 'do': 'pip install jedi', 'for': 'python' }
 Plug 'eagletmt/neco-ghc',        { 'do': 'stack install ghc-mod', 'for': 'haskell' }
 Plug 'ervandew/supertab'
 
+" Snippets
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+
 " Coworking
 Plug 'embear/vim-localvimrc'
 
 " Linting interface
-Plug 'scrooloose/syntastic', {
-            \'do':
-            \'pip install flake8 yamllint && ' .
-            \}
+Plug 'scrooloose/syntastic', { 'do': 'pip install flake8 yamllint && ' }
 
 " Text objects / Editing supports
 Plug 'kana/vim-textobj-user'
@@ -47,7 +48,6 @@ Plug 'kuc2477/vim-move'
 Plug 'tmhedberg/SimpylFold'
 
 " Visual supports
-Plug 'severin-lemaignan/vim-minimap'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'sjl/gundo.vim'
@@ -56,12 +56,11 @@ Plug 'pgdouyon/vim-evanesco'
 Plug 'gorkunov/smartpairs.vim'
 Plug 'myusuf3/numbers.vim'
 Plug 'ntpeters/vim-better-whitespace'
-Plug 'junegunn/vim-emoji'
 
 " Browsing
 Plug 'Numkil/ag.nvim'
 Plug 'kien/ctrlp.vim'
-Plug 'junegunn/fzf', {'do': { -> fzf# install() }}
+Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree',          { 'on': 'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin',  { 'on': 'NERDTreeToggle' }
@@ -108,7 +107,6 @@ Plug 'flazz/vim-colorschemes'
 Plug 'morhetz/gruvbox'
 Plug 'junegunn/seoul256.vim'
 Plug 'roosta/vim-srcery'
-Plug 'kudabux/vim-srcery-drk'
 Plug 'nightsense/carbonized'
 Plug 'nightsense/wonka'
 Plug 'ajmwagar/vim-deus'
@@ -212,7 +210,7 @@ let g:ctrlp_custom_ignore = {'dir': './data'}
 let g:seoul256_background = 234
 
 " vim-thematic
-let g:thematic#theme_name = 'srcery-dark'
+let g:thematic#theme_name = 'gruvbox'
 let g:thematic#themes = {
             \'srcery-dark': {
             \       'colorscheme': 'srcery-drk',
@@ -397,8 +395,9 @@ au filetype python let g:jedi#goto_definitions_command = '<leader>d'
 au filetype python let g:jedi#goto_assignments_command = '<leader>g'
 au filetype python let g:jedi#usages_command = '<leader>n'
 au filetype python let g:jedi#rename_command = '<leader>r'
-au filetype python let g:jedi#popup_on_dot = 0
+au filetype python let g:jedi#popup_on_dot = 1
 au filetype python let g:jedi#popup_select_first = 1
+au filetype python let g:jedi#use_splits_not_buffers = "left"
 let g:python_host_prog = expand('~/anaconda3/bin/python')
 let g:python3_host_prog = expand('~/anaconda3/bin/python')
 

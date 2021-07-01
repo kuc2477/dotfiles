@@ -1,16 +1,10 @@
 import contextlib
 import os
 import os.path
-from sys import platform
 import subprocess
+from .ascii import Colors
 from .registries import TARGET_REGISTRY, OPTION_REGISTRY
-from .constants.ascii import Colors
-from .constants.system import SYSTEM_SPECIFIC_NAMES, SHELL
 
-
-# ================
-# UTILITIES (CODE)
-# ================
 
 def header(string, margin_top=True, margin_bottom=False):
     margin_top = '\n' if margin_top else ''
@@ -99,21 +93,6 @@ def log_skipping_commands(command_names, reason='no sudo authority'):
         ), styles=['fg_yellow', 'bold'])
 
 
-def current_system_name():
-    return 'osx' if is_osx() else 'debian'
-
-
-def is_osx():
-    return platform == 'darwin'
-
-
-def system_specific_name(name, system):
-    try:
-        return SYSTEM_SPECIFIC_NAMES[name][system]
-    except KeyError:
-        return name
-
-
 def none_or_empty(command):
     is_none = command is None
     empty_string = isinstance(command, str) and len(command.strip()) == 0
@@ -134,10 +113,7 @@ def run_maybe_thunk_command(command):
         log_skipping_commands([c])
         return
     else:
-        os.system('{shell} -c "{command}"'.format(
-            shell=SHELL,
-            command=c,
-        ))
+        os.system('bash -c "{command}"'.format(command=c))
 
 
 def run(command):

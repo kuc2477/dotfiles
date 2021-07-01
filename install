@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import argparse
-from installer.constants.ascii import ASCII_ART
 from installer.registries import (
     TARGET_REGISTRY,
     OPTION_REGISTRY,
@@ -23,7 +22,6 @@ parser.add_argument('target', choices=[
 
 
 if __name__ == '__main__':
-    print(ASCII_ART)
     args = parser.parse_args()
     OPTION_REGISTRY.update(args.__dict__)
     TARGET_REGISTRY[args.target]()
