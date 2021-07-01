@@ -2,8 +2,10 @@ import contextlib
 import os
 import os.path
 import subprocess
+from sys import platform
 from .ascii import Colors
 from .registries import TARGET_REGISTRY, OPTION_REGISTRY
+from .constants.system import SYSTEM_SPECIFIC_NAMES
 
 
 def header(string, margin_top=True, margin_bottom=False):
@@ -122,6 +124,21 @@ def run(command):
             run_maybe_thunk_command(c)
     else:
         run_maybe_thunk_command(command)
+
+
+def current_system_name():
+    return 'osx' if is_osx() else 'debian'
+
+
+def is_osx():
+    return platform == 'darwin'
+
+
+def system_specific_name(name, system):
+    try:
+        return SYSTEM_SPECIFIC_NAMES[name][system]
+    except KeyError:
+        return name
 
 
 def stdout(command):
