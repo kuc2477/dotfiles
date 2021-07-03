@@ -134,8 +134,8 @@ def configs():
         'curl -fLo ~/.vim/autoload/plug.vim --create-dirs {}'.format(PLUG_URL),
         'mkdir -p ~/.config/nvim',
         C.link('vim/init.vim', '~/.config/nvim/init.vim'),
+        C.link('vim/coc-settings.json', '~/.config/nvim/coc-settings.json'),
         C.link('vim/vimrc.vim', '~/.vimrc'),
-        C.link('vim/snippets', '~/.snippets'),
     ]
 
 
@@ -145,11 +145,14 @@ def vim():
         'coc-jedi',
         'coc-pyright',
         'coc-sh',
+        'coc-json',
+        'coc-yaml',
+        'coc-html',
         'coc-diagnostic',
     ])
     return [
         'vi +PlugInstall +VimProcInstall +qall',
-        f'vi "+CocInstall {coc_plugs}"',
+        f'vi \'+CocInstall {coc_plugs}\'',
     ]
 
 
