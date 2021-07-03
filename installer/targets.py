@@ -8,6 +8,7 @@ from .constants.urls import (
     STACK_URL,
     FZF_URL,
     JUPYTER_VIM_BINDING_URL,
+    NVM_URL,
 )
 
 
@@ -103,7 +104,7 @@ def jupyter():
 
 
 @target
-def acs():
+def completions():
     return [
         C.link(
             'bash/autocompletions/git-completion.bash',
@@ -117,7 +118,7 @@ def acs():
 
 
 @target
-def rcs():
+def configs():
     return [
         # tmux
         C.link('tmux/tmux', '~/.tmux'),
@@ -135,13 +136,25 @@ def rcs():
         C.link('vim/init.vim', '~/.config/nvim/init.vim'),
         C.link('vim/vimrc.vim', '~/.vimrc'),
         C.link('vim/snippets', '~/.snippets'),
-        'vi +PlugInstall +VimProcInstall +qall'
+    ]
+
+
+@target
+def vim():
+    return [
+        'vi +PlugInstall +VimProcInstall +qall',
+        'vi +"CocInstall coc-pyright coc-jedi" +qall',
     ]
 
 
 @target
 def bins():
     return C.link('bin', '~/bin')
+
+
+@target
+def nvm():
+    return f'wget -qO- {NVM_URL} | bash'
 
 
 @target

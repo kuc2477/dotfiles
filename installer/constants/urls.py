@@ -24,3 +24,4 @@ SEOUL256_ITERM_URL = (
 JUPYTER_VIM_BINDING_URL = (
     'https://github.com/lambdalisue/jupyter-vim-binding vim_binding'
 )
+NVM_URL = 'https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh'

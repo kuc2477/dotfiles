@@ -4,6 +4,10 @@
       {
         "function": "powerline_gitstatus.gitstatus",
         "priority": 40
+      },
+      {
+          "function": "powerline_docker.docker",
+          "priority": 30
       }
     ]
   }

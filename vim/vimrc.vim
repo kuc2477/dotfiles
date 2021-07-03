@@ -12,8 +12,9 @@ filetype off
 call plug#begin('~/.vim/plugged')
 
 " Autocompletions
-Plug 'Shougo/deoplete.nvim',     { 'do': ':UpdateRemotePlugins' }
-Plug 'zchee/deoplete-jedi',      { 'do': 'pip install jedi', 'for': 'python' }
+"Plug 'Shougo/deoplete.nvim',     { 'do': ':UpdateRemotePlugins' }
+"Plug 'zchee/deoplete-jedi',      { 'do': 'pip install jedi', 'for': 'python' }
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'eagletmt/neco-ghc',        { 'do': 'stack install ghc-mod', 'for': 'haskell' }
 Plug 'ervandew/supertab'
 
@@ -59,7 +60,6 @@ Plug 'ntpeters/vim-better-whitespace'
 
 " Browsing
 Plug 'Numkil/ag.nvim'
-Plug 'kien/ctrlp.vim'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree',          { 'on': 'NERDTreeToggle' }
@@ -200,10 +200,6 @@ nmap <C-f> <Plug>(easymotion-sn)
 
 " fzf
 let g:fzf_layout = { 'down': '~20%' }
-
-" Ctrlp
-let g:ctrlp_cmd = 'CtrlPMixed'
-let g:ctrlp_custom_ignore = {'dir': './data'}
 
 " seoul256.vim
 let g:seoul256_background = 234
@@ -394,7 +390,7 @@ au filetype python let g:jedi#goto_definitions_command = '<leader>d'
 au filetype python let g:jedi#goto_assignments_command = '<leader>g'
 au filetype python let g:jedi#usages_command = '<leader>n'
 au filetype python let g:jedi#rename_command = '<leader>r'
-au filetype python let g:jedi#popup_on_dot = 1
+"au filetype python let g:jedi#popup_on_dot = 1
 au filetype python let g:jedi#popup_select_first = 1
 "au filetype python let g:jedi#use_splits_not_buffers = "left"
 let g:python_host_prog = expand('~/anaconda3/bin/python')
@@ -545,6 +541,8 @@ nnoremap - :vertical res -5<CR>
 nnoremap = :vertical res +5<CR>
 nnoremap _ :res -5<CR>
 nnoremap + :res +5<CR>
+nnoremap <C-t> :Lines<CR>
+nnoremap <C-p> :Files<CR>
 
 " Writing mode
 function! ToggleWritingMode()
@@ -570,44 +568,6 @@ imap <silent> jk <ESC>
 nnoremap <silent>gh zz
 nnoremap ; :
 vnoremap ; :
-
-" Use Ag if both ag and matcher is available
-if executable('ag') && executable('matcher!')
-    map <F2> :Ag TODO<CR>
-    " user ag over grep
-
-    set grepprg=ag\ --nogroup\ --nocolor
-    " user ag in ctrlp
-    let g:ctrlp_user_command = 'ag %s -l --nocolor -g""'
-    " age is fast enough that ctrlp doesn't need to cache
-    let g:ctrlp_use_caching = 0
-    " apply matcher to ctrlp
-    let g:ctrlp_match_func = { 'match': 'GoodMatch' }
-
-    function! GoodMatch(items, str, limit, mmode, ispath, crfile, regex)
-        " create a cache file if note yet exists
-        let cachefile = ctrlp#utils#cachedir().'matcher.cache'
-        if ! (filereadable(cachefile) && a:items == readfile(cachefile))
-            call writefile(a:items, cachefile)
-        endif
-        if !filereadable(cachefile)
-            return []
-        endif
-
-        " a:mmode is currently ignored. In the future, we should probably do
-        " something about that. the matcher behaves like 'full-line'.
-        let cmd = 'matcher --limit '.a:limit.' --manifest '.cachefile.' '
-        if !(exists('g:ctrlp_dotfiles') && g:ctrlp_dotfiles)
-            let cmd = cmd.'--no-dotfiles '
-        endif
-
-        let cmd = cmd.a:str
-        return split(system(cmd), "\n")
-    endfunction
-else
-    map <F2> :vimgrep /\<TODO\>/j **/*.py **/.*js **/*.html \| :cope<CR>
-endif
-
 
 "==========================Language Shim Settings============================="
 
