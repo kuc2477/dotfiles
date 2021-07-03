@@ -1,24 +1,25 @@
 import os
 import os.path
+
 from . import commands as C
 from . import utils as U
-from .target import target
 from .constants.urls import (
+    FZF_URL,
+    NVM_URL,
     PLUG_URL,
     STACK_URL,
-    FZF_URL,
     JUPYTER_VIM_BINDING_URL,
-    NVM_URL,
 )
+from .target import target
 
 
-LOCAL_PREFIX = "$HOME/.local/"
+LOCAL_PREFIX = '$HOME/.local/'
 
-COLOR_NONE = "\033[0m"
-COLOR_RED = "\033[0;31m"
-COLOR_GREEN = "\033[0;32m"
-COLOR_YELLOW = "\033[0;33m"
-COLOR_WHITE = "\033[1;37m"
+COLOR_NONE = '\033[0m'
+COLOR_RED = '\033[0;31m'
+COLOR_GREEN = '\033[0;32m'
+COLOR_YELLOW = '\033[0;33m'
+COLOR_WHITE = '\033[1;37m'
 
 
 @target
@@ -41,8 +42,7 @@ def fd():
 
 @target
 def tmux():
-    # TODO: NOT IMPLEMENTED YET
-    pass
+    return 'bash installer/linux_locals.sh; install_tmux'
 
 
 @target(['_submodules', '_font'])
@@ -50,7 +50,7 @@ def powerline():
     # powerline
     get_powerline_root_dir = (lambda: U.stdout(
         'pip show powerline-status | '
-        'grep -i location | grep -Eo /.*$'
+        'grep -i location | grep -Eo /.*$',
     ))
     get_powerline_bash_binding_path = (
         lambda: '{}/powerline/bindings/bash/powerline.sh'.format(
@@ -68,15 +68,15 @@ def powerline():
                         '~/.powerline', rel=False)),
         C.link(
             '{}/config.json'.format(powerline_config_dir),
-            '~/.config/powerline/config.json', rel=False
+            '~/.config/powerline/config.json', rel=False,
         ),
         C.link(
             '{}/colorscheme.json'.format(powerline_config_dir),
-            '~/.config/powerline/colorschemes/default.json', rel=False
+            '~/.config/powerline/colorschemes/default.json', rel=False,
         ),
         C.link(
             '{}/theme.json'.format(powerline_config_dir),
-            '~/.config/powerline/themes/shell/default.json', rel=False
+            '~/.config/powerline/themes/shell/default.json', rel=False,
         ),
     ]
 
@@ -95,7 +95,7 @@ def jupyter():
         'jupyter nbextensions_configurator enable --use',
         'mkdir -p {}/nbextensions'.format(U.stdout('jupyter --data-dir')),
         'cd {}/nbextensions && git clone {} && chmod -R go-w vim_binding'
-        .format(U.stdout('jupyter --data-dir'), JUPYTER_VIM_BINDING_URL)
+        .format(U.stdout('jupyter --data-dir'), JUPYTER_VIM_BINDING_URL),
     ]
     return [
         install_jupyter_packages,
@@ -112,7 +112,7 @@ def completions():
         ),
         C.link(
             'bash/autocompletions/tmux-completion.bash',
-            '~/.tmux-completion.bash'
+            '~/.tmux-completion.bash',
         ),
     ]
 
@@ -139,11 +139,17 @@ def configs():
     ]
 
 
-@target
+@target(['_vim_deps'])
 def vim():
+    coc_plugs = ' '.join([
+        'coc-jedi',
+        'coc-pyright',
+        'coc-sh',
+        'coc-diagnostic',
+    ])
     return [
         'vi +PlugInstall +VimProcInstall +qall',
-        'vi +"CocInstall coc-pyright coc-jedi" +qall',
+        f'vi "+CocInstall {coc_plugs}"',
     ]
 
 
@@ -161,9 +167,8 @@ def nvm():
 def fzf():
     # fzf
     return (
-        'git clone --depth 1 {} ~/.fzf && ~/.fzf/install --all'
-        .format(FZF_URL) if not os.path.exists(os.path.expanduser('~/.fzf'))
-        else None
+        f'git clone --depth 1 {FZF_URL} ~/.fzf && ~/.fzf/install --all'
+        if not os.path.exists(os.path.expanduser('~/.fzf')) else None
     )
 
 
@@ -171,7 +176,7 @@ def fzf():
 def miscs():
     return C.install_system_packages(
         'cowsay', 'fortune', 'toilet', 'autojump',
-        'ag', 'ranger', 'tig',
+        'ag', 'ranger', 'tig', 'ctags',
     )
 
 
@@ -188,6 +193,6 @@ def _font():
 @target(['_font'])
 def _vim_deps():
     return [
-        'pip install neovim',
-        'pip3 install neovim'
+        'pip install neovim flake8 yamllint',
     ]
+
