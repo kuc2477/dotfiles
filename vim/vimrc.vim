@@ -107,7 +107,7 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'nathanlong/vim-colors-writer'
 
 " Python
-"Plug 'davidhalter/jedi-vim',         { 'do': 'pip install jedi' }
+Plug 'davidhalter/jedi-vim',         { 'do': 'pip install jedi' }
 Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'kuc2477/vim-cute-python',      { 'for': 'python' }
 Plug 'vim-scripts/django.vim'
@@ -147,6 +147,15 @@ filetype plugin indent on
 
 " supertab
 let g:SuperTabDefaultCompletionType = "<c-n>"
+
+" jedi-vim (for code browsing; use coc-python for completion)
+au filetype python let g:jedi#completions_enabled = 0
+au filetype python let g:jedi#goto_definitions_command = '<leader>d'
+au filetype python let g:jedi#goto_assignments_command = '<leader>g'
+au filetype python let g:jedi#usages_command = '<leader>n'
+au filetype python let g:jedi#rename_command = '<leader>r'
+let g:python_host_prog = expand('~/anaconda3/bin/python')
+let g:python3_host_prog = expand('~/anaconda3/bin/python')
 
 " localvimrc
 let g:localvimrc_ask = 1
@@ -310,9 +319,6 @@ nnoremap <leader>l :Limelight!!<CR>
 autocmd! User GoyoEnter Limelight
 autocmd! User GoyoLeave Limelight!
 
-let g:python_host_prog = expand('~/anaconda3/bin/python')
-let g:python3_host_prog = expand('~/anaconda3/bin/python')
-
 " vim-jsx
 let g:jsx_ext_required = 0
 
@@ -358,7 +364,6 @@ map <Leader>vx :VimuxInterruptRunner<CR>
 " markdown-preview.vim
 let g:mkdp_auto_close = 0
 let g:mkdp_command_for_global = 1
-au filetype markdown let g:python_host_prog = expand('~/anaconda3/bin/python')
 
 " vim-better-whitespace
 autocmd FileType python,javascript,javascript.jsx,html,htmldjango let g:better_whitespace_enabled=1
@@ -397,10 +402,10 @@ nmap <silent> <c-[> <Plug>(coc-diagnostic-prev)
 nmap <silent> <c-]> <Plug>(coc-diagnostic-next)
 
 " GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+"nmap <silent> gd <Plug>(coc-definition)
+"nmap <silent> gy <Plug>(coc-type-definition)
+"nmap <silent> gi <Plug>(coc-implementation)
+"nmap <silent> gr <Plug>(coc-references)
 
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
