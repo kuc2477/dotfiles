@@ -13,7 +13,6 @@ call plug#begin('~/.vim/plugged')
 
 " Autocompletions
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'eagletmt/neco-ghc', { 'do': 'stack install ghc-mod', 'for': 'haskell' }
 Plug 'ervandew/supertab'
 
 " Snippets
@@ -58,7 +57,7 @@ Plug 'ntpeters/vim-better-whitespace'
 
 " Browsing
 Plug 'Numkil/ag.nvim'
-Plug 'junegunn/fzf'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree',          { 'on': 'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin',  { 'on': 'NERDTreeToggle' }
@@ -89,7 +88,7 @@ Plug 'reedes/vim-wheel'
 
 " Tag
 Plug 'xolox/vim-easytags', { 'on': 'TagbarToggle' }
-Plug 'majutsushi/tagbar',  { 'do': 'stack install ghc-mod hasktags' }
+Plug 'majutsushi/tagbar'
 
 " Miscs
 Plug 'xolox/vim-misc'
@@ -122,12 +121,6 @@ Plug 'mxw/vim-jsx'
 Plug 'pangloss/vim-javascript'
 Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'heavenshell/vim-jsdoc'
-
-" Haskell
-Plug 'Twinside/vim-syntax-haskell-cabal', { 'for': 'haskell'}
-Plug 'dag/vim2hs',                        { 'for': 'haskell'} " syntax highlighting and unicode conceals.
-Plug 'eagletmt/ghcmod-vim',               { 'for': 'haskell'} " use ghc-mod for type information and linting.
-Plug 'Twinside/vim-hoogle',               { 'for': 'haskell'}
 
 " Bash
 Plug 'kuc2477/bash-support.vim', {'for': 'sh'}
@@ -163,6 +156,11 @@ let g:SuperTabDefaultCompletionType = "<c-n>"
 let g:localvimrc_ask = 1
 let g:localvimrc_persistent = 2
 let g:localvimrc_event = ["VimEnter", "BufNewFile", "BufRead"]
+
+" Ultisnips
+let g:UltiSnipsExpandTrigger="<c-e>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<S-tab>"
 
 " nerdtree
 map <leader>] :NERDTreeToggle<CR>
@@ -234,36 +232,6 @@ nnoremap <leader>[[ :ThematicPrevious<CR>
 
 " Tagbar
 let g:tagbar_autofocus = 1
-let g:tagbar_type_haskell = {
-    \ 'ctagsbin': 'hasktags',
-    \ 'ctagsargs': '-x -c -o-',
-    \ 'kinds': [
-    \    'm:modules:0:1',
-    \    'd:data: 0:1',
-    \    'd_gadt: data gadt:0:1',
-    \    't:type names:0:1',
-    \    'c:classes:0:1',
-    \    'cons:constructors:1:1',
-    \    'c_gadt:constructor gadt:1:1',
-    \    'c_a:constructor accessors:1:1',
-    \    'ft:function types:1:1',
-    \    'fi:function implementations:0:1',
-    \    'o:others:0:1'
-    \ ],
-    \ 'sro': '.',
-    \ 'kind2scope': {
-    \    'm': 'modules',
-    \    'c': 'class',
-    \    'd': 'data',
-    \    't': 'type'
-    \ },
-    \ 'scope2kind': {
-    \    'module': 'm',
-    \    'class': 'c',
-    \    'data': 'd',
-    \    'type': 't'
-    \ }
-\}
 nnoremap <S-u> :TagbarToggle<CR>
 
 " MatchTagAlways
@@ -301,13 +269,9 @@ let g:syntastic_check_on_wq = 0
 
 " Syntastic language specific settings
 let g:syntastic_python_python_exec = expand('~/anaconda3/bin/python') " use python3 syntax
-let g:syntastic_python_checkers = ['flake8', 'pyright']                 " use flake8 for python
+let g:syntastic_python_checkers = ['flake8']                 " use flake8 for python
 let g:syntastic_javascript_checkers = ['eslint']             " use eslint for javascript
 let g:syntastic_html_tidy_exec = 'tidy'                      " use tidy for html5
-let g:syntastic_mode_map = {
-            \'mode': 'active',
-            \'passive_filetypes': ['haskell']
-            \}                                               " disable syntastic for haskell. we use ghc-mod-vim for it.
 
 " Gundo
 map <F3> :GundoToggle<CR>
@@ -368,13 +332,6 @@ nnoremap <leader>l :Limelight!!<CR>
 autocmd! User GoyoEnter Limelight
 autocmd! User GoyoLeave Limelight!
 
-" ghc-mod-vim
-au FileType haskell nnoremap <buffer> t :GhcModInfo<CR>
-au FileType haskell nnoremap <buffer> T :GhcModType<CR>
-au FileType haskell nnoremap <buffer> <leader>t :GhcModTypeClear<CR>
-au BufReadPost *.hs GhcModCheckAndLintAsync
-au BufWritePost *.hs GhcModCheckAndLintAsync
-
 let g:python_host_prog = expand('~/anaconda3/bin/python')
 let g:python3_host_prog = expand('~/anaconda3/bin/python')
 
@@ -432,6 +389,12 @@ autocmd FileType python,javascript,javascript.jsx,html,htmldjango let g:strip_wh
 
 
 "==============================CoC Settings================================="
+
+let g:coc_global_extensions = [
+            \'coc-python',
+            \'coc-json', 'coc-yaml',
+            \'coc-html', 'coc-git',
+            \]
 
 function! s:check_back_space() abort
   let col = col('.') - 1
@@ -550,7 +513,6 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
-
 "============================General Settings================================"
 
 " Add user local bin to runtime path
@@ -643,7 +605,7 @@ nnoremap = :vertical res +5<CR>
 nnoremap _ :res -5<CR>
 nnoremap + :res +5<CR>
 nnoremap <C-t> :Lines<CR>
-nnoremap <C-p> :Files<CR>
+nnoremap <C-p> :Files ~<CR>
 
 " Writing mode
 function! ToggleWritingMode()
@@ -670,6 +632,9 @@ nnoremap <silent>gh zz
 nnoremap ; :
 vnoremap ; :
 
+" Hide unwritten buffers
+set hidden
+
 "==========================Language Shim Settings============================="
 
 " Javascript
@@ -677,11 +642,6 @@ au FileType javascript let g:jsdoc_default_mapping = 1
 au FileType javascript noremap <C-e> :JsDoc<CR>
 au FileType javascript nnoremap ]] /\(function\s*(.*)\s*{\\|=>\s*{\)<CR>
 au FileType javascript nnoremap [[ ?\(function\s*(.*)\s*{\\|=>\s*{\)<CR>
-
-" Haskell
-au FileType haskell let g:haskellmode_completion_ghc = 0         "turn off haskell mode completion
-au FileType haskell let g:necoghc_enable_detailed_browse = 1     "use detailed browse
-au FileType haskell setlocal omnifunc=necoghc#omnifunc
 
 " Octave
 au BufRead,BufNewFile *.m,*.oct setfiletype octave

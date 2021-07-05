@@ -25,3 +25,6 @@ JUPYTER_VIM_BINDING_URL = (
     'https://github.com/lambdalisue/jupyter-vim-binding vim_binding'
 )
 NVM_URL = 'https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh'
+
+AG_URL = 'https://geoff.greer.fm/ag/releases/the_silver_searcher-2.2.0.tar.gz'
+AUTOJUMP_URL = 'https://github.com/wting/autojump'

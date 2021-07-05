@@ -9,6 +9,8 @@ from .constants.urls import (
     PLUG_URL,
     STACK_URL,
     JUPYTER_VIM_BINDING_URL,
+    AUTOJUMP_URL,
+    AG_URL,
 )
 from .target import target
 
@@ -28,6 +30,11 @@ def conda():
 
 
 @target
+def nvim():
+    return 'bash installer/linux_locals.sh install_neovim'
+
+
+@target
 def stack():
     return [
         C.if_no_command('stack', 'curl -sSL {} | bash'.format(STACK_URL)),
@@ -37,12 +44,12 @@ def stack():
 
 @target
 def fd():
-    return 'bash installer/linux_locals.sh; install_fd'
+    return 'bash installer/linux_locals.sh install_fd'
 
 
 @target
 def tmux():
-    return 'bash installer/linux_locals.sh; install_tmux'
+    return 'bash installer/linux_locals.sh install_tmux'
 
 
 @target(['_submodules', '_font'])
@@ -140,19 +147,22 @@ def configs():
 
 
 @target(['_vim_deps'])
-def vim():
+def vim_plugins():
+
     coc_plugs = ' '.join([
+        # autocompletions
         'coc-jedi',
-        'coc-pyright',
         'coc-sh',
         'coc-json',
         'coc-yaml',
         'coc-html',
+        # lint
         'coc-diagnostic',
     ])
     return [
+        'curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim',
         'vi +PlugInstall +VimProcInstall +qall',
-        f'vi \'+CocInstall {coc_plugs}\'',
+        # f'vi \'+CocInstall {coc_plugs}\'',
     ]
 
 
@@ -168,7 +178,6 @@ def nvm():
 
 @target
 def fzf():
-    # fzf
     return (
         f'git clone --depth 1 {FZF_URL} ~/.fzf && ~/.fzf/install --all'
         if not os.path.exists(os.path.expanduser('~/.fzf')) else None
@@ -177,10 +186,17 @@ def fzf():
 
 @target
 def miscs():
-    return C.install_system_packages(
-        'cowsay', 'fortune', 'toilet', 'autojump',
-        'ag', 'ranger', 'tig', 'ctags',
+    autojump = (
+        f'git clone {AUTOJUMP_URL} && cd autojump && ./install.py && '
+        'cd .. && rm -rf autojump'
     )
+    return [
+        autojump,
+        C.install_system_packages(
+            'cowsay', 'fortune', 'toilet',
+            'ag', 'ranger', 'tig', 'ctags',
+        )
+    ]
 
 
 @target
@@ -195,7 +211,10 @@ def _font():
 
 @target(['_font'])
 def _vim_deps():
-    return [
-        'pip install neovim flake8 yamllint',
-    ]
-
+    packages = ' '.join([
+        'neovim',
+        'jedi',
+        'flake8',
+        'yamllint',
+    ])
+    return f'pip install -U {packages}'

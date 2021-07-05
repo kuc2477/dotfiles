@@ -255,8 +255,12 @@ eval "$(direnv hook bash)"
 
 # fzf
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+if type ag &> /dev/null; then
+  export FZF_DEFAULT_COMMAND="FZF_DEFAULT_COMMAND
+ag -l --path-to-ignore ~/.ignore --nocolor --hidden -g ''"
+  export FZF_DEFAULT_OPTS='-m --height 50% --border'
+fi
 
 # autojump
-[ -f /usr/share/autojump/autojump.sh ] && . /usr/share/autojump/autojump.sh
-[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+[[ -s "$HOME/.autojump/etc/profile.d/autojump.sh" ]] && source "$HOME/.autojump/etc/profile.d/autojump.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
