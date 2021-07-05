@@ -22,9 +22,6 @@ Plug 'honza/vim-snippets'
 " Coworking
 Plug 'embear/vim-localvimrc'
 
-" Linting interface
-Plug 'scrooloose/syntastic'
-
 " Text objects / Editing supports
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-entire'
@@ -87,7 +84,6 @@ Plug 'terryma/vim-smooth-scroll'
 Plug 'reedes/vim-wheel'
 
 " Tag
-Plug 'xolox/vim-easytags', { 'on': 'TagbarToggle' }
 Plug 'majutsushi/tagbar'
 
 " Miscs
@@ -227,8 +223,6 @@ let g:thematic#themes = {
             \       'airline-theme': 'zenburn',
             \   }
             \}
-nnoremap <leader>]] :ThematicNext<CR>
-nnoremap <leader>[[ :ThematicPrevious<CR>
 
 " Tagbar
 let g:tagbar_autofocus = 1
@@ -256,22 +250,6 @@ let g:wheel#map#down = '<M-j>'
 let g:netrw_nogx = 1 " disable netrw's gx mapping
 nmap gx <Plug>(openbrowser-smart-search)
 vmap gx <Plug>(openbrowser-smart-search)
-
-" Syntastic
-set statusline+=%#waringmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_loc_list_height=3
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-
-" Syntastic language specific settings
-let g:syntastic_python_python_exec = expand('~/anaconda3/bin/python') " use python3 syntax
-let g:syntastic_python_checkers = ['flake8']                 " use flake8 for python
-let g:syntastic_javascript_checkers = ['eslint']             " use eslint for javascript
-let g:syntastic_html_tidy_exec = 'tidy'                      " use tidy for html5
 
 " Gundo
 map <F3> :GundoToggle<CR>
@@ -413,10 +391,10 @@ endif
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
-" Use `[g` and `]g` to navigate diagnostics
+" Use `[[` and `]]` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
+nmap <silent> <c-[> <Plug>(coc-diagnostic-prev)
+nmap <silent> <c-]> <Plug>(coc-diagnostic-next)
 
 " GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
