@@ -59,7 +59,6 @@ Plug 'myusuf3/numbers.vim'
 Plug 'ntpeters/vim-better-whitespace'
 
 " Browsing
-Plug 'Numkil/ag.nvim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
@@ -107,7 +106,7 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'nathanlong/vim-colors-writer'
 
 " Python
-Plug 'davidhalter/jedi-vim',         { 'do': 'pip install jedi' }
+Plug 'davidhalter/jedi-vim', { 'do': 'pip install jedi' }
 Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'kuc2477/vim-cute-python',      { 'for': 'python' }
 Plug 'vim-scripts/django.vim'
@@ -143,13 +142,13 @@ filetype plugin indent on
 "=============================Plug Settings================================="
 
 " jedi-vim (for code browsing; use coc-python for completion)
-au filetype python let g:jedi#completions_enabled = 0
-au filetype python let g:jedi#goto_definitions_command = '<leader>d'
-au filetype python let g:jedi#documentation_command = none
-au filetype python let g:jedi#goto_assignments_command = '<leader>g'
-au filetype python let g:jedi#usages_command = '<leader>n'
-au filetype python let g:jedi#rename_command = '<leader>r'
-au filetype python let g:jedi#environment_path = s:current_python_path
+let g:jedi#completions_enabled = 0
+let g:jedi#goto_definitions_command = '<leader>d'
+let g:jedi#goto_assignments_command = '<leader>g'
+let g:jedi#usages_command = '<leader>n'
+let g:jedi#rename_command = '<leader>r'
+let g:jedi#documentation_command = ''
+let g:jedi#environment_path = s:current_python_path
 
 " supertab
 let g:SuperTabDefaultCompletionType = "<c-n>"
@@ -347,8 +346,8 @@ call coc#config('python', {'pythonPath': s:current_python_path})
 
 " coc extensions
 let g:coc_global_extensions = [
-            \'coc-python',
-            \'coc-sh', 'coc-explorer',
+            \'coc-python', 'coc-explorer',
+            \'coc-sh', 'coc-vimlsp',
             \'coc-json', 'coc-yaml',
             \'coc-html', 'coc-git',
             \]
@@ -376,13 +375,13 @@ nmap <silent> <c-[> <Plug>(coc-diagnostic-prev)
 nmap <silent> <c-]> <Plug>(coc-diagnostic-next)
 
 " GoTo code navigation.
-"nmap <silent> gd <Plug>(coc-definition)
-"nmap <silent> gy <Plug>(coc-type-definition)
-"nmap <silent> gi <Plug>(coc-implementation)
-"nmap <silent> gr <Plug>(coc-references)
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 
-" Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+" Use K to show documentation in preview window (override jedi-vim)
+autocmd VimEnter * nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -512,18 +511,6 @@ set backspace=indent,eol,start
 " Set Clipboard
 set clipboard=unnamed
 
-" Copy to clipboard
-vnoremap  <leader>y  "+y
-nnoremap  <leader>Y  "+yg_
-nnoremap  <leader>y  "+y
-nnoremap  <leader>yy  "+yy
-
-" Paste from clipboard
-nnoremap <leader>p "+p
-nnoremap <leader>P "+P
-vnoremap <leader>p "+p
-vnoremap <leader>P "+P
-
 " Indentations
 set expandtab
 set smarttab
@@ -571,7 +558,7 @@ nnoremap - :vertical res -5<CR>
 nnoremap = :vertical res +5<CR>
 nnoremap _ :res -5<CR>
 nnoremap + :res +5<CR>
-nnoremap <C-t> :Lines<CR>
+nnoremap <C-t> :Ag<CR>
 nnoremap <C-p> :Files ~<CR>
 nnoremap <leader>b :Buffers<CR>
 
