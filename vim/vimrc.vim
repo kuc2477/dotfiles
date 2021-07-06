@@ -3,8 +3,14 @@ set nocompatible
 
 
 let g:plug_timeout = 300
-let s:osname = substitute(system('uname'), "\n", "", "")
-let s:username = substitute(system('whoami'), "\n", "", "")
+
+" a hack to dynamically configure conda env for plugins
+if $CONDA_PREFIX == ""
+  let s:current_python_path=$CONDA_PYTHON_EXE
+else
+  let s:current_python_path=$CONDA_PREFIX.'/bin/python'
+endif
+
 
 "============================Plug List======================================"
 
@@ -56,9 +62,6 @@ Plug 'ntpeters/vim-better-whitespace'
 Plug 'Numkil/ag.nvim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'scrooloose/nerdtree',          { 'on': 'NERDTreeToggle' }
-Plug 'Xuyuanp/nerdtree-git-plugin',  { 'on': 'NERDTreeToggle' }
-Plug 'jeetsukumaran/vim-buffergator'
 
 " Tmux
 Plug 'christoomey/vim-tmux-navigator'
@@ -80,15 +83,12 @@ Plug 'junegunn/limelight.vim'
 " Motion
 Plug 'Lokaltog/vim-easymotion'
 Plug 'justinmk/vim-sneak'
-Plug 'terryma/vim-smooth-scroll'
-Plug 'reedes/vim-wheel'
 
 " Tag
 Plug 'majutsushi/tagbar'
 
 " Miscs
 Plug 'xolox/vim-misc'
-Plug 'jceb/vim-orgmode'
 Plug 'mhinz/vim-startify'
 Plug 'esneider/YUNOcommit.vim'
 Plug 'guns/xterm-color-table.vim'
@@ -136,26 +136,23 @@ Plug 'elzr/vim-json'
 Plug 'plasticboy/vim-markdown'
 Plug 'iamcco/markdown-preview.vim'
 
-" LaTeX
-Plug 'lervag/vimtex'
-
 call plug#end()
 filetype plugin indent on
 
 
 "=============================Plug Settings================================="
 
-" supertab
-let g:SuperTabDefaultCompletionType = "<c-n>"
-
 " jedi-vim (for code browsing; use coc-python for completion)
 au filetype python let g:jedi#completions_enabled = 0
 au filetype python let g:jedi#goto_definitions_command = '<leader>d'
+au filetype python let g:jedi#documentation_command = none
 au filetype python let g:jedi#goto_assignments_command = '<leader>g'
 au filetype python let g:jedi#usages_command = '<leader>n'
 au filetype python let g:jedi#rename_command = '<leader>r'
-let g:python_host_prog = expand('~/anaconda3/bin/python')
-let g:python3_host_prog = expand('~/anaconda3/bin/python')
+au filetype python let g:jedi#environment_path = s:current_python_path
+
+" supertab
+let g:SuperTabDefaultCompletionType = "<c-n>"
 
 " localvimrc
 let g:localvimrc_ask = 1
@@ -167,26 +164,8 @@ let g:UltiSnipsExpandTrigger="<c-e>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<S-tab>"
 
-" nerdtree
-map <leader>] :NERDTreeToggle<CR>
-let NERDTreeIgnore = ['\.pyc$', '__pycache__']
-let g:NERDTreeIndicatorMapCustom = {
-    \ "Modified"  : "✹",
-    \ "Staged"    : "✚",
-    \ "Untracked" : "✭",
-    \ "Renamed"   : "➜",
-    \ "Unmerged"  : "═",
-    \ "Deleted"   : "✖",
-    \ "Dirty"     : "✗",
-    \ "Clean"     : "✔︎",
-    \ 'Ignored'   : '☒',
-    \ "Unknown"   : "?"
-    \ }
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-" buffergator
-let g:buffergator_supress_keymaps = 1
-noremap l; :BuffergatorToggle<CR>
+" coc-explorer
+nnoremap <leader>e :CocCommand explorer<CR>
 
 " easymotion
 let g:EasyMotion_smartcase = 1
@@ -250,15 +229,6 @@ noremap <silent> gk :call smooth_scroll#up(&scroll, 0, 9)<CR>
 noremap <silent> gj :call smooth_scroll#down(&scroll, 0, 9)<CR>
 noremap <silent> gkk :call smooth_scroll#up(&scroll*2, 0, 9)<CR>
 noremap <silent> gjj :call smooth_scroll#down(&scroll*2, 0, 9)<CR>
-
-" vim-wheel
-let g:wheel#map#up   = '<M-k>'
-let g:wheel#map#down = '<M-j>'
-
-" open-browser.vim
-let g:netrw_nogx = 1 " disable netrw's gx mapping
-nmap gx <Plug>(openbrowser-smart-search)
-vmap gx <Plug>(openbrowser-smart-search)
 
 " Gundo
 map <F3> :GundoToggle<CR>
@@ -373,8 +343,12 @@ autocmd FileType python,javascript,javascript.jsx,html,htmldjango let g:strip_wh
 
 "==============================CoC Settings================================="
 
+call coc#config('python', {'pythonPath': s:current_python_path})
+
+" coc extensions
 let g:coc_global_extensions = [
             \'coc-python',
+            \'coc-sh', 'coc-explorer',
             \'coc-json', 'coc-yaml',
             \'coc-html', 'coc-git',
             \]
@@ -396,7 +370,7 @@ endif
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
-" Use `[[` and `]]` to navigate diagnostics
+" Use `c-[` and `c-]` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
 nmap <silent> <c-[> <Plug>(coc-diagnostic-prev)
 nmap <silent> <c-]> <Plug>(coc-diagnostic-next)
@@ -498,6 +472,10 @@ nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
 "============================General Settings================================"
 
+" VIM Python interperter
+let g:python3_host_prog = s:current_python_path
+
+
 " Add user local bin to runtime path
 let $PATH = $PATH . ':' . expand("~/.local/bin")
 
@@ -583,12 +561,19 @@ autocmd FileType c,cpp,java,php,ruby,python autocmd BufWritePre <buffer> :call <
 " Key mappings
 nnoremap <F9> :tabnew<CR>
 nnoremap <F10> :tabclose<CR>
+nnoremap <silent> gr :tabp<CR>
+nnoremap <silent> gt :tabn<CR>
+nnoremap <silent> br :bp<CR>
+nnoremap <silent> bt :bn<CR>
+nnoremap <silent> bd :bd<CR>
+nnoremap <silent> bdd :bd!<CR>
 nnoremap - :vertical res -5<CR>
 nnoremap = :vertical res +5<CR>
 nnoremap _ :res -5<CR>
 nnoremap + :res +5<CR>
 nnoremap <C-t> :Lines<CR>
 nnoremap <C-p> :Files ~<CR>
+nnoremap <leader>b :Buffers<CR>
 
 " Writing mode
 function! ToggleWritingMode()
